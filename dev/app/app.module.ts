@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule }  from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { BrowserModule }  from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
 
-import { routing, appRoutingProviders } from './app.routes';
-import { AppLayout } from './app.layout';
-import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
-import { PageNotFoundComponent } from './404.component';
+import { routing, appRoutingProviders } from "./app.routes";
+import { AppLayout } from "./app.layout";
+import { HomeComponent } from "./home/home.component";
+import { AboutComponent } from "./about/about.component";
+import { PageNotFoundComponent } from "./404.component";
 
 
 @NgModule({
@@ -25,7 +25,7 @@ import { PageNotFoundComponent } from './404.component';
     ],
 
     providers: [
-    	appRoutingProviders
+        appRoutingProviders
     ],
 
     bootstrap: [ AppLayout ]
