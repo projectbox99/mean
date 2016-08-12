@@ -1,0 +1,27 @@
+{
+  "name": "mean",
+  "version": "0.1.0",
+  "description": "A SoftUni Student Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/projectbox99/mean.git"
+  },
+  "keywords": [
+    "mean",
+    "angular2",
+    "express",
+    "webpack",
+    "typescript",
+    "javascript"
+  ],
+  "author": "Grumpy & Mean",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/projectbox99/mean/issues"
+  },
+  "homepage": "https://github.com/projectbox99/mean#readme"
+}
