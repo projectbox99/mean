@@ -1,0 +1,9 @@
+<div class = 'ad-list'>
+    <h2>ADS</h2>
+    <ul class="items">
+        <li *ngFor="let ad of ads"
+            (click)="onSelect(ad)">
+            <span class="badge">{{ad.id}}</span> {{ad.name}}
+        </li>
+    </ul>
+</div>

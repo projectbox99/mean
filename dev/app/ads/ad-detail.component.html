@@ -1,0 +1,15 @@
+<div class = 'ad-detail'>
+    <h2>AD Detail</h2>
+    <div *ngIf="ad">
+        <h3>"{{ad.name}}"</h3>
+        <div>
+            <label>Id: </label>{{ad.id}}</div>
+        <div>
+            <label>Name: </label>
+            <input [(ngModel)]="ad.name" placeholder="name"/>
+        </div>
+        <p>
+            <button (click)="gotoAds()">Back</button>
+        </p>
+    </div>
+</div>

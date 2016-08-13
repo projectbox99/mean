@@ -1,3 +1,5 @@
+"use strict";
+
 import {
     addProviders,
     inject,
