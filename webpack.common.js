@@ -64,19 +64,19 @@ module.exports = {
 
 		new FaviconsWebpackPlugin({
 			logo: path.resolve(__dirname, 'dev/favicon.ico'),
-			prefix: '',
+			prefix: 'icons/',
 			emitStats: false,
 			statsFilename: path.resolve(__dirname, 'public'),
 			persistentCache: false,
 			inject: true,
 			title: 'Project',
 			icons: {
-				android: true,
+				android: false,
 				appleIcon: false,
 				appleStartup: false,
 				coast: false,
 				favicons: true,
-				firefox: true,
+				firefox: false,
 				opengraph: false,
 				twitter: false,
 				yandex: false,

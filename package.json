@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./server.js",
+    "dev-server": "webpack-dev-server --content-base public/ --progress --port 3000",
     "test": "karma start",
     "build": "rimraf public && webpack --config webpack.prod.js --progress --profile --bail",
     "postinstall": "typings install",
