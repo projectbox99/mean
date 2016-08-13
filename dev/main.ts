@@ -6,5 +6,5 @@ import { AppModule } from "./app/app.module";
 if (process.env.ENV === "production") {
     enableProdMode();
 }
-
+console.log("In main.ts");
 browserDynamicPlatform().bootstrapModule(AppModule);

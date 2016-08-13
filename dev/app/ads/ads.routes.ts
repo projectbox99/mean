@@ -11,3 +11,4 @@ const ad_Routes: Routes = [
 ];
 
 export const adRoutes = RouterModule.forChild(ad_Routes);
+console.log("In ads.routes.ts");

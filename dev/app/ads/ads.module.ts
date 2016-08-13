@@ -7,9 +7,9 @@ import { FormsModule }    from "@angular/forms";
 import { AdListComponent }    from "./ad-list.component";
 import { AdDetailComponent }  from "./ad-detail.component";
 
-import { adRoutes } from "./ads.routes";
-
 import { AdsService } from "./ads.service";
+
+import { adRoutes } from "./ads.routes";
 
 @NgModule({
     imports: [
@@ -26,3 +26,4 @@ import { AdsService } from "./ads.service";
     ]
 })
 export class AdsModule {}
+console.log("In ads.module.ts");

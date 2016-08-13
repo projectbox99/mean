@@ -19,9 +19,12 @@ let adsPromise = Promise.resolve(ADS);
 
 @Injectable()
 export class AdsService {
-    getAds() { return adsPromise; }
+    getAds() {
+        console.log("getAds in ads.service");
+        return adsPromise; }
 
     getAd(id: number | string) {
+        console.log("getAd in ads.service");
         return adsPromise
             .then(ads => ads.find(ad => ad.id === +id));
     }

@@ -8,3 +8,4 @@ import { Component } from "@angular/core";
 })
 
 export class AppLayout {  }
+console.log("In app.layout.ts");
