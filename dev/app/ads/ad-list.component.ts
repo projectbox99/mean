@@ -5,27 +5,32 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { Ad, AdsService } from "./ads.service";
 import { Subscription } from "rxjs/Subscription";
 
+console.log("Entering ad-list component!")
+
 @Component ({
     templateUrl: "./ad-list.component.html"
 })
-
 export class AdListComponent implements OnInit, OnDestroy {
     ads: Ad[];
 
-    private selectedId: number;
     private sub: Subscription;
+    private errorMessage: any;
 
-    constructor( private service: AdsService, private route: ActivatedRoute, private router: Router ) { }
+    constructor(private service: AdsService, private route: ActivatedRoute, private router: Router) {
+        console.log("ad-list.constructor!");
+    }
+
+    getAds() {
+        console.info("getAds!");
+        this.sub = this.service.getAds()
+            .subscribe(
+                ads => this.ads = ads,
+                error => this.errorMessage = <any>error);
+    }
 
     ngOnInit() {
-        this.sub = this.route
-            .params
-            .subscribe(params => {
-                this.selectedId = +params["id"];
-                this.service.getAds()
-                    .then(ads => this.ads = ads);
-            });
-        console.log("In OnInit - ad-list.component.ts");
+        console.info("OnInit!");
+        this.getAds();
     }
 
     ngOnDestroy() {
@@ -33,7 +38,7 @@ export class AdListComponent implements OnInit, OnDestroy {
     }
 
     onSelect(ad: Ad) {
+        console.info("OnSelect!");
         this.router.navigate(["/ads", ad.id]);
     }
 }
-console.log("In ad-list.component.ts");

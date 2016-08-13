@@ -1,31 +1,61 @@
 "use strict";
 
 import { Injectable } from "@angular/core";
+import { Http, Headers, Response } from "@angular/http";
+import { Observable } from "rxjs/Observable";
+
+const adsUrl: string = window.location.hostname + ":" + window.location.port + "/api/ads";
 
 export class Ad {
-    constructor(public id: number, public name: string) { }
+    constructor(
+        public id: number, 
+        public title: string,
+        public category: string,
+        public photos: string[],
+        public city: string,
+        public price: number,
+        public owner: string,
+        public dateCreated: Date,
+        public dateValid: Date) { }
 }
-
-let ADS = [
-    new Ad(11, "Mr. Nice"),
-    new Ad(12, "Narco"),
-    new Ad(13, "Bombasto"),
-    new Ad(14, "Celeritas"),
-    new Ad(15, "Magneta"),
-    new Ad(16, "RubberMan")
-];
-
-let adsPromise = Promise.resolve(ADS);
 
 @Injectable()
 export class AdsService {
-    getAds() {
-        console.log("getAds in ads.service");
-        return adsPromise; }
-
-    getAd(id: number | string) {
-        console.log("getAd in ads.service");
-        return adsPromise
-            .then(ads => ads.find(ad => ad.id === +id));
+    constructor(private http: Http) {
+        console.info("AdsService.constructor!");
     }
-}
+
+    getAds(): Observable<Ad[]> {
+        console.info("AdsService.getAds!");
+        return this.http.get(adsUrl, {})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }    // getAds()
+
+    getAd(id: number | string): Observable<Ad> {
+        console.info("AdsService.getAd!");
+        return this.http.get(adsUrl + "/" + id, {})
+            .map( (res: Response) => {
+                console.log(res.json().data);
+                return res.json().data;
+            });
+    }    // getAd()
+
+    private extractData(res: Response) {
+        console.info("AdsService.extractData!");
+        let body = res.json();
+        return body.data || {};
+    }    // extractData()
+
+    private handleError (error: any) {
+        console.info("AdsService.handleError!");
+        let errMsg = (error.message)
+            ? error.message
+            : error.status
+                ? `${error.status} - ${error.statusText}`
+                : 'Server error';
+
+    console.error(errMsg);
+    return Observable.throw(errMsg);
+  }    // handleError()
+}    // class AdsService
