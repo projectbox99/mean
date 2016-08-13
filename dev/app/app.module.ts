@@ -7,7 +7,7 @@ import { FormsModule } from "@angular/forms";
 import { AppLayout } from "./app.layout";
 import { HomeComponent } from "./home/home.component";
 import { AboutComponent } from "./about/about.component";
-// import { PageNotFoundComponent } from "./404.component";
+import { PageNotFoundComponent } from "./404.component";
 import { routing, appRoutingProviders } from "./app.routes";
 
 
@@ -23,8 +23,8 @@ import { AdsModule } from "./ads/ads.module";
     declarations: [
         AppLayout,
         HomeComponent,
-        AboutComponent
-        // PageNotFoundComponent
+        AboutComponent,
+        PageNotFoundComponent
     ],
     providers: [
         appRoutingProviders
@@ -32,4 +32,3 @@ import { AdsModule } from "./ads/ads.module";
     bootstrap: [ AppLayout ]
 })
 export class AppModule { }
-console.log("In app.module.ts");

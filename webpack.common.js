@@ -14,6 +14,7 @@ module.exports = {
 	},
 
 	output: {
+		publicPath: '/assets',
 		path: path.resolve(__dirname, 'public'),
 		filename: '[name].bundle.js'
 	},
@@ -45,7 +46,7 @@ module.exports = {
 			},
 			{	// images and fonts are bundled as well
 				test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-				loader: 'file?name=assets/[name].[hash].[ext]'
+				loader: 'file?name=assets/[name].[ext]&context=dev/assets'
 			}
 		]
 	},

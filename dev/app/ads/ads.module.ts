@@ -9,13 +9,13 @@ import { AdDetailComponent }  from "./ad-detail.component";
 
 import { AdsService } from "./ads.service";
 
-import { adRoutes } from "./ads.routes";
+import { adRouting } from "./ads.routes";
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        adRoutes
+        adRouting
     ],
     declarations: [
         AdListComponent,
@@ -26,4 +26,3 @@ import { adRoutes } from "./ads.routes";
     ]
 })
 export class AdsModule {}
-console.log("In ads.module.ts");

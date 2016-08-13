@@ -3,7 +3,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Ad, AdsService } from "./ads.service";
-import { Subscription }       from 'rxjs/Subscription';
+import { Subscription } from "rxjs/Subscription";
 
 @Component ({
     templateUrl: "./ad-list.component.html"
@@ -21,7 +21,7 @@ export class AdListComponent implements OnInit, OnDestroy {
         this.sub = this.route
             .params
             .subscribe(params => {
-                this.selectedId = +params['id'];
+                this.selectedId = +params["id"];
                 this.service.getAds()
                     .then(ads => this.ads = ads);
             });

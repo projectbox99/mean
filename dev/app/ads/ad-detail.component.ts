@@ -32,9 +32,9 @@ export class AdDetailComponent implements OnInit, OnDestroy {
     }
 
     gotoAds() {
-        //this.router.navigate(["/ads"]);
+        // this.router.navigate(["/ads"]);
         let adId = this.ad ? this.ad.id : null;
-        this.router.navigate(['/ads', { id: adId }]);
+        this.router.navigate(["/ads", { id: adId }]);
     }
 }
 console.log("In ad-detail.component.ts");
