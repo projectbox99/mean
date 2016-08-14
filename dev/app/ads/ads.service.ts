@@ -2,13 +2,20 @@
 
 import { Injectable } from "@angular/core";
 import { Http, Headers, Response } from "@angular/http";
+import 'rxjs/Rx';
 import { Observable } from "rxjs/Observable";
 
-const adsUrl: string = window.location.hostname + ":" + window.location.port + "/api/ads";
+const adsUrl: string =
+    window.location.protocol + "//" +
+    window.location.hostname +
+    ((window.location.port === "80")
+        ? ("")
+        : (":" + window.location.port)) +
+    "/api/ads";
 
 export class Ad {
     constructor(
-        public id: number, 
+        public id: number,
         public title: string,
         public category: string,
         public photos: string[],
@@ -27,6 +34,7 @@ export class AdsService {
 
     getAds(): Observable<Ad[]> {
         console.info("AdsService.getAds!");
+        console.log(`${adsUrl}`);
         return this.http.get(adsUrl, {})
             .map(this.extractData)
             .catch(this.handleError);
@@ -52,10 +60,10 @@ export class AdsService {
         let errMsg = (error.message)
             ? error.message
             : error.status
-                ? `${error.status} - ${error.statusText}`
-                : 'Server error';
+            ? `${error.status} - ${error.statusText}`
+            : 'Server error';
 
-    console.error(errMsg);
-    return Observable.throw(errMsg);
-  }    // handleError()
+        console.error(errMsg);
+        return Observable.throw(errMsg);
+    }    // handleError()
 }    // class AdsService
