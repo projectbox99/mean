@@ -8,7 +8,8 @@ import { Subscription } from "rxjs/Subscription";
 console.log("Entering ad-list component!")
 
 @Component ({
-    templateUrl: "./ad-list.component.html"
+    templateUrl: "./ad-list.component.html",
+    providers: [AdsService]
 })
 export class AdListComponent implements OnInit, OnDestroy {
     ads: Ad[];
