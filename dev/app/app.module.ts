@@ -7,6 +7,7 @@ import { FormsModule } from "@angular/forms";
 import { AppLayout } from "./app.layout";
 import { HomeComponent } from "./home/home.component";
 import { AboutComponent } from "./about/about.component";
+import { RegisterComponent } from "./register/register.component";
 import { PageNotFoundComponent } from "./404.component";
 import { routing, appRoutingProviders } from "./app.routes";
 
@@ -24,6 +25,7 @@ import { AdsModule } from "./ads/ads.module";
         AppLayout,
         HomeComponent,
         AboutComponent,
+        RegisterComponent,
         PageNotFoundComponent
     ],
     providers: [

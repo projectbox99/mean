@@ -4,6 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { HomeComponent } from "./home/home.component";
 import { AboutComponent } from "./about/about.component";
+import { RegisterComponent } from "./register/register.component";
 import { PageNotFoundComponent } from "./404.component";
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
     },
     { path: "home", data: { title: "Home" }, component: HomeComponent },
     { path: "about", data: { title: "About the App" }, component: AboutComponent },
+    { path: "register", data: { title: "Register User" }, component: RegisterComponent },
     { path: "**", component: PageNotFoundComponent }
 ];
 
