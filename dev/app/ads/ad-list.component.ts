@@ -5,21 +5,20 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { Ad, AdsService } from "./ads.service";
 import { Subscription } from "rxjs/Subscription";
 
-console.log("Entering ad-list component!")
+console.log("Entering ad-list component!");
 
 @Component ({
     templateUrl: "./ad-list.component.html",
     providers: [AdsService]
 })
 export class AdListComponent implements OnInit, OnDestroy {
-    ads: Ad[];
+    private ads: Ad[];
 
+    private selectedAd: Ad;
     private sub: Subscription;
     private errorMessage: any;
 
-    constructor(private service: AdsService, private route: ActivatedRoute, private router: Router) {
-        console.log("ad-list.constructor!");
-    }
+    constructor(private service: AdsService, private route: ActivatedRoute, private router: Router) { }
 
     getAds() {
         console.info("getAds!");
@@ -27,19 +26,26 @@ export class AdListComponent implements OnInit, OnDestroy {
             .subscribe(
                 ads => this.ads = ads,
                 error => this.errorMessage = <any>error);
-    }
+    }    // getAds()
 
-    ngOnInit() {
-        console.info("OnInit!");
-        this.getAds();
-    }
-
-    ngOnDestroy() {
-        this.sub.unsubscribe();
-    }
+    newAd() {
+        console.info("newAd!");
+        this.selectedAd = null;
+    }    // newAd()
 
     onSelect(ad: Ad) {
         console.info("OnSelect!");
+        this.selectedAd = ad;
         this.router.navigate(["/ads", ad.id]);
-    }
-}
+    }    // onSelect()
+
+    ngOnInit() {
+        console.info("OnInit!");
+        this.selectedAd = null;
+        this.getAds();
+    }    // ngOnInit()
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }    // ngOnDestroy()
+}    // class AdListComponent

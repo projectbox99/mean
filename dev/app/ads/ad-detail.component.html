@@ -3,13 +3,34 @@
     <div *ngIf="ad">
         <h3>"{{ad.title}}"</h3>
         <div>
-            <label>Id: </label>{{ad.id}}</div>
+            <label>Id: </label>{{ad.id || ""}}
+        </div>
         <div>
-            <label>Name: </label>
-            <input [(ngModel)]="ad.title" placeholder="name"/>
+            <label>Title: </label>
+            <input [(ngModel)]="ad.title | upperCase" placeholder="title"/>
+
+            <label>Category: </label>
+            <input [(ngModel)]="ad.category" placeholder="category"/>
+
+            <label>Description: </label>
+            <input [(ngModel)]="ad.desc" placeholder="Description"/>
+
+            <label>City: </label>
+            <input [(ngModel)]="ad.city" placeholder="City"/>
+
+            <label>Price: </label>
+            <input [(ngModel)]="ad.price" placeholder="Price"/>
+
+            <label>Owner: </label>
+            <input [(ngModel)]="ad.owner" placeholder="Owner"/>
         </div>
         <p>
             <button (click)="gotoAds()">Back</button>
+            <button (click)="saveAd()">Save</button>
+            <button (click)="deleteAd(ad, $event)">Del</button>
         </p>
+        <div class="error" *ngIf="errorMessage">
+            {{errorMessage}}
+        </div>
     </div>
 </div>
