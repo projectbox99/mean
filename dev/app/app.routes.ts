@@ -5,6 +5,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { HomeComponent } from "./home/home.component";
 import { AboutComponent } from "./about/about.component";
 import { RegisterComponent } from "./register/register.component";
+import { LoginComponent } from "./login/login.component";
 import { PageNotFoundComponent } from "./404.component";
 
 const routes: Routes = [
@@ -13,10 +14,11 @@ const routes: Routes = [
         redirectTo: "/home",
         pathMatch: "full"
     },
-    { path: "home", data: { title: "Home" }, component: HomeComponent },
+    { path: "home", data: { title: "Home" }, component: HomeComponent  },
     { path: "about", data: { title: "About the App" }, component: AboutComponent },
     { path: "register", data: { title: "Register User" }, component: RegisterComponent },
-    { path: "**", component: PageNotFoundComponent }
+    { path: "login", data: { title: "User Login" }, component: LoginComponent },
+    { path: "**", component: PageNotFoundComponent },
 ];
 
 export const appRoutingProviders: any[] = [

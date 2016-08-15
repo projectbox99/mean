@@ -5,7 +5,7 @@ import { Register, RegisterService } from "./register.service";
 @Component ({
     selector: "view",
     templateUrl: "./register.component.html",
-    styles: ['.ng-valid[required] { border-left: 5px solid #42A948; } .ng-invalid { border-left: 5px solid #a94442; }']
+    styles: [".ng-valid[required] { border-left: 5px solid #42A948; } .ng-invalid { border-left: 5px solid #a94442; }"]
 })
 
 export class RegisterComponent {
