@@ -14,10 +14,9 @@ const routes: Routes = [
         redirectTo: "/home",
         pathMatch: "full"
     },
-    { path: "home", data: { title: "Home" }, component: HomeComponent  },
+    { path: "home", data: { title: "Home" }, component: HomeComponent },
     { path: "about", data: { title: "About the App" }, component: AboutComponent },
     { path: "register", data: { title: "Register User" }, component: RegisterComponent },
-    { path: "login", data: { title: "User Login" }, component: LoginComponent },
     { path: "**", component: PageNotFoundComponent },
 ];
 
