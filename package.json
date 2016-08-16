@@ -9,7 +9,7 @@
     "test": "karma start",
     "build": "rimraf public && webpack --config webpack.prod.js --progress --profile --bail",
     "postinstall": "typings install",
-    "lint": "tslint ./dev/**/*.ts && eslint [./models, ./routes] --ext .js --ext .jsx --cache",
+    "lint": "tslint ./dev/**/*.ts && eslint [./models, ./routes] --ext .js --cache",
     "typings": "typings"
   },
   "repository": {

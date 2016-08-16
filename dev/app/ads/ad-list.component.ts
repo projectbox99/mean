@@ -2,14 +2,15 @@
 
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { Ad, AdsService } from "./ads.service";
+
 import { Subscription } from "rxjs/Subscription";
 
-console.log("Entering ad-list component!");
+import { Ad, AdsService } from "./ads.service";
+
 
 @Component ({
     templateUrl: "./ad-list.component.html",
-    providers: [AdsService]
+    providers: [ AdsService ]
 })
 export class AdListComponent implements OnInit, OnDestroy {
     private ads: Ad[];

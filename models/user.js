@@ -14,7 +14,7 @@ class User_schema extends mongoose.Schema {
 			phone2: String,
 			skypeId: String,
 			photo: String,
-			role: { type: Number, required: true, default: 0 },
+			role: { type: String, required: true, default: "regular" },
 			dateCreated: { type: Date, required: true, default: Date.now }
 		});
 	}	// constructor()

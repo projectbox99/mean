@@ -16,8 +16,8 @@ import { adRouting } from "./ads.routes";
     imports: [
         CommonModule,
         FormsModule,
-        adRouting,
-        HttpModule
+        HttpModule,
+        adRouting
     ],
     declarations: [
         AdListComponent,

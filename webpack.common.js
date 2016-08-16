@@ -27,21 +27,25 @@ module.exports = {
 		loaders: [
 			{	// a loader to transpile our Typescript to ES5, guided by tsconfig.json
 				test: /\.ts$/,
+				exclude: [ 'models', 'routes' ],
 				loaders: ['ts', 'angular2-template-loader']
 				// angular2-template-loader - loads angular components' template and styles
 			},
 			{	// for component templates
 				test: /\.html$/,
+				// include: 'dev/app',
+				// exclude: 'dev',
 				loader: 'html'
 			},
 			{	// this pattern matches application-wide styles
 				test: /\.css$/,
-				exclude: 'src',
+				include: 'dev',
+				exclude: 'dev/app',
 				loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
 			},
 			{	// handles component-scoped styles (styleUrls prop)
 				test: /\.css$/,
-				include: 'src',
+				// include: 'dev/app',
 				loader: 'raw'
 			},
 			{	// images and fonts are bundled as well

@@ -1,102 +1,87 @@
-<div class='register'>
-	<form (ngSubmit)="onSubmit()" #registrationForm="ngForm" role="form" class="form-horizontal">
-		<div class="form-group col-sm-10">
-			<label for="username" class="control-label col-sm-2">Username</label>
-            <div class="col-sm-4">
-			    <input type="text" id="username" class="form-control" placeholder="Username" required
-                [(ngModel)]="model.username" name="username" #username="ngModel">
-            </div>
-            <div [hidden]="username.valid || username.pristine" class="alert alert-danger">Username is required!</div>
+<div [hidden]="submitted" class="register-container col-sm-8">
+    <h1>User Registration</h1>
+
+    <div [hidden]="!errorMsg" class="errorMsg alert alert-danger">
+        An error occured while creating user! Error: {{errorMsg}}
+    </div>
+
+	<form *ngIf="active" class="form-horizontal" (ngSubmit)="onSubmit()" #userForm="ngForm">
+        <i>{{diagnostic}}</i><br>
+
+		<div class="form-group">
+			<label for="username" class="col-sm-2 col-form-label">Username</label>
+            <input type="text" class="form-control col-sm-8" id="username" placeholder="Username" required
+                [(ngModel)]="user.username" name="username" #usrName="ngModel" >
+                <div [hidden]="usrName.valid || usrName.pristine" class="alert alert-danger">
+                    Username is required
+                </div>
 		</div>
-
-        <br>
-
-        <div class="form-group col-sm-10">
-			<label for="password1" class="control-label col-sm-2">Password</label>
-            <div class="col-sm-4">
-			    <input type="password" id="password1" class="form-control" placeholder="Password" required
-                [(ngModel)]="model.password" name="password1" #password1="ngModel">
-            </div>
-            <div [hidden]="password1.valid || password1.pristine" class="alert alert-danger">Password is required!</div>
-            <div class="col-sm-4">
-			    <input type="password" id="password2" class="form-control" placeholder="Repeate Password" required
-                name="password2">
-            </div>
-            <div [hidden]="password2 === password1 || password2.pristine" class="alert alert-danger">Password is required!</div>
-		</div>
-
-        <br>
 
         <div class="form-group">
-            <label for="namesFirst" class="control-label col-sm-2">First Name</label>
-            <div class="col-sm-4">
-                <input type="text" id="namesFirst" class="form-control" placeholder="First Name" 
-                [(ngModel)]="model.namesFirst" name="namesFirst" #namesFirst="ngModel">
+			<label for="password1">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password" required
+                [(ngModel)]="user.password" name="password" #pswd="ngModel" >
+            <div [hidden]="pswd.valid || pswd.pristine" class="alert alert-danger">
+                Password is required
+            </div>
+            <input type="password" class="form-control" id="password2" placeholder="Repeate Password" required
+                [(ngModel)]="password2" name="password2" #pswd2="ngModel" >
+            <div [hidden]="pswd2.valid || pswd2.pristine" class="alert alert-danger">
+                Password control field is required
             </div>
         </div>
-        <div class="form-group">
-			<label for="namesLast" class="control-label col-sm-2">Last Name</label>
-            <div class="col-sm-4">
-			    <input type="text" id="namesLast" class="form-control" placeholder="Last Name" 
-                [(ngModel)]="model.namesLast" name="namesLast" #namesLast="ngModel">
-            </div>
-		</div>
-
-        <br>
 
         <div class="form-group">
-			<label for="email" class="control-label col-sm-2">Email</label>
-            <div class="col-sm-4">
-			    <input type="email" id="email" class="form-control" placeholder="Email" 
-                [(ngModel)]="model.email" name="email" #email="ngModel">
-            </div>
-		</div>
-
-        <br>
-
-        <div class="form-group">
-			<label for="phone1" class="control-label col-sm-2">Phones</label>
-            <div class="col-sm-4">
-			    <input type="text" id="phone1" class="form-control" placeholder="Phone" 
-                [(ngModel)]="model.phone1" name="phone1" #phone1="ngModel">
-            </div>
-            <div class="col-sm-4">
-			    <input type="text" id="phone2" class="form-control" placeholder="Phone" 
-                [(ngModel)]="model.phone2" name="phone2" #phone2="ngModel">
-            </div>
-		</div>
-
-        <br>
-
-        <div class="form-group">
-			<label for="skypeId" class="control-label col-sm-2">Skype Id</label>
-            <div class="col-sm-4">
-			    <input type="text" id="skypeId" class="form-control" placeholder="Skype" 
-                [(ngModel)]="model.skypeId" name="skypeId" #skypeId="ngModel">
-            </div>
-		</div>
-
-        <br>
-
-        <div class="form-group">
-			<label for="photo" class="control-label col-sm-2">Photo</label>
-            <div class="col-sm-4">
-			    <input type="text" id="photo" class="form-control" placeholder="Photo">
-            </div>
-		</div>
-
-        <br>
-
-        <div class="form-group">
-			<label for="role" class="control-label col-sm-2">Role</label>
-            <div class="col-sm-4">
-			    <input type="text" id="role" class="form-control" placeholder="Role" 
-                [(ngModel)]="model.role" name="role" #role="ngModel">
-            </div>
-		</div>
-        <br>
-        <div style="text-align: right">
-            <button type="submit" class="btn btn-success" [disabled]="!registrationForm.form.valid">Submit</button>
+            <label for="namesFirst">Names</label>
+            <input type="text" class="form-control" id="namesFirst" placeholder="First Name"
+                [(ngModel)]="user.namesFirst" name="namesFirst" #namesFirst="ngModel" >
+            <input type="text" class="form-control" id="namesLast" placeholder="Last Name"
+                [(ngModel)]="user.namesLast" name="namesLast" #namesLast="ngModel" >
         </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" id="email" placeholder="Email"
+                [(ngModel)]="user.email" name="email" #email="ngModel" >
+        </div>
+
+        <div class="form-group">
+            <label for="phone1">Phones</label>
+            <input type="text" class="form-control" id="phone1" placeholder="Main Phone Number"
+                [(ngModel)]="user.phone1" name="phone1" #phone1="ngModel" >
+            <input type="text" class="form-control" id="phone2" placeholder="Second Phone Number"
+                [(ngModel)]="user.phone2" name="phone2" #phone2="ngModel" >
+        </div>
+
+        <div class="form-group">
+            <label for="skypeId">Skype</label>
+            <input type="text" class="form-control" id="skypeId" placeholder="Skype"
+                [(ngModel)]="user.skypeId" name="skypeId" #skypeId="ngModel" >
+        </div>
+
+        <div class="form-group">
+            <label for="photo">User Photo</label>
+            <input type="image" class="form-control" id="photo" placeholder="Photo"
+                [(ngModel)]="user.photo" name="photo" #photo="ngModel" >
+        </div>
+
+        <div class="form-group" *ngIf="isAdmin">
+            <label for="role">Assign User Role</label>
+            <select class="form-control" id="role" placeholder="Pick a role"
+                [(ngModel)]="user.role" name="role" #role="ngModel" >
+                <option *ngFor="let role of roles" [value]="role">{{role}}</option>
+            </select>
+            <div [hidden]="isAdmin" class="alert alert-danger">
+                You are not Admin!
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-default" (click)="clearForm()">Clear Form</button>
+        <button type="submit" class="btn btn-success">Submit</button>
 	</form>
+</div>
+
+<!-- submitted = true -->
+<div [hidden]="!submitted" class="waiting">
+    <h2>Waiting for the server to authorize the new user...</h2>
 </div>

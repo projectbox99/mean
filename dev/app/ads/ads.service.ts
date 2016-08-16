@@ -2,6 +2,7 @@
 
 import { Injectable } from "@angular/core";
 import { Http, Headers, Response } from "@angular/http";
+
 import "rxjs/Rx";
 import { Observable } from "rxjs/Observable";
 
@@ -25,23 +26,25 @@ export class Ad {
         public owner: string = "",
         public dateCreated: Date = new Date,
         public dateValid: Date = new Date) { }
-}
+}    // class Ad
 
 @Injectable()
 export class AdsService {
-    constructor(private http: Http) {
-        console.info("AdsService.constructor!");
-    }
+    private adsCache: Ad[] = [];
+    private adCache: Ad = null;
 
-    getAds(): Observable<Ad[]> {
+    constructor(private http: Http) { }
+
+    public getAds(): Observable<Ad[]> {
         console.info("AdsService.getAds!");
         console.log(`${adsUrl}`);
+
         return this.http.get(adsUrl, {})
             .map(this.extractData)
             .catch(this.handleError);
     }    // getAds()
 
-    getAd(id: number | string): Observable<Ad> {
+    public getAd(id: number | string): Observable<Ad> {
         console.info("AdsService.getAd!");
         return this.http
             .get(adsUrl + "/" + id, {})
@@ -49,7 +52,7 @@ export class AdsService {
             .catch(this.handleError);
     }    // getAd()
 
-    postAd(ad: Ad): Observable<Ad> {
+    public postAd(ad: Ad): Observable<Ad> {
         console.info("AdsService.postAd!");
         let headers: Headers = new Headers();
         headers.append("Content-Type", "application/json");
@@ -60,7 +63,7 @@ export class AdsService {
             .catch(this.handleError);
     }    // postAd()
 
-    putAd(ad: Ad): Observable<Ad> {
+    public putAd(ad: Ad): Observable<Ad> {
         console.info("AdsService.putAd!");
         let headers: Headers = new Headers;
         headers.append("Content-Type", "application/json");
@@ -71,7 +74,7 @@ export class AdsService {
             .catch(this.handleError);
     }    // putAd()
 
-    deleteAd(ad: Ad): Observable<Ad> {
+    public deleteAd(ad: Ad): Observable<Ad> {
         console.info("AdsService.deleteAd!");
         let headers: Headers = new Headers;
         headers.append("Content-Type", "application/json");
@@ -88,13 +91,13 @@ export class AdsService {
         return body.data || {};
     }    // extractData()
 
-    private handleError (error: any) {
+    private handleError (error: any): Observable<string> {
         console.info("AdsService.handleError!");
         let errMsg = (error.message)
             ? error.message
-            : error.status
-            ? `${error.status} - ${error.statusText}`
-            : "Server error";
+            : (error.status)
+                ? `${error.status} - ${error.statusText}`
+                : "Server Error";
 
         console.error(errMsg);
         return Observable.throw(errMsg);

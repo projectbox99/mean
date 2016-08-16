@@ -1,9 +1,6 @@
 "use strict";
 
-import {
-    addProviders,
-    inject,
-} from "@angular/core/testing";
+import { addProviders, inject } from "@angular/core/testing";
 import { AppLayout } from "./app.layout";
 
 describe("App", () => {
