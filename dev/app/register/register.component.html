@@ -1,83 +1,107 @@
-<div [hidden]="submitted" class="register-container col-sm-8">
-    <h1>User Registration</h1>
+<div [hidden]="submitted" class="register-container col-sm-10">
+    <h1 class="form-heading">User Registration</h1>
 
     <div [hidden]="!errorMsg" class="errorMsg alert alert-danger">
         An error occured while creating user! Error: {{errorMsg}}
     </div>
 
 	<form *ngIf="active" class="form-horizontal" (ngSubmit)="onSubmit()" #userForm="ngForm">
-        <i>{{diagnostic}}</i><br>
+        <!--<i>{{diagnostic}}</i><br>-->
 
-		<div class="form-group">
+		<div class="form-group row">
 			<label for="username" class="col-sm-2 col-form-label">Username</label>
-            <input type="text" class="form-control col-sm-8" id="username" placeholder="Username" required
-                [(ngModel)]="user.username" name="username" #usrName="ngModel" >
-                <div [hidden]="usrName.valid || usrName.pristine" class="alert alert-danger">
-                    Username is required
-                </div>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="username" placeholder="Username" required
+                    [(ngModel)]="user.username" name="username" #usrName="ngModel" >
+                    <div [hidden]="usrName.valid || usrName.pristine" class="alert alert-danger">
+                        Username is required
+                    </div>
+            </div>
 		</div>
 
-        <div class="form-group">
-			<label for="password1">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password" required
-                [(ngModel)]="user.password" name="password" #pswd="ngModel" >
-            <div [hidden]="pswd.valid || pswd.pristine" class="alert alert-danger">
-                Password is required
+        <div class="form-group row">
+			<label for="password1" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-4">
+                <input type="password" class="form-control" id="password" placeholder="Password" required
+                    [(ngModel)]="user.password" name="password" #pswd="ngModel" >
+                    <div [hidden]="pswd.valid || pswd.pristine" class="alert alert-danger">
+                        Password is required
+                    </div>
             </div>
-            <input type="password" class="form-control" id="password2" placeholder="Repeate Password" required
-                [(ngModel)]="password2" name="password2" #pswd2="ngModel" >
-            <div [hidden]="pswd2.valid || pswd2.pristine" class="alert alert-danger">
-                Password control field is required
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="namesFirst">Names</label>
-            <input type="text" class="form-control" id="namesFirst" placeholder="First Name"
-                [(ngModel)]="user.namesFirst" name="namesFirst" #namesFirst="ngModel" >
-            <input type="text" class="form-control" id="namesLast" placeholder="Last Name"
-                [(ngModel)]="user.namesLast" name="namesLast" #namesLast="ngModel" >
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" class="form-control" id="email" placeholder="Email"
-                [(ngModel)]="user.email" name="email" #email="ngModel" >
-        </div>
-
-        <div class="form-group">
-            <label for="phone1">Phones</label>
-            <input type="text" class="form-control" id="phone1" placeholder="Main Phone Number"
-                [(ngModel)]="user.phone1" name="phone1" #phone1="ngModel" >
-            <input type="text" class="form-control" id="phone2" placeholder="Second Phone Number"
-                [(ngModel)]="user.phone2" name="phone2" #phone2="ngModel" >
-        </div>
-
-        <div class="form-group">
-            <label for="skypeId">Skype</label>
-            <input type="text" class="form-control" id="skypeId" placeholder="Skype"
-                [(ngModel)]="user.skypeId" name="skypeId" #skypeId="ngModel" >
-        </div>
-
-        <div class="form-group">
-            <label for="photo">User Photo</label>
-            <input type="image" class="form-control" id="photo" placeholder="Photo"
-                [(ngModel)]="user.photo" name="photo" #photo="ngModel" >
-        </div>
-
-        <div class="form-group" *ngIf="isAdmin">
-            <label for="role">Assign User Role</label>
-            <select class="form-control" id="role" placeholder="Pick a role"
-                [(ngModel)]="user.role" name="role" #role="ngModel" >
-                <option *ngFor="let role of roles" [value]="role">{{role}}</option>
-            </select>
-            <div [hidden]="isAdmin" class="alert alert-danger">
-                You are not Admin!
+            <div class="col-sm-4">
+                <input type="password" class="form-control" id="password2" placeholder="Repeate Password" required
+                    [(ngModel)]="password2" name="password2" #pswd2="ngModel" >
+                <div [hidden]="pswd2.valid || pswd2.pristine" class="alert alert-danger">
+                    Password control field is required
+                </div>
             </div>
         </div>
 
-        <button type="button" class="btn btn-default" (click)="clearForm()">Clear Form</button>
-        <button type="submit" class="btn btn-success">Submit</button>
+        <div class="form-group row">
+            <label for="namesFirst" class="col-sm-2 col-form-label">Names</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="namesFirst" placeholder="First Name"
+                    [(ngModel)]="user.namesFirst" name="namesFirst" #namesFirst="ngModel" >
+            </div>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="namesLast" placeholder="Last Name"
+                    [(ngModel)]="user.namesLast" name="namesLast" #namesLast="ngModel" >
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="email" placeholder="Email"
+                    [(ngModel)]="user.email" name="email" #email="ngModel" >
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="phone1" class="col-sm-2 col-form-label">Phones</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="phone1" placeholder="Main Phone Number"
+                    [(ngModel)]="user.phone1" name="phone1" #phone1="ngModel" >
+            </div>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="phone2" placeholder="Second Phone Number"
+                    [(ngModel)]="user.phone2" name="phone2" #phone2="ngModel" >
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="skypeId" class="col-sm-2 col-form-label">Skype</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="skypeId" placeholder="Skype"
+                    [(ngModel)]="user.skypeId" name="skypeId" #skypeId="ngModel" >
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="photo" class="col-sm-2 col-form-label">User Photo</label>
+            <div class="col-sm-3">
+                <input type="image" class="form-control" id="photo" placeholder="Photo"
+                    [(ngModel)]="user.photo" name="photo" #photo="ngModel" >
+            </div>
+        </div>
+
+        <div class="form-group row" *ngIf="isAdmin">
+            <label for="role" class="col-sm-2 col-form-label">Assign User Role</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="role" placeholder="Pick a role"
+                    [(ngModel)]="user.role" name="role" #role="ngModel" >
+                    <option *ngFor="let role of roles" [value]="role">{{role}}</option>
+                </select>
+                <div [hidden]="isAdmin" class="alert alert-danger">
+                    You are not Admin!
+                </div>
+            </div>
+        </div>
+
+        <div class="form-control-btns row col-sm-10">
+            <button type="button" class="btn btn-default" (click)="clearForm()">Clear Form</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
 	</form>
 </div>
 

@@ -8,12 +8,7 @@ import { UserRegistrationComponent } from "./register/register.component";
 import { PageNotFoundComponent } from "./404.component";
 
 const routes: Routes = [
-    {
-        path: "",
-        redirectTo: "/home",
-        pathMatch: "full"
-    },
-    { path: "home", data: { title: "Home" }, component: HomeComponent },
+    { path: "", data: { title: "Home" }, component: HomeComponent },
     { path: "about", data: { title: "About the App" }, component: AboutComponent },
     { path: "register", data: { title: "Register User" }, component: UserRegistrationComponent },
     { path: "**", component: PageNotFoundComponent }

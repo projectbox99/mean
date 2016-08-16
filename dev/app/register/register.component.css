@@ -1,11 +1,19 @@
+.form-heading {
+    margin-bottom: 20px;
+}
 .register-container {
-    border: 1px solid blue;
+    padding: 2%;
 }
 .ng-valid[required] {
-    border: 1px solid #42A948;
     border-left: 5px solid #42A948;
 }
 .ng-invalid {
-    border: 1px solid #a94442;
     border-left: 5px solid #a94442;
+}
+.form-control-btns {
+    margin-top: 5%;
+    text-align: right;
+}
+.btn {
+    margin-left: 10px;
 }
