@@ -54,14 +54,16 @@ module.exports = function (router) {
         user.role = req.body.role || "regular";
         user.dateCreated = new Date;
 
-        user.save((err, mongoResponse) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ data: "Error!!!" });
-            }
+        // Test bluebird
+        // let promise = User.findOne({ username: 'choki' }).exec();
+        // console.info(`Using ${(promise instanceof require('bluebird')) ? 'bluebird' : 'NOT bluebird'} promises!`);
 
+        user.save().then((mongoResponse) => {
             console.info("Document saved!");
             res.status(200).json({ data: mongoResponse });
+        }, (err) => {
+            console.error(err);
+            return res.status(500).json({ data: "Error!!!" });
         });
     });
 

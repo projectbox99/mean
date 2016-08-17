@@ -1,7 +1,6 @@
 'use strict';
 
 var mongoose = require('mongoose');
-// var User = require('./user');
 
 class Ad_schema extends mongoose.Schema {
 	constructor() {

@@ -4,28 +4,92 @@ var express = require('express');
 var path = require('path');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
 
+var chalk = require('chalk');
+const chalkError = chalk.bold.underline.bgRed;
+const chalkSuccess = chalk.bold.underline.bgGreen;
+const chalkWarn = chalk.bold.bgBlue;
+const chalkBold = chalk.bold;
+
+var Promise = require('bluebird');
+
+// Init Mongoose
+var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+
+// Pull environment settings from .env
 require('dotenv').config();
 const env = process.env;
 
-var routes = require(path.join(__dirname, 'routes/routes'));
-
+// Init express + supply routes
 var app = express();
+var routes = require(path.join(__dirname, 'routes/routes'));
+app.use('/', routes);
+require('./routes/routes.user')(app);
+require('./routes/routes.ad')(app);
+require('./routes/routes.lists')(app);
 
+// Connecting to MongoDB instance...
 var MONGODB_URI;
-if (app.get('env') === 'development')
-	MONGODB_URI = env.MONGO_HOST_DEV;
-else
-	MONGODB_URI = env.MONGO_HOST_LIVE;
+// if (app.get('env') === 'development') {
+if (env.NODE_ENV === 'development') {
+    MONGODB_URI = env.MONGO_HOST_DEV;
+}
+else {
+    MONGODB_URI = env.MONGO_HOST_LIVE;
+}
 
-console.info(`Connecting to MongoDB using: ${MONGODB_URI}`);
-mongoose.connect(MONGODB_URI);
+console.info(chalkBold('[ MongoDB ] ') + 'Using ' + chalkWarn(env.NODE_ENV) + ' server instance.');
+console.info(chalkBold('[ MongoDB ] ') + `Connecting to ${MONGODB_URI}...`);
 
-// // app.set('views', path.join(__dirname, 'views'));
-// app.set('views', __dirname + '/public');
-// app.set('view engine', 'hbs');
+mongoose.connect(MONGODB_URI, {
+    'settings': {
+        'db': {
+            w: 1,
+            native_parser: false,
+            fsync: true,
+            journal: true,
+            forceServerObjectId: true
+        },
+        'server': {
+            auto_reconnect: true
+        },
+        promiseLibrary: require('bluebird')
+    }
+});
 
+mongoose.connection.on('error', (error) => {
+    console.info(chalkBold('[ MongoDB ] ') + 'Connection ' + chalkError('Failed!') + error);
+});
+
+mongoose.connection.on('connected', () => {
+    console.info(chalkBold('[ MongoDB ] ') + 'Connection ' + chalkSuccess('Established!'));
+});
+
+mongoose.connection.on('disconnected', () => {
+    console.info(chalkBold('[ MongoDB ] ') + 'Connection to MongoDB ' + chalkWarn('disconnected!'));
+});
+
+// Init server-side cache
+let List = mongoose.model('List', require(path.resolve(__dirname, 'models/lists')));
+var USER_ROLES = [], CATEGORIES = [], CITIES = [];
+
+(function() {
+    List.find({}, function(err, lists) {
+        if (err) {
+            console.error(`Error retrieving Lists from DB: ${err}`);
+            throw err;
+        }
+
+        USER_ROLES = lists[0].roles, CATEGORIES = lists[1].categories, CITIES = lists[2].cities;
+        console.info(`${chalkBold('[ MongoDB ]')} LISTS: USER_ROLES: ${USER_ROLES}`);
+        console.info(`${chalkBold('[ MongoDB ]')} LISTS: CATEGORIES: ${CATEGORIES}`);
+        console.info(`${chalkBold('[ MongoDB ]')} LISTS: CITIES: ${CITIES}`);
+    });
+}());
+
+
+// Init logger
 app.use(morgan('dev'));
 
 app.use(bodyParser.json());
@@ -39,10 +103,6 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE');
     next();
 });
-
-app.use('/', routes);
-require('./routes/routes.user')(app);
-require('./routes/routes.ad')(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -124,9 +184,15 @@ function onListening() {
       ? 'pipe ' + addr
       : 'port ' + addr.port;
   debug('Listening on ' + bind);
-  console.log(`Listenning on ${addr}:${bind}`);
+  console.info(chalkBold('[ NodeJS  ] ') + 'Listening on localhost, ' + chalkSuccess(bind));
 }
 
+process.on('SIGINT', function() {  
+  mongoose.connection.close(() => { 
+    console.log(chalkBold('[ MongoDB ] ') + 'Mongoose connection closed ' + chalkSuccess('gracefully') + '.'); 
+    process.exit(0); 
+  }); 
+});
 
 
 module.exports = app;
