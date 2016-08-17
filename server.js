@@ -75,13 +75,13 @@ let List = mongoose.model('List', require(path.resolve(__dirname, 'models/lists'
 var USER_ROLES = [], CATEGORIES = [], CITIES = [];
 
 (function() {
-    List.find({}, function(err, lists) {
+    List.findOne({}, function(err, lists) {
         if (err) {
             console.error(`Error retrieving Lists from DB: ${err}`);
             throw err;
         }
 
-        USER_ROLES = lists[0].roles, CATEGORIES = lists[1].categories, CITIES = lists[2].cities;
+        USER_ROLES = lists.roles, CATEGORIES = lists.categories, CITIES = lists.cities;
         console.info(`${chalkBold('[ MongoDB ]')} LISTS: USER_ROLES: ${USER_ROLES}`);
         console.info(`${chalkBold('[ MongoDB ]')} LISTS: CATEGORIES: ${CATEGORIES}`);
         console.info(`${chalkBold('[ MongoDB ]')} LISTS: CITIES: ${CITIES}`);
