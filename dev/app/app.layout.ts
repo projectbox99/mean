@@ -18,6 +18,7 @@ export class AppLayout implements OnInit {
     model: any = {};
     loading = false;
     error = '';
+    loggedIn: boolean = false;
 
     users: User[] = [];
 
@@ -38,6 +39,7 @@ export class AppLayout implements OnInit {
             .subscribe(result => {
                 if (result === true) {
                     // login successful
+                    this.loggedIn = true;
                     this.router.navigate(['/']);
                 } else {
                     // login failed
