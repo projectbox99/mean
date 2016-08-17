@@ -88,6 +88,7 @@ var USER_ROLES = [], CATEGORIES = [], CITIES = [];
     });
 }());
 
+// app.set('views', __dirname + '/public');
 
 // Init logger
 app.use(morgan('dev'));
@@ -95,12 +96,13 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + '/public'));
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE');
+    console.log('ggggggg');
     next();
 });
 
@@ -129,6 +131,7 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
+    console.log('!!!!!!!!!!!!!!!!!!!');
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,

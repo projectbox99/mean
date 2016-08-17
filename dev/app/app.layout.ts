@@ -14,10 +14,11 @@ import { User, UserService } from "./register/register.service";
 export class AppLayout {
     constructor(private router: Router, private service: UserService) { }
 
-    private user: User = null;
+    private user: User = new User("", "", "");
     private role: string = null;
+    public active: boolean = true;
 
     public get isLoggedIn(): boolean {
-    	return this.user ? true : false;
+        return this.user ? true : false;
     }
 }	// class AppLayout
