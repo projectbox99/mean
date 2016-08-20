@@ -9,7 +9,7 @@ var Lists = require('../models/lists');
 
 module.exports = function (router) {
     router.get('/api/lists', (req, res, next) => {
-        Lists.find((err, lists) => {
+        Lists.findOne((err, lists) => {
             if (err) {
                 console.error('Error retrieving lists!');
                 return res.status(500).json({
@@ -18,7 +18,7 @@ module.exports = function (router) {
             }
 
             res.status(200).json({
-                data: lists
+                data: { categories: lists.categories, cities: lists.cities }
             });
         });
     });

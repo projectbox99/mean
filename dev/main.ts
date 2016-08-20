@@ -1,9 +1,9 @@
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { enableProdMode } from "@angular/core";
 
-import "./assets/funny-starbucks-logo.jpg";
-
 import { AppModule } from "./app/app.module";
+
+import "./assets/funny-starbucks-logo.jpg";
 
 if (process.env.ENV === "production") {
     enableProdMode();

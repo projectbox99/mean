@@ -5,12 +5,14 @@ import { CommonModule }   from "@angular/common";
 import { FormsModule }    from "@angular/forms";
 import { HttpModule /*, XHRBackend */} from "@angular/http";
 
+// components
 import { AdListComponent }    from "./ad-list.component";
 import { AdDetailComponent }  from "./ad-detail.component";
 
-import { AdsService } from "./ads.service";
+import { AdsService } from "../Services/ads.service";
 
 import { adRouting } from "./ads.routes";
+
 
 @NgModule({
     imports: [
@@ -27,4 +29,4 @@ import { adRouting } from "./ads.routes";
         AdsService
     ]
 })
-export class AdsModule {}
+export class AdsModule { }

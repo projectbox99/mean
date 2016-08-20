@@ -5,12 +5,12 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
-import { AdsService, Ad } from "./ads.service";
+import { AdsService, Ad } from "../Services/ads.service";
+
 
 @Component ({
     templateUrl: "./ad-detail.component.html"
 })
-
 export class AdDetailComponent implements OnInit, OnDestroy {
     @Input() ad: Ad;
     @Output() close = new EventEmitter();

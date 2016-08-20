@@ -1,59 +1,109 @@
 "use strict";
 
-import { Component,  OnInit} from "@angular/core";
 import { Router } from "@angular/router";
+import { Component,  OnInit} from "@angular/core";
 
-import { User, UserService } from "./register/register.service";
+// animation-specific imports
+import { Input, trigger, state, style, transition, animate } from "@angular/core";
 
-import { AuthenticationService } from './authentication.service';
+
+import { User, UserService } from "./Services/users.service";
+import { AuthService } from "./Services/authentication.service";
 
 @Component ({
     selector: "mean2-app",
-    templateUrl: "./app.layout.html",
-    styleUrls: [ "./register/register.component.css" ],
-    providers: [ UserService ]
+    templateUrl: "app.layout.html",
+    styleUrls: [ "app.layout.css" ],
+    animations: [
+        trigger("navLinkState", [
+            state("inactive", style({
+                backgroundColor: "#eee",
+                transform: "scale(1)"
+            })),
+            state("active", style({
+                backgroundColor: "#cfd8dc",
+                transform: "scale(1.1)"
+            })),
+            transition("inactive => active", animate("100ms ease-in")),
+            transition("active => inactive", animate("100ms ease-out"))
+        ])
+    ],
+    providers: [ UserService, AuthService ]
 })
 export class AppLayout implements OnInit {
+    public loggedIn: boolean;
+    public currentUser: User;
 
-    model: any = {};
-    loading = false;
-    error = '';
-    loggedIn: boolean = false;
+    public loading: boolean;
+    public active: boolean;
+    public error: string;
 
-    users: User[] = [];
+    constructor(private router: Router,
+        private userService: UserService,
+        private authService: AuthService) { }
 
-    constructor(private router: Router, private service: UserService, private authenticationService: AuthenticationService) { }
-
-    ngOnInit() {
-        this.authenticationService.logout();
-        // get users from secure api end point
-        this.service.getUsers()
-            .subscribe(users => {
-                this.users = users;
-            });
+    public linkState: string = "inactive";
+    public toggleLinkState() {
+        if (this.linkState === "active")
+            this.linkState = "inactive";
+        else
+            this.linkState = "active";
     }
 
-    login() {
+    public login(): void {
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.password)
+        this.authService.login(this.currentUser.username, this.currentUser.password)
             .subscribe(result => {
                 if (result === true) {
                     // login successful
+                    this.currentUser = this.authService.currentUser;
                     this.loggedIn = true;
-                    this.router.navigate(['/']);
+                    this.setErrorMsg();
+                    this.router.navigate(["/"]);
                 } else {
                     // login failed
-                    this.error = 'Username or password is incorrect';
-                    this.loading = false;
+                    // this.error = "Username or password is incorrect";
+                    this.setErrorMsg("Username or password is incorrect");
                 }
+
+                this.loading = false;
             });
-    }
+    }    // login()
 
-    private user: User = new User("", "", "");
-    private role: string = null;
-    public active: boolean = true;
+    public logout(): void {
+        this.authService.logout();
 
-    public get isLoggedIn(): boolean {
-        return this.user ? true : false;
-    }
+        this.active = false;
+        setTimeout(() => this.active = true, 0);
+
+        this.currentUser = this.authService.currentUser;
+        this.loggedIn = false;
+
+        this.router.navigate(["/"]);
+        this.loading = false;
+    }    // logout()
+
+    // private helpers
+    private setErrorMsg(errMsg?: string): void {
+        if (errMsg) {
+            this.error = errMsg.trim();
+            setTimeout(() => this.error = "", 5000 /* ms */);
+        }
+
+        else this.error = "";
+    }    // setErrorMsg()
+
+    private gotoRegistration(): void {
+        this.router.navigate(["/register"]);
+    }    // gotoRegistration()
+
+    ngOnInit() {
+        this.authService.logout();
+        this.currentUser = this.authService.currentUser;
+        this.loggedIn = false;
+
+        this.loading = false;
+        this.active = true;
+        this.setErrorMsg();
+    }    // ngOnInit()
 }	// class AppLayout

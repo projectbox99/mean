@@ -5,7 +5,8 @@ import { NgForm, Location } from "@angular/common";
 
 import { Subscription } from "rxjs/Subscription";
 
-import { User, UserService } from "./register.service";
+import { User, UserService } from "../Services/users.service";
+
 
 @Component ({
     templateUrl: "register.component.html",
@@ -13,7 +14,8 @@ import { User, UserService } from "./register.service";
     providers: [ UserService ]
 })
 export class UserRegistrationComponent implements OnInit, OnDestroy {
-    public constructor(private service: UserService, private location: Location) { }
+    public constructor(private userService: UserService,
+                       private location: Location) { }
 
     private user: User;
     private password2: string;
@@ -42,7 +44,7 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
             this.submitted = false;
         }
 
-        this.location.back();
+        setTimeout(() => this.location.back(), 5000);
     }    // onSubmit()
 
     public clearForm(): void {
@@ -54,7 +56,7 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
     }    // clearForm()
 
     private addUser(user: User): void {
-        this.service.addUser(this.user)
+        this.userService.addUser(this.user)
             .subscribe(            // we want an Observable returned
                 userData => {      // function to invoke for each element in the observable sequence
                     this.user = userData;

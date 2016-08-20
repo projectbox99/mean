@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 
 import { Subscription } from "rxjs/Subscription";
 
-import { Ad, AdsService } from "./ads.service";
+import { Ad, AdsService } from "../Services/ads.service";
 
 
 @Component ({

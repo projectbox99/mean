@@ -1,0 +1,125 @@
+@import url(https://fonts.googleapis.com/css?family=Ravi+Prakash);
+@import url(https://fonts.googleapis.com/css?family=Tangerine:bold,italic,bolditalic);
+
+ul.nav {
+	margin: 0;
+}
+
+ul.nav > li.app-logo > a {
+	margin: 0;
+	padding: 0;
+}
+
+.nav-link {
+	margin: 0 5px 0 5px;
+	border: 1px solid #eee;
+	border-radius: 5px;
+
+	color: #eee;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.nav-link:hover {
+	background-color: rgba(0, 0, 0, 0.85);
+}
+
+.nav-link:blur {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.nav-link:active {
+	background-color: #0030CC;
+}
+
+.nav-link:active:hover {
+	background-color: #0030AA;
+}
+
+.nav-link:active:blur {
+	background-color: #0030CC;
+}
+
+.app-name {
+	background-color: rgba(0, 0, 0, 0.3);
+	text-align: center;
+	vertical-align: middle;
+
+	border: 3px solid #eee;
+	border-radius: 10px 0 10px 0;
+	margin: 0 10px 0 0;
+	padding: 10px 20px 0px 10px;
+
+	font-family: 'Ravi Prakash', cursive;
+	font-size: 4em;
+	font-weight: 600;
+	word-spacing: -10px;
+	color: #eee;
+}
+
+.app-name-span {
+	vertical-align: +40%;
+	font-size: 0.8em;
+	font-weight: 900;
+	word-spacing: -60px;
+}
+
+.app-name-span2 {
+	vertical-align: -40%;
+	font-size: 1.1em;
+	font-weight: 300;
+}
+
+nav.navbar {
+    background: -webkit-linear-gradient(-100deg, #0360b0, #03a000, yellow); /* Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(-100deg, #0360b0, #03a000, yellow); /* Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(-100deg, #0360b0, #03a000, yellow); /* Firefox 3.6 to 15 */
+    /* background: linear-gradient(-100deg, #0360b0, #03a000, yellow); /* Standard syntax (must be last) /*
+	/* background: linear-gradient(-100deg, #08FF16, #0AFFFA, #FAFF05, #FDFFFE); */
+	/* background: linear-gradient(-100deg, #0000FB, #00FCFD, #00FE00, #000A01); */
+	background: linear-gradient(-100deg, #0000FB, #00FE00, #000A01);
+    /* background: linear-gradient(-100deg, #FF0100, #FF03FE, #FFFEFF, #FFFE00); */
+
+	padding: 10px;
+}
+
+div.login-group {
+	vertical-align: middle;
+	text-align: right;
+	margin: 0 5px 0 0;
+	float: left;
+}
+
+div.login-button-group {
+	float: right;
+}
+
+div.form-group {
+	margin: 0 0 5px 0;
+}
+
+label {
+	color: #eee;
+	margin: 0 10px 0 0;
+}
+
+button {
+	vertical-align: middle;
+	margin: 0 5px 0 5px;
+}
+
+div.fail {
+	border: 1px solid red;
+	/* background: -webkit-linear-gradient(-110deg, #0360b0, #03a000, yellow); /* Safari 5.1 to 6.0 */
+    /* background: -o-linear-gradient(-110deg, #0360b0, #03a000, yellow); /* Opera 11.1 to 12.0 */
+    /* background: -moz-linear-gradient(-110deg, #0360b0, #03a000, yellow); /* Firefox 3.6 to 15 */
+    /* background: linear-gradient(-100deg, #FF0100, #FF03FE, #FFFEFF, #FFFE00); /* Standard syntax (must be last) */
+    background-color: #eee;
+}
+
+#hello {
+	vertical-align: middle;
+	margin: 0 10px 0 10px;
+
+	color: #eee;
+	text-shadow: 1px 1px #aaa;
+}
