@@ -3,7 +3,6 @@ import { enableProdMode } from "@angular/core";
 
 import { AppModule } from "./app/app.module";
 
-import "./assets/funny-starbucks-logo.jpg";
 
 if (process.env.ENV === "production") {
     enableProdMode();

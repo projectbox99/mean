@@ -7,7 +7,7 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 
-import { AuthService } from "./authentication.service";
+// import { AuthService } from "./authentication.service";
 
 
 export class Lists {
@@ -26,8 +26,8 @@ export class StandingData {
             ? ("")
             : (":" + window.location.port)) + "/api/lists";
 
-    constructor (private http: Http,
-                 private authService: AuthService) {
+    constructor (private http: Http
+                 /* private authService: AuthService */) {
         console.log("StandingData instance created");
         this.getStandingData();
     }

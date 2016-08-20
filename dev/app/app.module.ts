@@ -6,13 +6,13 @@ import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
 // used to create fake backend
-import { MockBackend, MockConnection } from "@angular/http/testing";
-import { BaseRequestOptions } from "@angular/http";
-import { fakeBackendProvider } from "./Services/fake-backend";
+// import { MockBackend, MockConnection } from "@angular/http/testing";
+// import { BaseRequestOptions } from "@angular/http";
+// import { fakeBackendProvider } from "./Services/fake-backend";
 
 // services
-import { AuthService } from "./Services/authentication.service";
-import { AuthGuard } from "./Services/auth.guard";
+// import { AuthService } from "./Services/authentication.service";
+// import { AuthGuard } from "./Services/auth.guard";
 import { UserService } from "./Services/users.service";
 import { StandingData } from "./Services/standing.data.service";
 
@@ -51,15 +51,15 @@ import { AdsModule } from "./ads/ads.module";
     ],
     providers: [
         appRoutingProviders,
-        AuthGuard,
-        AuthService,
+        // AuthGuard,
+        // AuthService,
         UserService,
-        StandingData,
+        StandingData
 
         // providers used to create fake backend
-        fakeBackendProvider,
-        MockBackend,
-        BaseRequestOptions
+        // fakeBackendProvider,
+        // MockBackend,
+        // BaseRequestOptions
     ],
     bootstrap: [ AppLayout ]
 })

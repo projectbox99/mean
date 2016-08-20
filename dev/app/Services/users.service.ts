@@ -8,7 +8,7 @@ import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import "Rx";
 
-import { AuthService } from "./authentication.service";
+// import { AuthService } from "./authentication.service";
 
 
 export class User {
@@ -42,10 +42,8 @@ export class UserService {
 
     private token: string;
 
-    constructor (private http: Http,
-                 private authService: AuthService) {
-        this.token = this.authService.token;
-    }
+    constructor (private http: Http
+                 /* private authService: AuthService */) { }
 
     // anyone can register a new user
     public addUser(user: User): Observable<User> {

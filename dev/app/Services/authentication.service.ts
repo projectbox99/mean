@@ -15,6 +15,7 @@ export class AuthService {
         // set token if saved in session storage
         let currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
         this.token = currentUser && currentUser.token;
+        console.log(`AuthService instance created! Token: ${JSON.stringify(this.token)}`);
     }
 
     public get usrLoggedIn(): boolean {
