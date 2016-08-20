@@ -43,8 +43,6 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
             this.active = true;
             this.submitted = false;
         }
-
-        setTimeout(() => this.location.back(), 5000);
     }    // onSubmit()
 
     public clearForm(): void {
@@ -60,6 +58,13 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
             .subscribe(            // we want an Observable returned
                 userData => {      // function to invoke for each element in the observable sequence
                     this.user = userData;
+                    this.password2 = "";
+                    this.isAdmin = this.user.role === "admin";
+                    this.statusMsg = "User created successfully"
+                    this.submitted = true;
+                    this.active = false;
+
+                    setTimeout(() => this.location.back(), 5000);
                 },
                 error => {         // function to invoke on exceptional termination of the obs. sequence
                     this.errorMsg = <any>error;

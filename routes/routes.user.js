@@ -1,12 +1,45 @@
 'use strict';
 
+var encryptPswdClean = require('./helpers/password').encryptPswdClean;
+
+// var encrypted = encryptPswdClean('wendy123');
+// console.log(encrypted);
+
+var generateRandomTokenClean = require('./helpers/token');
+
 var User = require('../models/user');
 
 
 /**
  *		User
  */
+
 module.exports = function (router) {
+    router.get('/api/login', (req, res, next) => {
+        if (req.body && req.body.username) {
+            let usr = req.body.username;
+            let pswd = encryptPswdClean(req.body.password);
+
+            User.findOne({ username: usr, password: pswd }, 'username', (err, user) => {
+                if (err) {
+                    return res.status(500).json({
+                        msg: 'Error fetching user data!'
+                    });
+                }
+
+                if (!user.username) {
+                    return res.status(400).json({ data: 'Error: wrong username or password' });
+                }
+
+                let usrToken = generateRandomTokenClean();
+
+                res.status(200).json({
+                    data: { username: usr, token: usrToken }
+                });
+            });
+        }
+    }
+
     router.get('/api/users', (req, res, next) => {
         User.find((err, users) => {
             if (err) {
@@ -41,9 +74,30 @@ module.exports = function (router) {
     });
 
     router.post('/api/users', (req, res, next) => {
-        var user = new User();
+        if (!(req.body && req.body.username)) {
+            return res.status(500).json({ data: "Error: missing body"});
+        } else {
+            User.findOne({ username: req.body.username }, 'username', (err, user) => {
+                if (err) {
+                    console.log('Error' + err);
+                    return res.status(500).json({ data: "Error looking up username" });
+                }
+
+                if (user) {
+                    console.log('User!:' + JSON.stringify(user));
+                    if (user.username) {
+                        return res.status(400).json({ data: "User already exists" });
+                    }
+                } else {
+                    next();
+                }
+            });
+        }
+    }, (req, res) => {
+        let user = new User();
+
         user.username = req.body.username;
-        user.password = req.body.password;
+        user.password = encryptPswdClean(req.body.password);
         user.namesFirst = req.body.namesFirst || "";
         user.namesLast = req.body.namesLast || "";
         user.email = req.body.email || "";
@@ -54,16 +108,12 @@ module.exports = function (router) {
         user.role = req.body.role || "regular";
         user.dateCreated = new Date;
 
-        // Test bluebird
-        // let promise = User.findOne({ username: 'choki' }).exec();
-        // console.info(`Using ${(promise instanceof require('bluebird')) ? 'bluebird' : 'NOT bluebird'} promises!`);
-
         user.save().then((mongoResponse) => {
             console.info("Document saved!");
-            res.status(200).json({ data: mongoResponse });
+            return res.status(200).json({ data: mongoResponse });
         }, (err) => {
-            console.error(err);
-            return res.status(500).json({ data: "Error!!!" });
+            console.error(`Error saving user data: ${err}`);
+            return res.status(500).json({ data: "Error saving user data" });
         });
     });
 

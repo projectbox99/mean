@@ -23,6 +23,10 @@ const env = process.env;
 
 // Init express + supply routes
 var app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 var routes = require(path.join(__dirname, 'routes/routes'));
 app.use('/', routes);
 require('./routes/routes.user')(app);
@@ -92,9 +96,6 @@ var USER_ROLES = [], CATEGORIES = [], CITIES = [];
 
 // Init logger
 app.use(morgan('dev'));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(__dirname + '/public'));
 
