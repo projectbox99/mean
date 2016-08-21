@@ -5,6 +5,7 @@ var path = require('path');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
+var compression = require('compression');
 
 var chalk = require('chalk');
 const chalkError = chalk.bold.underline.bgRed;
@@ -24,6 +25,8 @@ const env = process.env;
 
 // Init express + supply routes
 var app = express();
+
+app.use(compression());
 
 app.use(favicon(path.resolve(__dirname, 'dev/favicon.ico')));
 
