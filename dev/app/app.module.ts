@@ -7,12 +7,12 @@ import { HttpModule } from "@angular/http";
 
 // used to create fake backend
 // import { MockBackend, MockConnection } from "@angular/http/testing";
-// import { BaseRequestOptions } from "@angular/http";
+import { BaseRequestOptions } from "@angular/http";
 // import { fakeBackendProvider } from "./Services/fake-backend";
 
 // services
-// import { AuthService } from "./Services/authentication.service";
-// import { AuthGuard } from "./Services/auth.guard";
+import { AuthService } from "./Services/authentication.service";
+import { AuthGuard } from "./Services/auth.guard";
 import { UserService } from "./Services/users.service";
 import { StandingData } from "./Services/standing.data.service";
 
@@ -25,7 +25,7 @@ import { UsersComponent } from "./users/users.component";
 import { PageNotFoundComponent } from "./404.component";
 
 // directives
-import { NavLinkDirective } from "./Directives/nav-link-behavior";
+import { NavLinkDirective } from './Directives/nav-link-behavior';
 
 import { routing, appRoutingProviders } from "./app.routes";
 
@@ -51,15 +51,15 @@ import { AdsModule } from "./ads/ads.module";
     ],
     providers: [
         appRoutingProviders,
-        // AuthGuard,
-        // AuthService,
+        AuthGuard,
+        AuthService,
         UserService,
-        StandingData
+        StandingData,
 
         // providers used to create fake backend
         // fakeBackendProvider,
         // MockBackend,
-        // BaseRequestOptions
+        BaseRequestOptions
     ],
     bootstrap: [ AppLayout ]
 })

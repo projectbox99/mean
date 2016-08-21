@@ -1,51 +1,63 @@
 'use strict';
 
 var encryptPswdClean = require('./helpers/password').encryptPswdClean;
-
-// var encrypted = encryptPswdClean('wendy123');
-// console.log(encrypted);
-
-var generateRandomTokenClean = require('./helpers/token');
+var generateRandomTokenClean = require('./helpers/token').generateRandomTokenClean;
 
 var User = require('../models/user');
 
+var tokens = [];
 
 /**
  *		User
  */
 
-module.exports = function (router) {
-    router.get('/api/login', (req, res, next) => {
-        if (req.body && req.body.username) {
-            let usr = req.body.username;
-            let pswd = encryptPswdClean(req.body.password);
+module.exports = (router) => {
+    router.post('/api/login', (req, res, next) => {
+        if (!req.body || !req.body.username || !req.body.password) {
+            console.log('No body!');
+            return res.status(500).json({
+                data: 'Error: req.body not found... again!'
+            });
+        }
 
-            User.findOne({ username: usr, password: pswd }, 'username', (err, user) => {
-                if (err) {
-                    return res.status(500).json({
-                        msg: 'Error fetching user data!'
-                    });
+        let usr = req.body.username;
+        let pswd = encryptPswdClean(req.body.password);
+
+        User.findOne({ username: usr, password: pswd }, 
+        	'username namesFirst namesLast email phone1 phone2 skypeId photo role dateCreated',
+        	(err, userData) => {
+            	if (err) {
+                    console.log(`Error talking to Mongo: ${err}`);
+                	return res.status(500).json({
+                    	data: 'Error fetching user data!'
+                	});
+            	}
+
+                if (!userData || !userData.username) {
+                    console.log(`Mongo answered: ${JSON.stringify(userData)}... returning 401`);
+                    return res.status(401).json({ data: 'Error: wrong username or password' });
                 }
 
-                if (!user.username) {
-                    return res.status(400).json({ data: 'Error: wrong username or password' });
-                }
+                let usrToken;
+                do {
+    				usrToken = generateRandomTokenClean();
+                } while (tokens.indexOf(usrToken) > -1);
+                console.log(`Generated a token of ${usrToken}`);
+                tokens.push(usrToken);
 
-                let usrToken = generateRandomTokenClean();
-
-                res.status(200).json({
-                    data: { username: usr, token: usrToken }
+                return res.status(200).json({
+                    data: { user: userData, token: usrToken }
                 });
             });
         }
-    });
+    );
 
     router.get('/api/users', (req, res, next) => {
         User.find((err, users) => {
             if (err) {
                 console.error('Error retrieving user list!');
                 return res.status(500).json({
-                    msg: 'Error fetching user data!'
+                    data: 'Error fetching user data!'
                 });
             }
 

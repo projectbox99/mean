@@ -49,11 +49,11 @@ export class AuthGuard implements CanActivate {
 
     // helpers
     private hasTokenInSessionStorage(): boolean {
-        return sessionStorage.getItem("currentUser") ? true : false;
+        return sessionStorage.getItem("token") ? true : false;
     }    // hasTokenInSessionStorage()
 
     private hasTokenInLocalStorage(): boolean {
-        return localStorage.getItem("currentUser") ? true : false;
+        return localStorage.getItem("token") ? true : false;
     }    // hasTokenInLocalStorage()
 
     private navigateHome(): void {

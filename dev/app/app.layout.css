@@ -108,7 +108,7 @@ button {
 }
 
 div.fail {
-	border: 1px solid red;
+	text-align: center;
 	/* background: -webkit-linear-gradient(-110deg, #0360b0, #03a000, yellow); /* Safari 5.1 to 6.0 */
     /* background: -o-linear-gradient(-110deg, #0360b0, #03a000, yellow); /* Opera 11.1 to 12.0 */
     /* background: -moz-linear-gradient(-110deg, #0360b0, #03a000, yellow); /* Firefox 3.6 to 15 */

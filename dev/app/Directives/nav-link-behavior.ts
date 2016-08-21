@@ -2,7 +2,7 @@ import { Directive, ElementRef, HostListener, Input } from "@angular/core";
 
 
 @Directive({
-  selector: "[nav-link-custom]"
+  selector: '[nav-link-custom]'
 })
 export class NavLinkDirective {
     private defaultHighlighColor = "DodgerBlue";
@@ -12,11 +12,11 @@ export class NavLinkDirective {
 
     @Input("nav-link-custom") highlightColor: string;
 
-    @HostListener("mouseenter") onMouseEnter() {
+    @HostListener('mouseenter') onMouseEnter() {
         this.highlight(this.highlightColor || this.defaultHighlighColor);
     }
 
-    @HostListener("mouseleave") onMouseLeave() {
+    @HostListener('mouseleave') onMouseLeave() {
         this.highlight(null);
     }
 

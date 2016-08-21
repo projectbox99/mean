@@ -9,7 +9,8 @@ import { AdsService, Ad } from "../Services/ads.service";
 
 
 @Component ({
-    templateUrl: "./ad-detail.component.html"
+    templateUrl: "./ad-detail.component.html",
+    providers: [ AdsService ]
 })
 export class AdDetailComponent implements OnInit, OnDestroy {
     @Input() ad: Ad;
@@ -24,14 +25,14 @@ export class AdDetailComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private service: AdsService) {}
+        private adsService: AdsService) {}
 
     ngOnInit() {
         this.route.params.forEach( (params: Params) => {
             if (params["id"] !== undefined) {
                 let id = +params["id"];
                 this.navigatedHere = true;
-                this.service.getAd(id).subscribe(
+                this.adsService.getAd(id).subscribe(
                     ad => this.ad = ad,
                     error => this.errorMessage = <any>error);
             } else {
@@ -51,11 +52,11 @@ export class AdDetailComponent implements OnInit, OnDestroy {
 
     saveAd() {
         if (this.ad.id) {
-            this.service.putAd(this.ad).subscribe(
+            this.adsService.putAd(this.ad).subscribe(
                 ad => this.ad = ad,
                 error => this.handleError(error));
         } else {
-            this.service.postAd(this.ad).subscribe(
+            this.adsService.postAd(this.ad).subscribe(
                 ad => this.ad = ad,
                 error => this.handleError(error));
         }
@@ -65,7 +66,7 @@ export class AdDetailComponent implements OnInit, OnDestroy {
         event.stopPropagation();
 
         if (this.ad.id) {
-            this.service.deleteAd(ad).subscribe(
+            this.adsService.deleteAd(ad).subscribe(
                 ad => {
                     if (this.selectedId === +ad.id) {
                         this.selectedId = null;

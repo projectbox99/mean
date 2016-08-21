@@ -7,7 +7,7 @@ import { Component,  OnInit} from "@angular/core";
 import { Input, trigger, state, style, transition, animate } from "@angular/core";
 
 import { User, UserService } from "./Services/users.service";
-// import { AuthService } from "./Services/authentication.service";
+import { AuthService } from "./Services/authentication.service";
 
 
 @Component ({
@@ -28,19 +28,20 @@ import { User, UserService } from "./Services/users.service";
             transition("active => inactive", animate("100ms ease-out"))
         ])
     ],
-    providers: [ UserService /*, AuthService */]
+    providers: [ UserService, AuthService ]
 })
 export class AppLayout implements OnInit {
     public loggedIn: boolean;
-    public currentUser: User = new User("982375987", "bambi", "123");
+    public currentUser: User;
 
     public loading: boolean;
     public active: boolean;
+    public submitted: boolean;
     public error: string;
 
     constructor(private router: Router,
-        private userService: UserService
-        /* private authService: AuthService */) { }
+                private userService: UserService,
+                private authService: AuthService) { }
 
     public linkState: string = "inactive";
     public toggleLinkState() {
@@ -50,8 +51,11 @@ export class AppLayout implements OnInit {
             this.linkState = "active";
     }
 
-    /* public login(): void {
+     public login(): void {
         this.loading = true;
+        this.submitted = true;
+
+        console.log(`layout.component: logging in ${this.currentUser.username} : ${this.currentUser.password}`);
         this.authService.login(this.currentUser.username, this.currentUser.password)
             .subscribe(result => {
                 if (result === true) {
@@ -62,11 +66,25 @@ export class AppLayout implements OnInit {
                     this.router.navigate(["/"]);
                 } else {
                     // login failed
-                    // this.error = "Username or password is incorrect";
-                    this.setErrorMsg("Username or password is incorrect");
+                    this.currentUser.password = "";
+                    this.loading = false;
+                    this.loggedIn = false;
+                    this.submitted = false;
+                    this.setErrorMsg("Invalid Username or Password");
                 }
 
                 this.loading = false;
+            },
+            error => {
+                console.log(error);
+                this.currentUser.password = "";
+                this.loading = false;
+                this.loggedIn = false;
+                this.submitted = false;
+                if (error.indexOf('401') > -1)
+                    this.setErrorMsg("Invalid Username or Password");
+                else
+                    this.setErrorMsg(error);
             });
     }    // login()
 
@@ -81,7 +99,7 @@ export class AppLayout implements OnInit {
 
         this.router.navigate(["/"]);
         this.loading = false;
-    }    // logout() */
+    }    // logout() 
 
     // private helpers
     private setErrorMsg(errMsg?: string): void {
@@ -98,8 +116,8 @@ export class AppLayout implements OnInit {
     }    // gotoRegistration()
 
     ngOnInit() {
-        // this.authService.logout();
-        // this.currentUser = this.authService.currentUser;
+        this.authService.logout();
+        this.currentUser = this.authService.currentUser;
         this.loggedIn = false;
 
         this.loading = false;

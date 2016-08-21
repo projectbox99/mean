@@ -65,9 +65,9 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			// have webpack inject all generated js and css files into our index.html
 			template: path.resolve(__dirname, 'dev/index.html')
-		}),
+		})
 
-		 new FaviconsWebpackPlugin({
+		/* new FaviconsWebpackPlugin({
 			logo: path.resolve(__dirname, 'dev/favicon.ico'),
 			prefix: 'icons/',
 			emitStats: false,
@@ -87,6 +87,6 @@ module.exports = {
 				yandex: false,
 				windows: false
 			}
-		})
+		}) */
 	]
 }

@@ -1,12 +1,12 @@
 'use strict';
 
-var crypto = require('crypto');
-var randomBytes = require('bluebird').promisify(require('crypto').randomBytes);
+const crypto = require('crypto');
+const randomBytes = require('bluebird').promisify(require('crypto').randomBytes);
 
 module.exports = {
 	generateRandomTokenClean: function() {
-		let bytes = randomBytes(256);
-		const hash = createHash('sha1');
+		var bytes = crypto.randomBytes(256);
+		var hash = crypto.createHash('sha256');
 
 		hash.update(bytes);
 		return hash.digest('hex');

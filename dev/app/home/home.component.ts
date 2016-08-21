@@ -5,7 +5,7 @@ import { Component, OnInit } from "@angular/core";
 
 // services
 import { User, UserService } from "../Services/users.service";
-// import { AuthService } from "../Services/authentication.service";
+import { AuthService } from "../Services/authentication.service";
 import { StandingData } from "../Services/standing.data.service";
 
 
@@ -13,7 +13,7 @@ import { StandingData } from "../Services/standing.data.service";
     selector: "view",
     templateUrl: "home.component.html",
     styleUrls: [ "home.component.css" ],
-    providers: [ UserService, /* AuthService, */ StandingData ]
+    providers: [ UserService, AuthService, StandingData ]
 })
 export class HomeComponent implements OnInit {
     public loggedIn: boolean;
@@ -26,9 +26,11 @@ export class HomeComponent implements OnInit {
     public error: string;
 
     constructor(private router: Router,
-        private userService: UserService,
-        /* private authService: AuthService, */
-        private standingData: StandingData) { }
+        		private userService: UserService,
+        		private authService: AuthService,
+        		private standingData: StandingData) {
+    	this.categories = this.standingData.getCategories;
+    }
 
     // private helpers
     private setErrorMsg(errMsg?: string): void {
@@ -41,8 +43,8 @@ export class HomeComponent implements OnInit {
     }    // setErrorMsg()
 
     ngOnInit() {
-        // this.currentUser = this.authService.currentUser;
-        // this.loggedIn = this.authService.usrLoggedIn;
+        this.currentUser = this.authService.currentUser;
+        this.loggedIn = this.authService.usrLoggedIn;
         this.categories = this.standingData.getCategories;
         console.log(this.categories);
 

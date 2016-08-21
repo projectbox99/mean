@@ -1,23 +1,5 @@
-.idea
-public
-
-# Dependency directories
 node_modules
 typings
-
-# Runtime data
-pids
-*.pid
-*.seed
-
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# Optional npm cache directory
-.npm
-
-# Generated files
-dev/**/*.js
-dev/**/*.js.map
+public
+.idea
+.log

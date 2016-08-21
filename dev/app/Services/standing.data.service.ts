@@ -28,11 +28,23 @@ export class StandingData {
 
     constructor (private http: Http
                  /* private authService: AuthService */) {
-        console.log("StandingData instance created");
-        this.getStandingData();
+        // this.getStandingData();
+        this.categories = [];
+        this.cities = [];
     }
 
     public get getCategories(): string[] {
+        if (!this.categories) {
+            this.loadStandingData().subscribe(
+                sd => {
+                    console.log(`SD: getCategories pulled sd: ${JSON.stringify(sd)}`);
+                    this.categories = sd.categories;
+                    this.cities = sd.cities;
+                },
+                error => {console.log(`Error retrieving SD: ${JSON.stringify(error)}`);}
+            );
+        }
+
         return this.categories;
     }    // get getCategories()
 
@@ -40,13 +52,14 @@ export class StandingData {
         return this.cities;
     }    // get getCities()
 
+
+
     public getStandingData(): void {
         this.loadStandingData().subscribe(
             sd => {
+                console.info(JSON.stringify(sd));
                 this.categories = sd.categories;
                 this.cities = sd.cities;
-                console.log(this.categories);
-                console.log(this.cities);
             },
             error => console.error(`Error retrieving lists: ${JSON.stringify(error)}`));
     }    // getStandingData()
