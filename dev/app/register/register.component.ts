@@ -1,6 +1,6 @@
 "use strict";
 
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ElementRef } from "@angular/core";
 import { NgForm, Location } from "@angular/common";
 
 import { Subscription } from "rxjs/Subscription";
@@ -15,7 +15,8 @@ import { User, UserService } from "../Services/users.service";
 })
 export class UserRegistrationComponent implements OnInit, OnDestroy {
     public constructor(private userService: UserService,
-                       private location: Location) { }
+                       private location: Location,
+                       private element: ElementRef) { }
 
     private user: User;
     private password2: string;
@@ -31,6 +32,19 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
 
     // make sure two-way binding is working
     public get diagnostic(): string { return JSON.stringify(this.user); }
+
+    public imgChange(event) {
+    	let reader: any = new FileReader();
+    	let target: EventTarget;
+    	let image = this.element.nativeElement.querySelector(".user-image");
+
+    	reader.onload = function(e) {
+    		let src = e.target.result;
+    		image.src = src;
+    	}
+
+    	reader.readAsDataURL(event.target.files[0]);
+    }	// imgChange()
 
     public onSubmit(): void {
         this.submitted = true;

@@ -20,7 +20,7 @@
 		</div>
 
         <div class="form-group row">
-			<label for="password1" class="col-sm-2 col-form-label">Password</label>
+			<label for="password" class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-4">
                 <input type="password" class="form-control" id="password" placeholder="Password" required
                     [(ngModel)]="user.password" name="password" #pswd="ngModel" >
@@ -80,8 +80,9 @@
         <div class="form-group row">
             <label for="photo" class="col-sm-2 col-form-label">User Photo</label>
             <div class="col-sm-3">
-                <input type="image" class="form-control" id="photo" placeholder="Photo"
-                    [(ngModel)]="user.photo" name="photo" #photo="ngModel" >
+                <input type="file" class="form-control" id="photo" placeholder="Photo"
+                    [(ngModel)]="user.photo" (change)="imgChange($event)" name="photo" #photo="ngModel" >
+                <img class="user-image">
             </div>
         </div>
 
