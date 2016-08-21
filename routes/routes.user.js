@@ -38,7 +38,7 @@ module.exports = function (router) {
                 });
             });
         }
-    }
+    });
 
     router.get('/api/users', (req, res, next) => {
         User.find((err, users) => {

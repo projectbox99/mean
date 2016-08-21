@@ -25,7 +25,7 @@ import { UsersComponent } from "./users/users.component";
 import { PageNotFoundComponent } from "./404.component";
 
 // directives
-import { NavLinkDirective } from './Directives/nav-link-behavior';
+import { NavLinkDirective } from "./Directives/nav-link-behavior";
 
 import { routing, appRoutingProviders } from "./app.routes";
 

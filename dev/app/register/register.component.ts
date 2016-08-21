@@ -60,7 +60,7 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
                     this.user = userData;
                     this.password2 = "";
                     this.isAdmin = this.user.role === "admin";
-                    this.statusMsg = "User created successfully"
+                    this.statusMsg = "User created successfully";
                     this.submitted = true;
                     this.active = false;
 

@@ -9,5 +9,5 @@ import { Component } from "@angular/core";
     styleUrls: [ "home.component.css" ]
 })
 export class HomeComponentCategories {
-	constructor(public category: string) { }
+    constructor(public category: string) { }
 }	// class HomeComponentCategories

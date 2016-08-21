@@ -26,9 +26,9 @@ export class HomeComponent implements OnInit {
     public error: string;
 
     constructor(private router: Router,
-        		private userService: UserService,
-        		/* private authService: AuthService, */
-        		private standingData: StandingData) { }
+        private userService: UserService,
+        /* private authService: AuthService, */
+        private standingData: StandingData) { }
 
     // private helpers
     private setErrorMsg(errMsg?: string): void {
