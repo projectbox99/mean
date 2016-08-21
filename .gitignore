@@ -1,5 +1,20 @@
+public
+
+.idea
+
+# Dependency directories
 node_modules
 typings
-public
-.idea
-.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Optional npm cache directory
+.npm
