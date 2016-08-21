@@ -83,7 +83,7 @@
             </label>
             <div class="col-sm-3">
                 <input type="file" class="form-control" id="photo" placeholder="Photo"
-                [(ngModel)]="user.photo" (change)="imgChange($event)" name="photo" #photo="ngModel" >
+                (change)="imgChange($event)" name="photo" >
                 <img class="user-image" src="/images/kermit.jpg">
                 <span>{{percent}}</span>
             </div>

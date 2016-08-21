@@ -35,13 +35,15 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
     public get diagnostic(): string { return JSON.stringify(this.user); }
 
     public imgChange(event) {
+    	let target = EventTarget;
+    	let image = this.element.nativeElement.querySelector('.user-image');
     	let reader: any = new FileReader();
-    	let target: EventTarget;
-    	let image = this.element.nativeElement.querySelector(".user-image");
+
+    	var self = this;
 
     	reader.onload = function(e) {
-    		let src = e.target.result;
-    		image.src = src;
+    		self.user.photo = e.target.result;
+    		image.src = self.user.photo;
     	}
 
     	reader.readAsDataURL(event.target.files[0]);
