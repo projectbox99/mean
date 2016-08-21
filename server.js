@@ -25,7 +25,7 @@ const env = process.env;
 // Init express + supply routes
 var app = express();
 
-app.use(favicon('public/images/favicon.ico'));
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
