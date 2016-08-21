@@ -81,7 +81,7 @@ export class AppLayout implements OnInit {
                 this.loading = false;
                 this.loggedIn = false;
                 this.submitted = false;
-                if (error.indexOf('401') > -1)
+                if (error.indexOf("401") > -1)
                     this.setErrorMsg("Invalid Username or Password");
                 else
                     this.setErrorMsg(error);

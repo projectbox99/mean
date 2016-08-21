@@ -41,7 +41,7 @@ export class StandingData {
                     this.categories = sd.categories;
                     this.cities = sd.cities;
                 },
-                error => {console.log(`Error retrieving SD: ${JSON.stringify(error)}`);}
+                error => {console.log(`Error retrieving SD: ${JSON.stringify(error)}`); }
             );
         }
 

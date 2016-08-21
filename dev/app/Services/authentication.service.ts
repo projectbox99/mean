@@ -19,10 +19,10 @@ export class AuthService {
     }
 
     public get usrLoggedIn(): boolean {
-        return this.currentUser.username && 
+        return this.currentUser.username &&
             this.currentUser.username.trim() !== "" &&
             this.token !== "";
-    }    // get usrLoggedIn()
+    }// get usrLoggedIn()
 
     public get usrRole(): string {
         if (this.currentUser.role && this.currentUser.role.trim() !== "")
@@ -72,7 +72,6 @@ export class AuthService {
                     console.log(`AuthService: this.currentUser set to ${this.currentUser}`);
                 }
 
-                    
                 if (!this.token || !this.currentUser) {
                     // return false to indicate failed login
                     return false;
