@@ -103,7 +103,7 @@ var USER_ROLES = [], CATEGORIES = [], CITIES = [];
 // Init logger
 app.use(morgan('dev'));
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public', { maxAge: 86400000 }));
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
