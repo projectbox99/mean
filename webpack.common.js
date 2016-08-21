@@ -3,7 +3,7 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 module.exports = {
@@ -50,7 +50,7 @@ module.exports = {
 			},
 			{	// images and fonts are bundled as well
 				test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-				loader: 'file?name=assets/[name].[ext]&context=dev/assets'
+				loader: 'file?name=public/[name].[ext]&context=dev'
 			}
 		]
 	},
@@ -65,28 +65,11 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			// have webpack inject all generated js and css files into our index.html
 			template: path.resolve(__dirname, 'dev/index.html')
-		})
+		}),
 
-		/* new FaviconsWebpackPlugin({
-			logo: path.resolve(__dirname, 'dev/favicon.ico'),
-			prefix: 'icons/',
-			emitStats: false,
-			statsFilename: path.resolve(__dirname, 'public'),
-			persistentCache: false,
-			inject: true,
-			title: 'Project',
-			icons: {
-				android: false,
-				appleIcon: false,
-				appleStartup: false,
-				coast: false,
-				favicons: true,
-				firefox: false,
-				opengraph: false,
-				twitter: false,
-				yandex: false,
-				windows: false
-			}
-		}) */
+		new CopyWebpackPlugin([
+			{ from: 'dev/favicon.ico' },
+			{ from: 'dev/assets', to: 'images' }
+		])
 	]
 }

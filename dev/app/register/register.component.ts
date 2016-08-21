@@ -30,6 +30,7 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
     private submitted: boolean;
     private active: boolean;
 
+
     // make sure two-way binding is working
     public get diagnostic(): string { return JSON.stringify(this.user); }
 
