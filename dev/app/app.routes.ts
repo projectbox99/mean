@@ -17,6 +17,7 @@ const routes: Routes = [
     { path: "about", data: { title: "About the App" }, component: AboutComponent, canActivate: [AuthGuard] },
     { path: "register", data: { title: "Register User" }, component: UserRegistrationComponent },
     { path: "users", data: { title: "Users" }, component: UsersComponent },
+    { path: "users/:id", data: { title: "User data" }, component: UserRegistrationComponent },
     { path: "**", component: PageNotFoundComponent }
 ];
 

@@ -80,7 +80,7 @@ export class AuthService {
                 // return true to indicate successful login
                 return true;
             })
-            .catch((error) => Observable.throw(`${error.status} - ${error.statusText}`));
+            .catch((error) => this.handleError(error));
     }    // login()
 
     public logout(): void {
@@ -90,4 +90,15 @@ export class AuthService {
 
         this.currentUser = new User("", "", "");
     }    // logout()
+
+    private handleError (error: any) {
+        let errMsg =
+            (error.message)
+                ? error.message
+                : (error.status)
+                    ? `${error.status} - ${error.statusText}`
+                    : "Server Error";
+
+        return Observable.throw(errMsg);
+    }    // handleError()
 }    // class AuthService

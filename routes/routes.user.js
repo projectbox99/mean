@@ -41,8 +41,8 @@ module.exports = (router) => {
                 do {
     				usrToken = generateRandomTokenClean();
                 } while (tokens.indexOf(usrToken) > -1);
-                console.log(`Generated a token of ${usrToken}`);
-                tokens.push(usrToken);
+                console.log(`Generated a token for ${usr} -> ${usrToken}`);
+                tokens.push({ token: usrToken, user: userData.username, role: userData.role });
 
                 return res.status(200).json({
                     data: { user: userData, token: usrToken }
@@ -56,7 +56,7 @@ module.exports = (router) => {
             if (err) {
                 console.error('Error retrieving user list!');
                 return res.status(500).json({
-                    data: 'Error fetching user data!'
+                    data: 'Error fetching user list!'
                 });
             }
 
@@ -67,14 +67,21 @@ module.exports = (router) => {
     });
 
     router.get('/api/users/:userId', (req, res, next) => {
-        var userId = req.params.userId;
-        next();
-    }, (req, res) => {
-        User.findById(userId, (err, mongoResponse) => {
+        if (!req.params || !req.params.userId) {
+            console.error("No id paramater found in the request!");
+            return res.status(400).json({
+                data: 'Bad paramater!'
+            });
+        }
+
+        let userId = req.params.userId;
+        User.findById(userId,
+            '_id username namesFirst namesLast email phone1 phone2 skypeId photo role dateCreated',
+            (err, mongoResponse) => {
             if (err) {
-                console.error(`Error finding user: ${userId}`);
+                console.error('Error querying user in MongoDB!');
                 return res.status(500).json({
-                    msg: 'Error finding user!'
+                    data: 'Error querying user in database!'
                 });
             }
 
@@ -116,11 +123,10 @@ module.exports = (router) => {
         user.phone2 = req.body.phone2 || "";
         user.skypeId = req.body.skypeId || "";
         user.photo = req.body.photo || "";
-        user.role = req.body.role || "regular";
+        user.role = "regular";
         user.dateCreated = new Date;
 
         user.save().then((mongoResponse) => {
-            console.info("Document saved!");
             return res.status(200).json({ data: mongoResponse });
         }, (err) => {
             console.error(`Error saving user data: ${err}`);
@@ -129,27 +135,65 @@ module.exports = (router) => {
     });
 
     router.put('/api/users/:userId', (req, res, next) => {
-        var userId = req.params.userId;
-        next();
-    }, (req, res) => {
-        User.findByIdAndUpdate(userId, {
-            password: req.body.password,
+        if (!req.params || !req.params.userId) {
+            console.error("Missing id paramater found in the request!");
+            return res.status(400).json({
+                data: 'Bad paramater!'
+            });
+        }
+
+        // check requester's bearer token:
+        let currentToken;
+        if (req.headers.authorization) {
+            // console.log(`Auth header: ${req.headers.authorization}`);
+            currentToken = req.headers.authorization.slice(7);
+        }
+
+        if (!currentToken) {
+            console.log(`Bad token!`);
+            return res.status(401).json({
+                data: 'Error: Missing authorization credentials'
+            });
+        }
+
+        let currentRole, currentUser;
+        for (let i = 0; i < tokens.length; i++) {
+            // console.log("[i]: " + tokens[i].token + " : " + tokens[i].user + " : " + tokens[i].role);
+            if (currentToken === tokens[i].token) {
+                currentUser = tokens[i].user;
+                currentRole = tokens[i].role;
+                break;
+            }
+        }
+
+        if ((currentRole !== 'admin') && (currentUser !== req.body.username)) {
+            return res.status(401).json({
+                data: 'Error: Unauthorized to modify this user\'s data'
+            });
+        }
+
+        let userId = req.params.userId;
+        User.findByIdAndUpdate(userId,
+        {
+            password: encryptPswdClean(req.body.password),
             namesFirst: req.body.namesFirst,
             namesLast: req.body.namesLast,
             email: req.body.email,
             phone1: req.body.phone1,
             phone2: req.body.phone2,
             skypeId: req.body.skypeId,
-            photo: req.body.photo
+            photo: req.body.photo,
+            role: req.body.role || 'regular'
         }, {
             new: true,
             upsert: false,
             runValidators: true
+            // select: {'_id', 'username', 'namesFirst', 'namesLast', 'email', 'phone1', 'phone2', 'skypeId', 'photo', 'role', 'dateCreated'}
         }, (err, mongoResponse) => {
             if (err) {
                 console.error('Error updating user!');
                 return res.status(500).json({
-                    msg: `Error updating user data for ${userId}!`
+                    data: `Error updating user data for ${userId}!`
                 });
             }
 
@@ -159,10 +203,15 @@ module.exports = (router) => {
         });
     });
 
-    router.delete('/api/users/:userId', (req, res, next) => {
+    router.delete('/api/users/:userId', (req, res) => {
+        if (!req.params || !req.params.userId) {
+            console.error("No id paramater found in the request!");
+            return res.status(400).json({
+                data: 'Bad paramater!'
+            });
+        }
+
         var userId = req.params.userId;
-        next();
-    }, (req, res) => {
         User.findByIdAndRemove(userId, {}, (err, mongoResponse) => {
             if (err) {
                 console.error('Error deleting user!');
@@ -172,7 +221,7 @@ module.exports = (router) => {
             }
 
             res.status(200).json({
-                data: mongoResponse
+                data: 'OK'
             });
         });
     });

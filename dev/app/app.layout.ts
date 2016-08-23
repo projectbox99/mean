@@ -17,11 +17,9 @@ import { AuthService } from "./Services/authentication.service";
     animations: [
         trigger("navLinkState", [
             state("inactive", style({
-                backgroundColor: "#eee",
                 transform: "scale(1)"
             })),
             state("active", style({
-                backgroundColor: "#cfd8dc",
                 transform: "scale(1.1)"
             })),
             transition("inactive => active", animate("100ms ease-in")),
@@ -31,8 +29,9 @@ import { AuthService } from "./Services/authentication.service";
     providers: [ UserService, AuthService ]
 })
 export class AppLayout implements OnInit {
-    public loggedIn: boolean;
     public currentUser: User;
+    public loggedIn: boolean;
+    public currenUserRole: string;
 
     public loading: boolean;
     public active: boolean;
@@ -61,6 +60,7 @@ export class AppLayout implements OnInit {
                 if (result === true) {
                     // login successful
                     this.currentUser = this.authService.currentUser;
+                    this.currenUserRole = this.currentUser.role;
                     this.loggedIn = true;
                     this.setErrorMsg();
                     this.router.navigate(["/"]);
@@ -95,6 +95,7 @@ export class AppLayout implements OnInit {
         setTimeout(() => this.active = true, 0);
 
         this.currentUser = this.authService.currentUser;
+        this.currenUserRole = "";
         this.loggedIn = false;
 
         this.router.navigate(["/"]);
@@ -118,6 +119,7 @@ export class AppLayout implements OnInit {
     ngOnInit() {
         this.authService.logout();
         this.currentUser = this.authService.currentUser;
+        this.currenUserRole = "";
         this.loggedIn = false;
 
         this.loading = false;

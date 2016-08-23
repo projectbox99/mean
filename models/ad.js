@@ -6,7 +6,7 @@ class Ad_schema extends mongoose.Schema {
 	constructor() {
 		super({
 			title: { type: String, required: true },
-			category: { type: Number, required: true },
+			category: { type: String, required: true },
 			desc: { type: String, required: true },
 			photos: [{ type: String }],
 			city: { type: String, required: true },

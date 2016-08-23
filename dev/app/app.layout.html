@@ -3,93 +3,99 @@
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+                <a routerLink="/">
+                    <h2 class="app-name">Web
+                        <span class="app-name-span">Tech</span>
+                        <span class="app-name-span2">Ads</span>
+                    </h2>
+                </a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="app-logo">
-                        <a routerLink="/">
-                            <!--<img src="/assets/funny-starbucks-logo.jpg" height="55" width="55"/>-->
-                            <h2 class="app-name">Web<span class="app-name-span">Tech</span><span class="app-name-span2">Ads</span></h2>
-                        </a>
-                    </li>
-                    <!--<li [nav-link-custom]="DodgerBlue" [@navLinkState]="linkState" (click)="toggleLinkState()">-->
-                    <li>
-                        <a class="nav-link" routerLink="/" routerLinkActive="active"><i class="fa fa-home"></i> Home</a>
-                    </li>
-                    <!--<li [nav-link-custom]="DodgerBlue" [@navLinkState]="linkState" (click)="toggleLinkState()">-->
-                    <li>
-                        <a class="nav-link" routerLink="/about" routerLinkActive="active"><i class="fa fa-info-circle"></i> About</a>
-                    </li>
-                    <!--<li [nav-link-custom]="DodgerBlue" [@navLinkState]="linkState" (click)="toggleLinkState()">-->
-                    <li>
-                        <a class="nav-link" routerLink="/ads" routerLinkActive="active"><i class="fa fa-info-circle"></i> Ads</a>
-                    </li>
-                    <li class="dropdown" [@navLinkState]="linkState" (click)="toggleLinkState()">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+            <div id="bs-navbar-collapse-1">
+                <ul class="nav navbar-nav nav-links-container">
+                    <li class="li-nav-link"><a class="nav-link" routerLink="/"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li class="li-nav-link"><a class="nav-link" routerLink="/about"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">About</a></li>
+                    <!--<li class="li-nav-link"><a class="nav-link" routerLink="/ads"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Ads</a></li>-->
+                    <li *ngIf="loggedIn" class="li-nav-link"><a class="nav-link" routerLink="/ads"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">New Ad</a></li>
+
+                    <li *ngIf="currenUserRole === 'admin'" class="dropdown li-nav-link" [@navLinkState]="linkState" (click)="toggleLinkState()">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                            aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a class="nav-link" routerLink="/" routerLinkActive="active" (click)="router.navigate(['/'])" ><span class="glyphicon glyphicon-align-left"></span> Home</a></li>
-                            <li><a class="nav-link" routerLink="/about" routerLinkActive="active" (click)="router.navigate(['/about'])" >About</a></li>
+                            <li>
+                                <a class="nav-link" routerLink="/" (click)="router.navigate(['/'])"
+                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >
+                                <span class="glyphicon glyphicon-align-left"></span> Home</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" routerLink="/about" (click)="router.navigate(['/about'])"
+                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >
+                                About</a>
+                            </li>
                             <li role="separator" class="divider"></li>
-                            <li><a class="nav-link" routerLink="/users" routerLinkActive="active" (click)="router.navigate(['/users'])" >Users</a></li>
+                            <li>
+                                <a class="nav-link" routerLink="/users" (click)="router.navigate(['/users'])"
+                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >
+                                Users</a>
+                            </li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
                         </ul>
                     </li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li *ngIf="!loggedIn">
-                        <form class="form-inline login-form" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+                    <li *ngIf="!loggedIn" class="login-area">
+                        <form class="form-inline navbar-form" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
                             <div class="login-group">
-                                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
-                                    <label for="username">Username</label>
-                                    <input type="text" class="form-control input-sm" name="username" [(ngModel)]="currentUser.username" id="username" #username="ngModel" required />
+                                <!--<label for="username">Username</label>-->
+                                <div class="input-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                    </span>
+                                    <input type="text" class="form-control input-sm" name="username" placeholder="Username" 
+                                    [(ngModel)]="currentUser.username" id="username" #username="ngModel" required />
                                         <!--<div *ngIf="f.submitted && !username.valid" class="help-block">Username is required
                                         </div>-->
                                 </div>
-                                <br>
-                                <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control input-sm" name="password" [(ngModel)]="currentUser.password" id="password" #password="ngModel" required />
+                                <br />
+                                <!--<label for="password">Password</label>-->
+                                <div class="input-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-lock"></span>
+                                    </span>
+                                    <input type="password" class="form-control input-sm" name="password" placeholder="Password" 
+                                    [(ngModel)]="currentUser.password" id="password" #password="ngModel" required />
                                         <!--<div *ngIf="f.submitted && !password.valid" class="help-block">Password is required
                                         </div>-->
                                 </div>
-                                <br>
+
+                                <div class="input-group login-button-group">
+                                    <button [disabled]="loading" class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-log-in"></span>  Login</button>
+                                    <button [disabled]="loading" class="btn btn-success" (click)="gotoRegistration()">
+                                        <span class="glyphicon glyphicon-registration-mark"></span>  Sign up
+                                    </button>
+                                </div>
                                 <div *ngIf="error" class="alert fail">{{error}}</div>
-                            </div>
-                            <div class="login-button-group">
-                                <button [disabled]="loading" class="btn btn-primary">Login</button>
                             </div>
                         </form>
                     </li>
 
                     <li *ngIf="loggedIn && currentUser && currentUser.username.length > 0">
-                        <div class="form-group">
+                        <div class="input-group login-button-group">
                             <p id="hello">Hello, <strong>{{currentUser.namesFirst || currentUser.username}}</strong></p>
-                        </div>
-                    </li>
-
-                    <li *ngIf="loggedIn">
-                        <div class="form-group">
-                            <button class="btn btn-default" (click)="logout()">Logout</button>
-                        </div>
-                    </li>
-
-                    <li *ngIf="!loggedIn">
-                        <div class="form-group">
-                            <button type="button" class="btn btn-success" (click)="gotoRegistration()">
-                                <span class="glyphicon glyphicon-registration-mark"></span> <strong>Register</strong>
+                            <button class="btn btn-default" (click)="logout()">
+                                <span class="glyphicon glyphicon-log-in"></span>  Logout
                             </button>
                         </div>
                     </li>
+
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

@@ -26,7 +26,7 @@ export class User {
         public dateCreated?: Date) { }
 
     public get names(): string {
-        return `${this.namesFirst || ""} ${this.namesLast || ""}`;
+        return (this.namesFirst || "") + (this.namesLast || "");
     }    // get names()
 }    // class User
 
@@ -42,7 +42,9 @@ export class UserService {
     private token: string;
 
     constructor (private http: Http
-                 /* private authService: AuthService */) { }
+                 /* private authService: AuthService */) {
+        this.token = JSON.parse(sessionStorage.getItem("token"));
+    }
 
     // anyone can register a new user
     public addUser(user: User): Observable<User> {
@@ -59,13 +61,79 @@ export class UserService {
         // add authorization header with jwt token
         let headers = new Headers({ "Authorization": "Bearer " + this.token });
         let options = new RequestOptions({ headers: headers });
-        console.log("In users.service.getUsers()");
 
         // get users from api
         return this.http.get(this.userUrl, options)
             .map((response: Response) => this.extractData(response))
             .catch(this.handleError);
     }    // getUsers()
+
+    public getUser(id: string): Observable<User> {
+        if (!id) {
+            console.log(`getUser was called with a bad id argument: ${id.toString()}`);
+            return Observable.create(new User("", "", ""));
+        }
+
+        let headers = new Headers({ "Authorization": "Bearer " + this.token });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.get(this.userUrl + "/" + id, options)
+            .map((response: Response) => {
+                let userData = this.extractData(response);
+                if (userData._id && userData.username) {
+                    userData.id = userData._id;
+                    return userData;
+                } else {
+                    return Observable.create(new User("", "", ""));
+                }
+            })
+            .catch(this.handleError);
+    }    // getUser()
+
+    public putUser(user: User): Observable<User> {
+        if (!user || !user.id || !user.username || !user.password) {
+            console.log(`putUser was called with a bad user argument: ${JSON.stringify(user)}`);
+            return Observable.create(new User("", "", ""));
+        }
+
+        let headers = new Headers({ "Authorization": "Bearer " + this.token, "Content-Type": "application/json" });
+        let options = new RequestOptions({ headers: headers });
+        let body: string = JSON.stringify(user);
+
+        return this.http.put(this.userUrl + "/" + user.id, body, options)
+            .map((response: Response) => {
+                let userData = this.extractData(response);
+                if (userData._id && userData.username) {
+                    userData.id = userData._id;
+                    console.info(`putUser returns: ${JSON.stringify(userData)}`);
+                    return userData;
+                } else {
+                    return Observable.create(new User("", "", ""));
+                }
+            })
+            .catch(this.handleError);
+    }    // putUser()
+
+    public deleteUser(id: string): Observable<boolean> {
+        if (!id) {
+            console.log(`deleteUser was called with a bad id argument: ${id.toString()}`);
+            return Observable.create(false);
+        }
+
+        let headers = new Headers({ "Authorization": "Bearer " + this.token });
+        let options = new RequestOptions({ headers: headers });
+        console.log(`In users.service.deleteUser(): id -> ${id}`);
+
+        return this.http.delete(this.userUrl + "/" + id, options)
+            .map((response: Response) => {
+                console.log("deleteUser response: " + this.extractData(response));
+                return this.extractData(response) === "OK";
+            })
+            .catch((error) => {
+                this.handleError(error).map((errMsg) => console.error("deleteUser Error: " + errMsg));
+                return Observable.create(false);
+            });
+    }    // deleteUser()
 
 
     // private helpers

@@ -2,6 +2,8 @@
 
 import { Component, OnInit, OnDestroy, ElementRef } from "@angular/core";
 import { NgForm, Location } from "@angular/common";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+
 
 import { Subscription } from "rxjs/Subscription";
 
@@ -16,19 +18,22 @@ import { User, UserService } from "../Services/users.service";
 export class UserRegistrationComponent implements OnInit, OnDestroy {
     public constructor(private userService: UserService,
                        private location: Location,
-                       private element: ElementRef) { }
+                       private element: ElementRef,
+                       private route: ActivatedRoute,
+                       private router: Router) { }
 
-    private user: User;
-    private password2: string;
+    public user: User;
+    public password2: string;
     private roles: string[];
+
     private isAdmin: boolean;
 
     private sub: Subscription;
 
-    private errorMsg: string;
+    private isEditingUser: boolean;
+    public errorMsg: string;
     private statusMsg: string;
-    private submitted: boolean;
-    private active: boolean;
+    public active: boolean;
 
 
     // make sure two-way binding is working
@@ -36,7 +41,7 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
 
     public imgChange(event) {
     	let target = EventTarget;
-    	let image = this.element.nativeElement.querySelector('.user-image');
+    	let image = this.element.nativeElement.querySelector('.user-image-input');
     	let reader: any = new FileReader();
 
     	var self = this;
@@ -50,15 +55,22 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
     }	// imgChange()
 
     public onSubmit(): void {
-        this.submitted = true;
         this.errorMsg = "";
         this.statusMsg = "";
 
-        this.addUser(this.user);
+        if (this.isEditingUser) {
+            this.modifyUser(this.user);
+        } else {
+            this.addUser(this.user);
+        }
 
         if (this.errorMsg) {
             this.active = true;
-            this.submitted = false;
+        } else {
+            if (this.isEditingUser)
+                setTimeout(() => this.location.back(), 1000);
+            else
+                setTimeout(() => this.router.navigate([ "/" ]), 1000);
         }
     }    // onSubmit()
 
@@ -78,10 +90,7 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
                     this.password2 = "";
                     this.isAdmin = this.user.role === "admin";
                     this.statusMsg = "User created successfully";
-                    this.submitted = true;
                     this.active = false;
-
-                    setTimeout(() => this.location.back(), 5000);
                 },
                 error => {         // function to invoke on exceptional termination of the obs. sequence
                     this.errorMsg = <any>error;
@@ -92,15 +101,49 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
                 });
     }    // addUser()
 
+    private modifyUser(user: User): void {
+        this.userService.putUser(this.user)
+            .subscribe(
+                userData => {
+                    this.user = userData;
+                    this.password2 = "";
+                    this.statusMsg = "User modified successfully";
+                    this.active = true;
+                },
+                error => {
+                    this.errorMsg = <any>error;
+                },
+                () =>{
+                    console.info("UserRegistrationComponent.modifyUser()'s observable completed gracefully");
+                });
+    }    // editUser()
+
     ngOnInit() {
-        this.user = new User("" /* id */, "" /* username */, "" /* password */);
-        this.password2 = "";
+        this.user = new User("", "", "");
+        this.isEditingUser = false;
+
+        this.sub = this.route.params.subscribe(
+            params => {
+                let id = params["id"];
+                if (id) {
+                    this.isEditingUser = true;
+                    this.userService.getUser(id).subscribe(
+                        userData => {
+                            this.user = userData;
+                            this.password2 = "";
+                            console.info(`Setting register.component.user to ${JSON.stringify(this.user)}`);
+                        }, error => this.errorMsg = <any>error
+                    );
+                }
+            }
+        );
+
+
         this.roles = [ "admin", "supervisor", "regular" ];
         this.isAdmin = true;
 
         this.errorMsg = "";
         this.statusMsg = "";
-        this.submitted = false;
         this.active = true;
     }    // ngOnInit()
 

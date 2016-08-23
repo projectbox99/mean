@@ -22,7 +22,6 @@ export class AdListComponent implements OnInit, OnDestroy {
     constructor(private service: AdsService, private route: ActivatedRoute, private router: Router) { }
 
     getAds() {
-        console.info("getAds!");
         this.sub = this.service.getAds()
             .subscribe(
                 ads => this.ads = ads,
@@ -30,18 +29,15 @@ export class AdListComponent implements OnInit, OnDestroy {
     }    // getAds()
 
     newAd() {
-        console.info("newAd!");
         this.selectedAd = null;
     }    // newAd()
 
     onSelect(ad: Ad) {
-        console.info("OnSelect!");
         this.selectedAd = ad;
         this.router.navigate(["/ads", ad.id]);
     }    // onSelect()
 
     ngOnInit() {
-        console.info("OnInit!");
         this.selectedAd = null;
         this.getAds();
     }    // ngOnInit()

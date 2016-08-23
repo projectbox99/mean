@@ -1,11 +1,11 @@
-<div [hidden]="submitted" class="register-container col-sm-10">
-    <h1 class="form-heading">User Registration</h1>
+<div [hidden]="!active" class="register-container col-sm-10">
+    <h1 class="form-heading">User <small>Registration</small></h1>
 
     <div [hidden]="!errorMsg" class="errorMsg alert alert-danger">
         An error occured while creating user! Error: {{errorMsg}}
     </div>
 
-	<form *ngIf="active" class="form-horizontal" (ngSubmit)="onSubmit()" #userForm="ngForm">
+	<form class="form-horizontal" (ngSubmit)="onSubmit()" #userForm="ngForm">
         <!--<i>{{diagnostic}}</i><br>-->
 
 		<div class="form-group row">
@@ -36,6 +36,8 @@
                 </div>
             </div>
         </div>
+
+        <br>
 
         <div class="form-group row">
             <label for="namesFirst" class="col-sm-2 col-form-label">Names</label>
@@ -82,14 +84,16 @@
                 <i class="ion-document icon"></i> User Photo
             </label>
             <div class="col-sm-3">
-                <input type="file" class="form-control" id="photo" placeholder="Photo"
+                <input type="file" class="form-control" id="photo" accept="image/*"
                 (change)="imgChange($event)" name="photo" >
-                <img class="user-image" src="/images/kermit.jpg">
+                <img *ngIf="user.photo" [src]="user.photo" class="user-image-input">
+                <img *ngIf="!user.photo" class="user-image-input" src="/images/kermit.jpg">
+                <!--<img *ngIf="user.photo" class="user-image-input" src="">-->
                 <span>{{percent}}</span>
             </div>
         </div>
 
-        <div class="form-group row" *ngIf="isAdmin">
+        <div *ngIf="isAdmin" class="form-group row admin-data">
             <label for="role" class="col-sm-2 col-form-label">Assign User Role</label>
             <div class="col-sm-4">
                 <select class="form-control" id="role" placeholder="Pick a role"
@@ -100,6 +104,14 @@
                     You are not Admin!
                 </div>
             </div>
+            <br>
+            <div>
+                <p>User Id: {{user.id}}</p>
+            </div>
+            <br>
+            <div>
+                <p>Date Created: {{user.dateCreated}}</p>
+            </div>
         </div>
 
         <div class="form-control-btns row col-sm-10">
@@ -109,7 +121,6 @@
 	</form>
 </div>
 
-<!-- submitted = true -->
-<div [hidden]="!submitted" class="waiting">
+<div [hidden]="active" class="waiting">
     <h2>Waiting for the server to authorize the new user...</h2>
 </div>

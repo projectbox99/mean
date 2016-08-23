@@ -1,8 +1,35 @@
 <div class="users">
-	Users:
-	<ul>
+	
+	<table class="table table-bordered table-hover table-condensed table-responsive">
+		<tr class="table-header-row">
+			<th>Username</th>
+			<th>Names</th>
+			<th>Email</th>
+			<th>Role</th>
+			<th>Date Created</th>
+		</tr>
+
+		<tr *ngFor="let user of users">
+			<td>{{user.username}}</td>
+			<td>{{user.namesFirst + " " + user.namesLast}}</td>
+			<td>{{user.email}}</td>
+			<td><strong>{{user.role}}</strong></td>
+			<td>{{user.dateCreated}}</td>
+			<td>
+				<div class="warning func-btns">
+					<button class="btn btn-primary" [disabled]="loading" (click)="editUser(user._id)">Edit User</button>
+					<button class="btn btn-danger" [disabled]="loading" (click)="delUser(user._id)">Delete User</button>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<div class="view-footer">
+		<button class="btn btn-default btn-refresh" [disabled]="loading" (click)="refresh()">Refresh List</button>
+	</div>
+	<!--<ul>
 		<li *ngFor="let user of users">
 			User: {{user.username}}
 		</li>
-	</ul>
+	</ul>-->
 </div>

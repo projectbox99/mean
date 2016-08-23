@@ -1,124 +1,218 @@
 @import url(https://fonts.googleapis.com/css?family=Ravi+Prakash);
 
-ul.nav {
+.container-fluid {
+	padding: 0 10px 0 10px;
+}
+
+.navbar {
+    background: -webkit-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Firefox 3.6 to 15 */
+    background: linear-gradient(-100deg, #0000FB, #00FE00, #000A01);
+    /* background: linear-gradient(-100deg, #0360b0, #03a000, yellow); /* Standard syntax (must be last) /*
+	/* background: linear-gradient(-100deg, #08FF16, #0AFFFA, #FAFF05, #FDFFFE); */
+	/* background: linear-gradient(-100deg, #0000FB, #00FCFD, #00FE00, #000A01); */
+    /* background: linear-gradient(-100deg, #FF0100, #FF03FE, #FFFEFF, #FFFE00); */
+	padding: 10px 0 0 0;
+}
+
+.nav {
+	margin: 0;
+	min-width: 250px;
+	max-width: 550px;
+}
+
+.navbar-right {
+	min-width: 250px;
+	max-width: 300px;
 	margin: 0;
 }
 
-ul.nav > li.app-logo > a {
+.navbar-header {
 	margin: 0;
 	padding: 0;
-}
-
-.nav-link {
-	margin: 0 5px 0 5px;
-	border: 1px solid #eee;
-	border-radius: 5px;
-
-	color: #eee;
-	background-color: rgba(0, 0, 0, 0.5);
-}
-
-.nav-link:hover {
-	background-color: rgba(0, 0, 0, 0.85);
-}
-
-.nav-link:blur {
-	background-color: rgba(0, 0, 0, 0.5);
-}
-
-.nav-link:active {
-	background-color: #0030CC;
-}
-
-.nav-link:active:hover {
-	background-color: #0030AA;
-}
-
-.nav-link:active:blur {
-	background-color: #0030CC;
+	min-width: 250px;
+	max-width: 300px;
 }
 
 .app-name {
 	background-color: rgba(0, 0, 0, 0.3);
 	text-align: center;
-	vertical-align: middle;
+	vertical-align: baseline;
+	min-width: 250px;
+	max-width: 300px;
 
 	border: 3px solid #eee;
 	border-radius: 10px 0 10px 0;
-	margin: 0 10px 0 0;
-	padding: 10px 20px 0px 10px;
+	margin: 0 50px 0 10px;
+	padding: 10px 10px 0px 10px;
 
 	font-family: 'Ravi Prakash', cursive;
 	font-size: 4em;
 	font-weight: 600;
-	word-spacing: -10px;
+	letter-spacing: -5px;
+	word-spacing: -100%;
+
 	color: #eee;
+	mix-blend-mode: normal;
 }
 
 .app-name-span {
 	vertical-align: +40%;
 	font-size: 0.8em;
 	font-weight: 900;
-	word-spacing: -60px;
+	word-spacing: -100%;
 }
 
 .app-name-span2 {
 	vertical-align: -40%;
 	font-size: 1.1em;
 	font-weight: 300;
+	word-spacing: -100%;
+	color: #FFCC00;
+	text-shadow: 2px 1px #AA9900;
 }
 
-nav.navbar {
-    background: -webkit-linear-gradient(-100deg, #0360b0, #03a000, yellow); /* Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(-100deg, #0360b0, #03a000, yellow); /* Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(-100deg, #0360b0, #03a000, yellow); /* Firefox 3.6 to 15 */
-    /* background: linear-gradient(-100deg, #0360b0, #03a000, yellow); /* Standard syntax (must be last) /*
-	/* background: linear-gradient(-100deg, #08FF16, #0AFFFA, #FAFF05, #FDFFFE); */
-	/* background: linear-gradient(-100deg, #0000FB, #00FCFD, #00FE00, #000A01); */
-	background: linear-gradient(-100deg, #0000FB, #00FE00, #000A01);
-    /* background: linear-gradient(-100deg, #FF0100, #FF03FE, #FFFEFF, #FFFE00); */
-
-	padding: 10px;
+#bs-navbar-collapse-1 {
+	margin: 0;
 }
 
-div.login-group {
-	vertical-align: middle;
-	text-align: right;
+.nav-links-container {
+	margin: 0;
+	padding: 0 0 0 5px;
+	vertical-align: top;
+	/*display: inline-block;*/
+}
+
+.li-nav-link {
+	display: inline-block;
+}
+
+.nav-link {
+	margin: 5px;
+	border-width: 0 0 1px 1px;
+	border-style: solid;
+	border-color: #eee;
+	border-radius: 5px;
+	width: 100px;
+
+	font-size: 1.2em;
+	font-variant: small-caps;
+	text-align: center;
+	color: #eee;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.nav-link:hover {
+	background-color: #FFCC00;
+}
+
+.nav-link.active {
+	background-color: rgba(0, 50, 200, 0.5);
+}
+
+.nav-link.active:hover {
+	background-color: rgba(0, 50, 200, 0.75);
+}
+
+.dropdown {
+	margin: 5px;
+	padding: 0;
+	border: 1px solid #eee;
+	border-radius: 5px;
+	width: 140px;
+
+	font-size: 1.2em;
+	font-variant: small-caps;
+	text-align: center;
+	color: #eee;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1;
+}
+
+.dropdown:hover, .dropdown-toggle:hover {
+	background-color: #FFCC00;
+}
+
+
+.dropdown:active, .dropdown-toggle:active {
+	background-color: rgba(0, 50, 200, 0.5);
+}
+
+.dropdown:active:hover {
+	background-color: rgba(0, 50, 200, 0.75);
+}
+
+.dropdown-toggle {
+	color: #eee;
+}
+
+.dropdown-menu {
+	background-color: #FFCC00;
+}
+
+.login-group {
+	display: inline-block;
+	vertical-align: bottom;
+	text-align: left;
 	margin: 0 5px 0 0;
-	float: left;
+	padding: 0 0 0 10px;
+	width: 100%;
 }
 
-div.login-button-group {
-	float: right;
+.login-button-group {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 5px 0 5px;
+	text-align: right;
 }
 
-div.form-group {
-	margin: 0 0 5px 0;
+.btn {
+	margin: 0 0 0 10px;
+	display: inline;
+	width: 110px;
+	font-size: 1.2em;
+	font-weight: normal;
+	text-align: center;
+	font-variant: small-caps;
+}
+
+.input-group {
+	width: 95%;
+	margin: 5px 0 5px 10px;
+	padding: 0;
+	min-width: 250px;
+	max-width: 300px;
 }
 
 label {
+	text-align: left;
 	color: #eee;
 	margin: 0 10px 0 0;
 }
 
-button {
-	vertical-align: middle;
-	margin: 0 5px 0 5px;
+.form-control {
+	min-width: 205px;
+	max-width: 300px;
 }
 
-div.fail {
+.logout-btn {
+	margin: 0 10px 0 0;
+}
+
+.fail {
+	max-height: 50px;
 	text-align: center;
-	/* background: -webkit-linear-gradient(-110deg, #0360b0, #03a000, yellow); /* Safari 5.1 to 6.0 */
-    /* background: -o-linear-gradient(-110deg, #0360b0, #03a000, yellow); /* Opera 11.1 to 12.0 */
-    /* background: -moz-linear-gradient(-110deg, #0360b0, #03a000, yellow); /* Firefox 3.6 to 15 */
-    /* background: linear-gradient(-100deg, #FF0100, #FF03FE, #FFFEFF, #FFFE00); /* Standard syntax (must be last) */
     background-color: #eee;
 }
 
 #hello {
+	float: left;
+	display: inline;
 	vertical-align: middle;
 	margin: 0 10px 0 10px;
 
 	color: #eee;
+	font-size: 1.2em;
 	text-shadow: 1px 1px #aaa;
 }
