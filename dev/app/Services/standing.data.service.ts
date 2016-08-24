@@ -11,15 +11,18 @@ import "rxjs/add/operator/catch";
 
 
 export class Lists {
-    constructor(public categories: string[], public cities: string[]) { }
+    constructor(public categories: string[], 
+                public cities: string[],
+                public roles: string[]) { }
 }    // class Lists
 
 @Injectable()
 export class StandingData {
-    private categories: string[];
-    private cities: string[];
+    public lists: Lists;
 
-    private userUrl: string =
+    private token: string;
+
+    private listsUrl: string =
         window.location.protocol + "//" +
         window.location.hostname +
         ((window.location.port === "80")
@@ -28,47 +31,42 @@ export class StandingData {
 
     constructor (private http: Http
                  /* private authService: AuthService */) {
-        // this.getStandingData();
-        this.categories = [];
-        this.cities = [];
+        this.lists = new Lists([], [], []);
+        this.token = JSON.parse(sessionStorage.getItem("token")) || "";
     }
 
-    public get getCategories(): string[] {
-        if (!this.categories) {
+    public getLists(): Lists {
+        if (this.lists && 
+            this.lists.categories && this.lists.categories.length > 0 &&
+            this.lists.cities && this.lists.cities.length > 0 &&
+            this.lists.roles && this.lists.roles.length > 0) {
+            return this.lists;
+        } else {
             this.loadStandingData().subscribe(
-                sd => {
-                    console.log(`SD: getCategories pulled sd: ${JSON.stringify(sd)}`);
-                    this.categories = sd.categories;
-                    this.cities = sd.cities;
+                result => {
+                    this.lists
                 },
-                error => {console.log(`Error retrieving SD: ${JSON.stringify(error)}`); }
+                error => this.lists
             );
         }
+    }    // get getCategories
 
-        return this.categories;
-    }    // get getCategories()
+    private loadStandingData(): Observable<boolean> {
+        let headers = new Headers({ "Authorization": "Bearer " + this.token });
+        let options = new RequestOptions({ headers: headers });
 
-    public get getCities(): string[] {
-        return this.cities;
-    }    // get getCities()
-
-
-
-    public getStandingData(): void {
-        this.loadStandingData().subscribe(
-            sd => {
-                console.info(JSON.stringify(sd));
-                this.categories = sd.categories;
-                this.cities = sd.cities;
-            },
-            error => console.error(`Error retrieving lists: ${JSON.stringify(error)}`));
-    }    // getStandingData()
-
-    private loadStandingData(): Observable<Lists> {
-        // standing data from api
-        console.log("Getting SD!");
-        return this.http.get("/api/lists")
-            .map((response: Response) => this.extractData(response))
+        return this.http.get(this.listsUrl, options)
+            .map((response: Response) => {
+                let reply = this.extractData(response);
+                if (reply.categories && reply.cities && reply.roles) {
+                    this.lists.categories = reply.categories;
+                    this.lists.cities = reply.cities;
+                    this.lists.roles = reply.roles;
+                    return Observable.create(true);
+                } else {
+                    return Observable.create(false);
+                }
+            })
             .catch((error) => this.handleError(error));
     }    // loadStandingData()
 

@@ -116,7 +116,7 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
                 () =>{
                     console.info("UserRegistrationComponent.modifyUser()'s observable completed gracefully");
                 });
-    }    // editUser()
+    }    // modifyUser()
 
     ngOnInit() {
         this.user = new User("", "", "");

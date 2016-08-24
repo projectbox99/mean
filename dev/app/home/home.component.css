@@ -1,3 +1,53 @@
-div.categories-container {
-	background-color: #ddd;
+.home {
+	width: 100%;
+	margin: 0;
+}
+
+.sd-container {
+	width: 100%;
+	margin: -10px 0 0 0;
+	background: -webkit-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Firefox 3.6 to 15 */
+    background: linear-gradient(-100deg, #0000FB, #00FE00, #000A01);
+}
+
+.categories-heading {
+	text-align: center;
+	font-variant: small-caps;
+	font-weight: 300;
+}
+
+.categories_list {
+	width: 100%;
+	text-align: center;
+}
+
+.category {
+	max-width: 300px;
+
+	margin: 10px;
+	padding: 0 10px;
+
+	border-width: 0 0 1px 1px;
+	border-style: solid;
+	border-color: #eee;
+	border-radius: 5px;
+	font-size: 2em;
+	font-family: 'Ravi Prakash', cursive;
+	vertical-align: baseline;
+	/*color: #FFCC00;*/
+	color: #eee;
+	/*text-shadow: 2px 2px 2px #FFCC00;*/
+	background-color: #0C6B80;
+}
+
+.cities_list {
+	width: 100%;
+	text-align: center;
+}
+
+.city {
+	font-size: 1.2em;
+	color: #094502;
 }

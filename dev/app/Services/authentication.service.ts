@@ -15,7 +15,6 @@ export class AuthService {
         // set token if saved in session storage
         this.currentUser = new User("", "", "");
         this.token = JSON.parse(sessionStorage.getItem("token"));
-        console.log(`AuthService instance created! Token: ${JSON.stringify(this.token)}`);
     }
 
     public get usrLoggedIn(): boolean {
@@ -50,10 +49,8 @@ export class AuthService {
         let options: RequestOptions = new RequestOptions({ headers: headers });
         let body: string = JSON.stringify({ username: username, password: password });
 
-        console.log(`AuthService: sending request for ${username}, ${password}`);
         return this.http.post("/api/login", body, options)
             .map((response: Response) => {
-                console.log(`AuthService: received reply: ${JSON.stringify(response.json())}`);
                 // login successful if there's a jwt token in the response
                 let token = response.json().data && response.json().data.token;
                 if (token) {
@@ -61,15 +58,11 @@ export class AuthService {
                     this.token = token;
                     // store username and jwt token in local storage to keep user logged in between page refreshes
                     sessionStorage.setItem("token", JSON.stringify(this.token));
-                    console.log(`AuthService: this.token set to ${this.token}`);
                 }
 
-                console.log(JSON.stringify(response.json().data.user));
                 let userData = JSON.stringify(response.json().data.user);
-                console.log(`AuthService: attempting to set currentUser to ${userData}`);
                 if (userData) {
                     this.currentUser = JSON.parse(userData);
-                    console.log(`AuthService: this.currentUser set to ${this.currentUser}`);
                 }
 
                 if (!this.token || !this.currentUser) {

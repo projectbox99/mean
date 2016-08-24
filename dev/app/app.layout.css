@@ -1,8 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Ravi+Prakash);
 
-.container-fluid {
-	padding: 0 10px 0 10px;
-}
+/*.container-fluid {
+	border: 1px solid black;
+}*/
 
 .navbar {
     background: -webkit-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Safari 5.1 to 6.0 */
@@ -35,6 +35,11 @@
 	max-width: 300px;
 }
 
+.navbar-form {
+	padding: 0;
+	margin: 0;
+}
+
 .app-name {
 	background-color: rgba(0, 0, 0, 0.3);
 	text-align: center;
@@ -44,7 +49,7 @@
 
 	border: 3px solid #eee;
 	border-radius: 10px 0 10px 0;
-	margin: 0 50px 0 10px;
+	margin: 0 50px 17px 10px;
 	padding: 10px 10px 0px 10px;
 
 	font-family: 'Ravi Prakash', cursive;
@@ -70,7 +75,8 @@
 	font-weight: 300;
 	word-spacing: -100%;
 	color: #FFCC00;
-	text-shadow: 2px 1px #AA9900;
+	text-shadow: 2px 1px 2px #AA9900;
+	margin: 0 0 -10px 0;
 }
 
 #bs-navbar-collapse-1 {
@@ -89,14 +95,15 @@
 }
 
 .nav-link {
-	margin: 5px;
+	margin: 10px 5px 0 5px;
+	padding: 10px;
 	border-width: 0 0 1px 1px;
 	border-style: solid;
 	border-color: #eee;
 	border-radius: 5px;
 	width: 100px;
 
-	font-size: 1.2em;
+	font-size: 1.1em;
 	font-variant: small-caps;
 	text-align: center;
 	color: #eee;
@@ -151,10 +158,14 @@
 	background-color: #FFCC00;
 }
 
+.login-area {
+	margin: -10px 0 -30px 0;
+}
+
 .login-group {
 	display: inline-block;
 	vertical-align: bottom;
-	text-align: left;
+	text-align: right;
 	margin: 0 5px 0 0;
 	padding: 0 0 0 10px;
 	width: 100%;
@@ -169,31 +180,27 @@
 
 .btn {
 	margin: 0 0 0 10px;
+	padding: -5px;
 	display: inline;
-	width: 110px;
-	font-size: 1.2em;
+	width: 95px;
+	font-size: 1.1em;
 	font-weight: normal;
 	text-align: center;
 	font-variant: small-caps;
 }
 
 .input-group {
+	text-align: right;
 	width: 95%;
 	margin: 5px 0 5px 10px;
 	padding: 0;
-	min-width: 250px;
-	max-width: 300px;
-}
-
-label {
-	text-align: left;
-	color: #eee;
-	margin: 0 10px 0 0;
+	min-width: 220px;
+	max-width: 220px;
 }
 
 .form-control {
-	min-width: 205px;
-	max-width: 300px;
+	min-width: 180px;
+	max-width: 180px;
 }
 
 .logout-btn {

@@ -10,6 +10,8 @@ import { AdListComponent }    from "./ad-list.component";
 import { AdDetailComponent }  from "./ad-detail.component";
 
 import { AdsService } from "../Services/ads.service";
+import { StandingData } from "../Services/standing.data.service";
+import { AuthService } from "../Services/authentication.service";
 
 import { adRouting } from "./ads.routes";
 
@@ -26,7 +28,7 @@ import { adRouting } from "./ads.routes";
         AdDetailComponent
     ],
     providers: [
-        AdsService
+        AdsService, StandingData, AuthService
     ]
 })
 export class AdsModule { }

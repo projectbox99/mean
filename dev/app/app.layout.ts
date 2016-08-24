@@ -54,7 +54,6 @@ export class AppLayout implements OnInit {
         this.loading = true;
         this.submitted = true;
 
-        console.log(`layout.component: logging in ${this.currentUser.username} : ${this.currentUser.password}`);
         this.authService.login(this.currentUser.username, this.currentUser.password)
             .subscribe(result => {
                 if (result === true) {

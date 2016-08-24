@@ -1,41 +1,61 @@
 "use strict";
 
 import { Router } from "@angular/router";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
+
+import { Subscription } from "rxjs/Subscription";
 
 // services
 import { User, UserService } from "../Services/users.service";
 import { AuthService } from "../Services/authentication.service";
-import { StandingData } from "../Services/standing.data.service";
+import { StandingData, Lists } from "../Services/standing.data.service";
 
 
 @Component ({
-    selector: "view",
+    // selector: "user-list",
     templateUrl: "home.component.html",
     styleUrls: [ "home.component.css" ],
     providers: [ UserService, AuthService, StandingData ]
 })
 export class HomeComponent implements OnInit {
-    public loggedIn: boolean;
-    public currentUser: User;
+    private lists: Lists;
 
-    public categories: string[];
+    public get categories(): string[] {
+        return this.lists.categories || [];
+    }
 
-    public loading: boolean;
-    public active: boolean;
-    public error: string;
+    public get cities(): string[] {
+        return this.lists.cities || [];
+    }
+
+    public get roles(): string[] {
+        return this.lists.categories || [];
+    }
+
+    private loading: boolean;
+    private active: boolean;
+    private error: string;
 
     constructor(private router: Router,
-        private userService: UserService,
-        private authService: AuthService,
-        private standingData: StandingData) {
-            this.categories = this.standingData.getCategories;
-    }
+                private userService: UserService,
+                private authService: AuthService,
+                private standingData: StandingData) {
+        this.setErrorMsg("");
+        this.lists = new Lists([], [], []);
+        this.loadStandingData();
+    }    // constructor()
+
+    public loadStandingData(): void {
+        this.lists = this.standingData.getLists();
+    }    // loadStandingData()
+
 
     // private helpers
     private setErrorMsg(errMsg?: string): void {
-        if (errMsg) {
-            this.error = errMsg.trim();
+        let msg = errMsg.trim();
+
+        if (msg) {
+            this.error = msg;
             setTimeout(() => this.error = "", 5000 /* ms */);
         }
 
@@ -43,13 +63,7 @@ export class HomeComponent implements OnInit {
     }    // setErrorMsg()
 
     ngOnInit() {
-        this.currentUser = this.authService.currentUser;
-        this.loggedIn = this.authService.usrLoggedIn;
-        this.categories = this.standingData.getCategories;
-        console.log(this.categories);
-
         this.loading = false;
         this.active = true;
-        this.setErrorMsg();
     }    // ngOnInit()
 }	// class HomeComponent

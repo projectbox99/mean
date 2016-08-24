@@ -1,12 +1,27 @@
-<div class='home'>
-    <div class="col-md-10">
-        <div class="categories-container">
-        Categories:
-        	<ul>
-				<li *ngFor="let category of categories">
-				Ctegory: {{category}}
-				</li>
-        	</ul>
-        </div>
+<div class="home">
+    <div class="sd-container">
+    <div class="categories-heading">
+        <h2 class="heading">Categories</h2>
+    </div>
+
+    <div *ngIf="error" class="error">Error: {{error}}</div>
+
+    <div class="categories_list">
+    	<ul *ngIf="standingData.lists.categories" class="list-inline">
+			<li *ngFor="let category of standingData.lists.categories"
+            class="category" role="button">
+			{{category}}
+			</li>
+    	</ul>
+    </div>
+
+    <div class="cities_list">
+        <ul *ngIf="standingData.lists.cities" class="list-inline">
+            <li *ngFor="let city of standingData.lists.cities" class="city">
+                {{city}}
+            </li>
+        </ul>
+    </div>
+
     </div>
 </div>

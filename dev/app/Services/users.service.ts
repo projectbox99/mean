@@ -62,7 +62,6 @@ export class UserService {
         let headers = new Headers({ "Authorization": "Bearer " + this.token });
         let options = new RequestOptions({ headers: headers });
 
-        // get users from api
         return this.http.get(this.userUrl, options)
             .map((response: Response) => this.extractData(response))
             .catch(this.handleError);
@@ -122,7 +121,6 @@ export class UserService {
 
         let headers = new Headers({ "Authorization": "Bearer " + this.token });
         let options = new RequestOptions({ headers: headers });
-        console.log(`In users.service.deleteUser(): id -> ${id}`);
 
         return this.http.delete(this.userUrl + "/" + id, options)
             .map((response: Response) => {

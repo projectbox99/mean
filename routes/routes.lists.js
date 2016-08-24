@@ -1,6 +1,7 @@
 'use strict';
 
 var Lists = require('../models/lists');
+var Ads = require('../models/ad');
 
 
 /**
@@ -17,8 +18,10 @@ module.exports = function (router) {
                 });
             }
 
+            // let categoriesCount = lists.categories.count;
+
             res.status(200).json({
-                data: { categories: lists.categories, cities: lists.cities }
+                data: { categories: lists.categories, cities: lists.cities, roles: lists.roles }
             });
         });
     });

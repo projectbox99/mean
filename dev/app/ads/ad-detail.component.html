@@ -1,36 +1,126 @@
-<div class = 'ad-detail'>
-    <h2>AD Detail</h2>
-    <div *ngIf="ad">
-        <h3>"{{ad.title}}"</h3>
-        <div>
-            <label>Id: </label>{{ad.id || ""}}
-        </div>
-        <div>
-            <label>Title: </label>
-            <input [(ngModel)]="ad.title" placeholder="title"/>
+<div [hidden]="!active" class="ad-container col-sm-10">
+    <h1 class="form-heading">User <small>Ad</small></h1>
 
-            <label>Category: </label>
-            <input [(ngModel)]="ad.category" placeholder="category"/>
-
-            <label>Description: </label>
-            <input [(ngModel)]="ad.desc" placeholder="Description"/>
-
-            <label>City: </label>
-            <input [(ngModel)]="ad.city" placeholder="City"/>
-
-            <label>Price: </label>
-            <input [(ngModel)]="ad.price" placeholder="Price"/>
-
-            <label>Owner: </label>
-            <input [(ngModel)]="ad.owner" placeholder="Owner"/>
-        </div>
-        <p>
-            <button (click)="gotoAds()">Back</button>
-            <button (click)="saveAd()">Save</button>
-            <button (click)="deleteAd(ad, $event)">Del</button>
-        </p>
-        <div class="error" *ngIf="errorMessage">
-            {{errorMessage}}
-        </div>
+    <div [hidden]="!errorMsg" class="errorMsg alert alert-danger">
+        An error occured while creating user! Error: {{errorMsg}}
     </div>
+
+    <form class="form-horizontal" (ngSubmit)="onSubmit()" #userForm="ngForm">
+        <!--<i>{{diagnostic}}</i><br>-->
+
+        <div class="form-group row">
+            <label for="title" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="title" placeholder="Title" required
+                    [(ngModel)]="ad.title" name="title" #title="ngModel" >
+                    <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
+                        A title is required
+                    </div>
+            </div>
+        </div>
+
+        <div *ngIf="standingData.lists.categories.length > 0" class="form-group row">
+            <label for="category" class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="category" 
+                placeholder="Pick a category" required [(ngModel)]="ad.category" name="category" #category="ngModel" >
+                    <option *ngFor="let cat of standingData.lists.categories" [value]="cat">{{cat}}</option>
+                </select>
+                    <div [hidden]="category.valid || category.pristine" class="alert alert-danger">
+                        Select a category for your ad
+                    </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="form-group row">
+            <label for="desc" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-4">
+                <textarea class="form-control" id="desc" placeholder="Description" required 
+                [(ngModel)]="ad.desc" name="desc" #desc="ngModel" rows="10" cols="50">
+                </textarea>
+                    <div [hidden]="desc.valid || desc.pristine" class="alert alert-danger">
+                        A short description is required
+                    </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="photo" class="col-sm-2 col-form-label">Ad Photo</label>
+            <div class="col-sm-3">
+                <input type="file" class="form-control" id="photo" accept="image/*"
+                (change)="imgChange($event)" name="photo" >
+                <img *ngIf="ad.photo" [src]="ad.photo" class="ad-image-input">
+                <img *ngIf="!ad.photo" class="ad-image-input" src="/images/kermit.jpg">
+                <span>{{percent}}</span>
+            </div>
+        </div>
+        <!-- Photos -->
+
+        <div class="form-group row">
+            <label for="city" class="col-sm-2 col-form-label">City</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="city" placeholder="City" required 
+                    [(ngModel)]="ad.city" name="city" #city="ngModel" >
+                    <div [hidden]="city.valid || city.pristine" class="alert alert-danger">
+                        The city is also required
+                    </div>
+                        <ul *ngIf="standingData.lists.cities" class="list-inline">
+                    <li *ngFor="let city of standingData.lists.cities" class="city">
+                        {{city}}
+                    </li>
+        </ul>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="price" class="col-sm-2 col-form-label">Price</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="price" placeholder="Price" required 
+                    [(ngModel)]="ad.price" name="price" #price="ngModel" >
+                    <div [hidden]="price.valid || price.pristine" class="alert alert-danger">
+                        You have not set a price for your auction
+                    </div>
+            </div>
+        </div>
+
+        <div *ngIf="authService.currentUser.role === 'admin'" class="form-group row admin-data">
+            <label for="role" class="col-sm-2 col-form-label">Assign User Role</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="role" placeholder="Pick a role"
+                    [(ngModel)]="user.role" name="role" #role="ngModel" >
+                    <option *ngFor="let role of roles" [value]="role">{{role}}</option>
+                </select>
+                <div [hidden]="isAdmin" class="alert alert-danger">
+                    You are not Admin!
+                </div>
+            </div>
+            <br>
+            <div>
+                <p>Ad Id: {{ad.id}}</p>
+            </div>
+            <br>
+            <div>
+                <p>Owner: {{ad.owner}}</p>
+            </div>
+            <br>
+            <div>
+                <p>Date Created: {{ad.dateCreated}}</p>
+            </div>
+            <br>
+            <div>
+                <p>Valid until: {{ad.dateValid}}</p>
+            </div>
+        </div>
+
+        <div class="form-control-btns row col-sm-10">
+            <button type="button" class="btn btn-default" (click)="clearForm()">Clear Form</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </form>
+</div>
+
+<div [hidden]="active" class="waiting">
+    <h2>Waiting for the server to authorize the new ad...</h2>
 </div>

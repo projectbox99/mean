@@ -1,4 +1,4 @@
-<div class="fluid-container">
+<div class="container-fluid">
     <nav class="navbar"> <!-- navbar-fixed-top, navbar-inverse -->
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -21,7 +21,7 @@
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">About</a></li>
                     <!--<li class="li-nav-link"><a class="nav-link" routerLink="/ads"
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Ads</a></li>-->
-                    <li *ngIf="loggedIn" class="li-nav-link"><a class="nav-link" routerLink="/ads"
+                    <li *ngIf="loggedIn" class="li-nav-link"><a class="nav-link" routerLink="/ads/create"
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">New Ad</a></li>
 
                     <li *ngIf="currenUserRole === 'admin'" class="dropdown li-nav-link" [@navLinkState]="linkState" (click)="toggleLinkState()">
@@ -129,6 +129,5 @@
 
 	<!-- Routed views go here -->
 	<router-outlet></router-outlet>
-    <p>FIN</p>
 </div>
 
