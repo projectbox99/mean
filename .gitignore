@@ -16,3 +16,6 @@ npm-debug.log*
 
 # Optional npm cache directory
 .npm
+
+serverCert.pem
+serverKey.pem

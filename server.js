@@ -7,6 +7,13 @@ var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
 var compression = require('compression');
 
+// niki
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
+var stats;
+var helmet = require('helmet');
+
 var chalk = require('chalk');
 const chalkError = chalk.bold.underline.bgRed;
 const chalkSuccess = chalk.bold.underline.bgGreen;
@@ -25,6 +32,23 @@ const env = process.env;
 
 // Init express + supply routes
 var app = express();
+
+// niki
+app.use(helmet());
+//app.use(helmet.hidePoweredBy());
+app.use(helmet.hidePoweredBy({ setTo: 'Grumpy-and-Mean' }));
+//app.disable('x-powered-by');
+app.use(helmet.noSniff());
+
+app.use(helmet.noCache());
+
+app.use(helmet.ieNoOpen()); // ???
+
+//var ninetyDaysInMilliseconds = 7776000000; // ???
+//app.use(helmet.hsts({ maxAge: ninetyDaysInMilliseconds })); // ???
+
+//  contentSecurityPolicy, hpkp, and noCache.
+
 
 app.use(compression());
 
@@ -123,7 +147,7 @@ app.use(function (req, res, next) {
 
 // error handlers
 
-// development error handler
+// development error handler02
 // will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
@@ -148,12 +172,29 @@ app.use(function (err, req, res, next) {
 
 
 var debug = require('debug')('web-tech:server');
-var http = require('http');
+//var http = require('http');
+
+// niki
+try {
+    stats = fs.statSync('serverCert.pem');
+    stats = fs.statSync('serverKey.pem');
+    console.log("Certificate exists. Create sequre HTTPS connection.");
+    var server = https.createServer(
+        {
+            key: fs.readFileSync('serverKey.pem'),
+            cert: fs.readFileSync('serverCert.pem')
+        },
+        app);
+}
+catch (e) {
+    console.log("Certificate missing. Create HTTP connection.");
+    var server = http.createServer(app);
+}
 
 var port = env.PORT || '3000';
 app.set('port', port);
 
-var server = http.createServer(app);
+//var server = http.createServer(app);
 
 server.listen(port);
 // console.info(`HTTP Server listening on: ${JSON.stringify(server)}`);
