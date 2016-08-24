@@ -178,7 +178,7 @@ var debug = require('debug')('web-tech:server');
 try {
     stats = fs.statSync('serverCert.pem');
     stats = fs.statSync('serverKey.pem');
-    console.log("Certificate exists. Create sequre HTTPS connection.");
+    console.log(`${chalkBold('[ NodeJS  ]')} Certificate exists. Create secure HTTPS connection.`);
     var server = https.createServer(
         {
             key: fs.readFileSync('serverKey.pem'),
@@ -187,7 +187,7 @@ try {
         app);
 }
 catch (e) {
-    console.log("Certificate missing. Create HTTP connection.");
+    console.log(`${chalkWarn('[ MongoDB ]')} Certificate missing. Create HTTP connection.`);
     var server = http.createServer(app);
 }
 

@@ -9,6 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 import { User, UserService } from "../Services/users.service";
 import { AuthService } from "../Services/authentication.service";
 import { StandingData, Lists } from "../Services/standing.data.service";
+import { PagerService } from "../Services/pager.service";
 
 
 @Component ({
@@ -36,13 +37,22 @@ export class HomeComponent implements OnInit {
     private active: boolean;
     private error: string;
 
+    private dummyItems: number[];
+    private pager: any = {};
+    private pagedItems: any[];
+
     constructor(private router: Router,
                 private userService: UserService,
                 private authService: AuthService,
-                private standingData: StandingData) {
+                private standingData: StandingData,
+                private pagerService: PagerService) {
         this.setErrorMsg("");
         this.lists = new Lists([], [], []);
         this.loadStandingData();
+
+        this.dummyItems = <number[]>[];
+        for (let i = 1; i < 151; i++)
+            this.dummyItems.push(i);
     }    // constructor()
 
     public loadStandingData(): void {
@@ -62,8 +72,19 @@ export class HomeComponent implements OnInit {
         else this.error = "";
     }    // setErrorMsg()
 
+    private setPage(page: number): void {
+        if (page < 1 || page > this.pager.totalPages) {
+            return;
+        }
+
+        this.pager = this.pagerService.getPager(this.dummyItems.length, page);
+        this.pagedItems = this.dummyItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    }    // setPage()
+
     ngOnInit() {
         this.loading = false;
         this.active = true;
+
+        this.setPage(1);
     }    // ngOnInit()
 }	// class HomeComponent
