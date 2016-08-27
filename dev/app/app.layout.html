@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <nav class="navbar"> <!-- navbar-fixed-top, navbar-inverse -->
-        <div class="container-fluid">
+        <div>
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <a routerLink="/">
@@ -24,25 +24,17 @@
                     <li *ngIf="loggedIn" class="li-nav-link"><a class="nav-link" routerLink="/ads/create"
                         routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">New Ad</a></li>
 
+                    <li *ngIf="loggedIn" class="li-nav-link"><a class="nav-link" routerLink="/ads/list/{{currentUser.id}}"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">My Ads</a></li>
                     <li *ngIf="currenUserRole === 'admin'" class="dropdown li-nav-link" [@navLinkState]="linkState" (click)="toggleLinkState()">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                            aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <a href="#" id="admin-dropdown" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                            aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>
-                                <a class="nav-link" routerLink="/" (click)="router.navigate(['/'])"
-                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >
-                                <span class="glyphicon glyphicon-align-left"></span> Home</a>
-                            </li>
-                            <li>
-                                <a class="nav-link" routerLink="/about" (click)="router.navigate(['/about'])"
-                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >
-                                About</a>
-                            </li>
                             <li role="separator" class="divider"></li>
-                            <li>
+                            <li class="menu-item">
                                 <a class="nav-link" routerLink="/users" (click)="router.navigate(['/users'])"
                                 routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >
-                                Users</a>
+                                <span class="glyphicon glyphicon-align-left"></span> Users</a>
                             </li>
                             <li role="separator" class="divider"></li>
                         </ul>
@@ -87,18 +79,17 @@
                         </form>
                     </li>
 
-                    <li *ngIf="loggedIn && currentUser && currentUser.username.length > 0">
-                        <div class="input-group login-button-group">
-                            <p id="hello">Hello, <strong>{{currentUser.namesFirst || currentUser.username}}</strong></p>
+                    <li *ngIf="loggedIn && currentUser && currentUser.username.length">
+                        <div class="login-button-group">
+                            <p id="hello">Hello, <a class="nav-link profile-link" (click)="gotoProfile()"><strong>{{currentUser.namesFirst || currentUser.username}}</strong></a></p>
                             <button class="btn btn-default" (click)="logout()">
                                 <span class="glyphicon glyphicon-log-in"></span>  Logout
                             </button>
                         </div>
                     </li>
-
                 </ul>
             </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+        </div>
     </nav>
 
 <!--    <div class="col-md-6 col-md-offset-3">

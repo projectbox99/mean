@@ -12,10 +12,12 @@ export class Ad {
         public title: string = "",
         public category: string = "",
         public desc: string = "",
-        public photos: string[] = [],
+        public photoMain: string = "",
+        public photos: any[] = [],
         public city: string = "",
         public price: number = 0,
         public owner: string = "",
+        public approved: boolean = false,
         public dateCreated: Date = new Date,
         public dateValid: Date = new Date) { }
 }    // class Ad
@@ -45,6 +47,17 @@ export class AdsService {
             .catch(this.handleError);
     }    // getAds()
 
+    public getMyAds(id: string): Observable<Ad[]> {
+        let headers = new Headers({ "Authorization": "Bearer " + this.token, "Content-Type": "application/json" });
+        let options = new RequestOptions({ headers: headers });
+        let body = "{\"user\":\"" + id + "\"}";
+
+
+        return this.http.post(this.adsUrl + "/list", body, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }    // getMyAds()
+
     public getAd(id: string): Observable<Ad> {
         if (!id) {
             console.log(`getAd was called with a bad id argument: ${id.toString()}`);
@@ -67,9 +80,10 @@ export class AdsService {
     }    // getAd()
 
     public postAd(ad: Ad): Observable<Ad> {
-        let headers: Headers = new Headers({ "Content-Type": "application/json" });
+        let headers = new Headers({ "Authorization": "Bearer " + this.token, "Content-Type": "application/json" });
         let options: RequestOptions = new RequestOptions({ headers: headers });
         let body: string = JSON.stringify(ad);
+        console.info(`BODY in service: ${body}`);
 
         return this.http.post(this.adsUrl, body, options)   // returns Observable<Response>
             .map(this.extractData)               // success
@@ -110,7 +124,7 @@ export class AdsService {
 
         return this.http.delete(this.adsUrl + "/" + id, options)
             .map((response: Response) => {
-                return this.extractData(response) === "OK";
+                return this.extractData(response)._id ? Observable.create(true) : Observable.create(false);
             })
             .catch((error) => {
                 this.handleError(error).map((errMsg) => console.error("deleteUser Error: " + errMsg));

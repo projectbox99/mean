@@ -1,0 +1,41 @@
+<div class="ads">
+	
+	<table class="table table-bordered table-hover table-condensed table-responsive">
+		<tr class="table-header-row">
+			<th></th>
+			<th>Title</th>
+			<th>Category</th>
+			<th>City</th>
+			<th>Owner</th>
+			<th>Date Created</th>
+			<th>Approved</th>
+			<th></th>
+		</tr>
+
+		<tr *ngFor="let ad of ads">
+			<td *ngIf="ad.photoMain"><img [src]="'/uploads/' + ad.photoMain" width="100"></td>
+			<td *ngIf="!ad.photoMain"><img src="/images/kermit.jpg" width="100"></td>
+			<td><p>{{ad.title.length > 35 ? ad.title.substring(0, 32) + "..." : ad.title}}</p></td>
+			<td>{{ad.category}}</td>
+			<td>{{ad.city}}</td>
+			<td>{{ad.owner}}</td>
+			<td>{{ad.dateCreated}}</td>
+			<td>{{ad.approved ? "Yes" : "No"}}</td>
+			<td>
+				<div class="warning func-btns">
+					<button class="btn btn-primary" [disabled]="loading" (click)="editAd(ad._id)">Edit Ad</button>
+					<button class="btn btn-danger" [disabled]="loading" (click)="delAd(ad._id)">Delete Ad</button>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<div class="view-footer">
+		<button class="btn btn-default btn-refresh" [disabled]="loading" (click)="refresh()">Refresh List</button>
+	</div>
+	<!--<ul>
+		<li *ngFor="let user of users">
+			User: {{user.username}}
+		</li>
+	</ul>-->
+</div>

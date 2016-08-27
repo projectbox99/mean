@@ -1,12 +1,12 @@
-<div [hidden]="!active" class="ad-container col-sm-10">
+<div [hidden]="!active" class="ad-container col-sm-12">
     <h1 class="form-heading">User <small>Ad</small></h1>
 
     <div [hidden]="!errorMsg" class="errorMsg alert alert-danger">
         An error occured while creating user! Error: {{errorMsg}}
     </div>
 
-    <form class="form-horizontal" (ngSubmit)="onSubmit()" #userForm="ngForm">
-        <!--<i>{{diagnostic}}</i><br>-->
+    <form class="form-horizontal" (ngSubmit)="onSubmit()" #userForm="ngForm"> <!-- form-horizontal -->
+        <i>{{diagnostic}}</i><br>
 
         <div class="form-group row">
             <label for="title" class="col-sm-2 col-form-label">Title</label>
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div *ngIf="standingData.lists.categories.length > 0" class="form-group row">
+        <div *ngIf="standingData.lists.categories.length" class="form-group row">
             <label for="category" class="col-sm-2 col-form-label">Category</label>
             <div class="col-sm-4">
                 <select class="form-control" id="category" 
@@ -46,17 +46,73 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <label for="photo" class="col-sm-2 col-form-label">Ad Photo</label>
-            <div class="col-sm-3">
-                <input type="file" class="form-control" id="photo" accept="image/*"
-                (change)="imgChange($event)" name="photo" >
-                <img *ngIf="ad.photo" [src]="ad.photo" class="ad-image-input">
-                <img *ngIf="!ad.photo" class="ad-image-input" src="/images/kermit.jpg">
+        <!-- Photos -->
+        <div class="form-group main-image row">
+            <label for="photoMain" class="col-sm-2 col-form-label">Ad Photo</label>
+            <div class="col-sm-3" style="display: inline">
+                <input type="file" class="form-control" id="photoMain" name="photo" accept="image/*"
+                (change)="imgChange($event)" (drop)="drop($event)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
+                <img *ngIf="photoMain" [src]="photoMain" id="photo0" class="ad-image-input">
+                <img *ngIf="!photoMain" class="ad-image-input" id="photo0" src="/images/kermit.jpg">
                 <span>{{percent}}</span>
             </div>
         </div>
-        <!-- Photos -->
+
+        <div *ngIf="ad.photoMain" class="form-group">
+        <label for="photo-1" class="col-sm-2 col-form-label">Photo</label>
+            <div class="col-sm-3" style="display: inline">
+                <input type="file" class="form-control" id="photo-1" name="photo-1" accept="image/*"
+                (change)="imgChange($event, 1)" (drop)="drop($event, 1)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
+                <img *ngIf="photos[0]" [src]="photos[0]" id="photo1" class="ad-image-input">
+                <img *ngIf="!photos[0]" id="photo1" class="ad-image-input" src="/images/kermit.jpg">
+                <span>{{percent_1}}</span>
+            </div>
+        </div>
+
+        <div *ngIf="ad.photos[0]" class="form-group">
+        <label for="photo-2" class="col-sm-2 col-form-label">Photo</label>
+            <div class="col-sm-3" style="display: inline">
+                <input type="file" class="form-control" id="photo-2" name="photo-2" accept="image/*"
+                (change)="imgChange($event, 2)" (drop)="drop($event, 2)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
+                <img *ngIf="photos[1]" [src]="photos[1]" id="photo2" class="ad-image-input">
+                <img *ngIf="!photos[1]" id="photo2" class="ad-image-input" src="/images/kermit.jpg">
+                <span>{{percent_2}}</span>
+            </div>
+        </div>
+
+        <div *ngIf="ad.photos[1]" class="form-group">
+        <label for="photo-3" class="col-sm-2 col-form-label">Photo</label>
+            <div class="col-sm-3" style="display: inline">
+                <input type="file" class="form-control" id="photo-3" name="photo-3" accept="image/*"
+                (change)="imgChange($event, 3)" (drop)="drop($event, 3)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
+                <img *ngIf="photos[2]" [src]="photos[2]" id="photo3" class="ad-image-input">
+                <img *ngIf="!photos[2]" id="photo3" class="ad-image-input" src="/images/kermit.jpg">
+                <span>{{percent_3}}</span>
+            </div>
+        </div>
+
+        <div *ngIf="ad.photos[2]" class="form-group">
+        <label for="photo-4" class="col-sm-2 col-form-label">Photo</label>
+            <div class="col-sm-3" style="display: inline">
+                <input type="file" class="form-control" id="photo-4" name="photo-4" accept="image/*"
+                (change)="imgChange($event, 4)" (drop)="drop($event, 4)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
+                <img *ngIf="photos[3]" [src]="photos[3]" id="photo4" class="ad-image-input">
+                <img *ngIf="!photos[3]" id="photo4" class="ad-image-input" src="/images/kermit.jpg">
+                <span>{{percent_4}}</span>
+            </div>
+        </div>
+
+        <div *ngIf="ad.photos[3]" class="form-group">
+        <label for="photo-5" class="col-sm-2 col-form-label">Photo</label>
+            <div class="col-sm-3" style="display: inline">
+                <input type="file" class="form-control" id="photo-5" name="photo5" accept="image/*"
+                (change)="imgChange($event, 5)" (drop)="drop($event, 5)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
+                <img *ngIf="photos[4]" [src]="photos[4]" id="photo5" class="ad-image-input">
+                <img *ngIf="!photos[4]" id="photo-5" class="ad-image-input" src="/images/kermit.jpg">
+                <span>{{percent_5}}</span>
+            </div>
+        </div>
+        <!-- END Photos -->
 
         <div class="form-group row">
             <label for="city" class="col-sm-2 col-form-label">City</label>
@@ -77,40 +133,42 @@
         <div class="form-group row">
             <label for="price" class="col-sm-2 col-form-label">Price</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="price" placeholder="Price" required 
-                    [(ngModel)]="ad.price" name="price" #price="ngModel" >
+                <input type="number" class="form-control" id="price" placeholder="Price" required 
+                    [(ngModel)]="ad.price" name="price" #price="ngModel"
+                    min="0.01" max="99999.99" step="0.01">
                     <div [hidden]="price.valid || price.pristine" class="alert alert-danger">
                         You have not set a price for your auction
                     </div>
             </div>
         </div>
 
-        <div *ngIf="authService.currentUser.role === 'admin'" class="form-group row admin-data">
-            <label for="role" class="col-sm-2 col-form-label">Assign User Role</label>
-            <div class="col-sm-4">
-                <select class="form-control" id="role" placeholder="Pick a role"
-                    [(ngModel)]="user.role" name="role" #role="ngModel" >
-                    <option *ngFor="let role of roles" [value]="role">{{role}}</option>
-                </select>
-                <div [hidden]="isAdmin" class="alert alert-danger">
-                    You are not Admin!
+        <div *ngIf="curUsrRole === 'admin'" class="form-group row admin-data">
+            <div class="form-group">
+                <label for="adId" class="col-sm-2 col-form-label">Ad Id</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="adId" placeholder="Ad Id"
+                    [ngModel]="ad.id" name="id" #id="ngModel" readonly >
                 </div>
-            </div>
-            <br>
-            <div>
-                <p>Ad Id: {{ad.id}}</p>
-            </div>
-            <br>
-            <div>
-                <p>Owner: {{ad.owner}}</p>
-            </div>
-            <br>
-            <div>
-                <p>Date Created: {{ad.dateCreated}}</p>
-            </div>
-            <br>
-            <div>
-                <p>Valid until: {{ad.dateValid}}</p>
+                <label for="approved" class="col-sm-2 col-form-label">Approved</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="approved" placeholder="Approved"
+                        [ngModel]="ad.approved" name="approved" #approved="ngModel" readonly >
+                </div>
+                <label for="owner" class="col-sm-2 col-form-label">Owner</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="owner" placeholder="Owner"
+                        [ngModel]="ad.owner" name="owner" #owner="ngModel" readonly >
+                </div>
+                <label for="dateCreated" class="col-sm-2 col-form-label">Date Created</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="dateCreated" placeholder="Date Created"
+                        [ngModel]="ad.dateCreated" name="dateCreated" #dateCreated="ngModel" readonly >
+                </div>
+                <label for="dateValid" class="col-sm-2 col-form-label">Valid until</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="dateValid" placeholder="Validity"
+                        [ngModel]="ad.dateValid" name="dateValid" #dateValid="ngModel" readonly >
+                </div>
             </div>
         </div>
 

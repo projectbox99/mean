@@ -20,6 +20,9 @@ const chalkSuccess = chalk.bold.underline.bgGreen;
 const chalkWarn = chalk.bold.bgBlue;
 const chalkBold = chalk.bold;
 
+var multer = require('multer');
+var upload = multer();
+
 var Promise = require('bluebird');
 
 // Init Mongoose
@@ -34,7 +37,7 @@ const env = process.env;
 var app = express();
 
 // niki
-app.use(helmet());
+app.use(helmet({ hsts: false }));
 //app.use(helmet.hidePoweredBy());
 app.use(helmet.hidePoweredBy({ setTo: 'Grumpy-and-Mean' }));
 //app.disable('x-powered-by');
@@ -42,7 +45,7 @@ app.use(helmet.noSniff());
 
 app.use(helmet.noCache());
 
-app.use(helmet.ieNoOpen()); // ???
+//app.use(helmet.ieNoOpen()); // ???
 
 //var ninetyDaysInMilliseconds = 7776000000; // ???
 //app.use(helmet.hsts({ maxAge: ninetyDaysInMilliseconds })); // ???
@@ -54,8 +57,8 @@ app.use(compression());
 
 app.use(favicon(path.resolve(__dirname, 'dev/favicon.ico')));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
 
 var routes = require(path.join(__dirname, 'routes/routes'));
 app.use('/', routes);
@@ -162,12 +165,15 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
-    console.log('!!!!!!!!!!!!!!!!!!!');
+    console.error(`EXPRESS ERROR:`);
+    console.error(`Error: ${JSON.stringify(err)}:`);
+
     res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+    res.end(`${err.message}`);
+    // res.render('error', {
+    //     message: err.message,
+    //     error: {}
+    // });
 });
 
 

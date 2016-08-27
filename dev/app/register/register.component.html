@@ -80,37 +80,37 @@
         </div>
 
         <div class="form-group row">
-            <label for="photo" class="col-sm-2 col-form-label">
-                <i class="ion-document icon"></i> User Photo
-            </label>
-            <div class="col-sm-3">
+            <label for="photo" class="col-sm-2 col-form-label">User Photo</label>
+            <div class="col-sm-4">
                 <input type="file" class="form-control" id="photo" accept="image/*"
                 (change)="imgChange($event)" name="photo" >
-                <img *ngIf="user.photo" [src]="user.photo" class="user-image-input">
-                <img *ngIf="!user.photo" class="user-image-input" src="/images/kermit.jpg">
-                <!--<img *ngIf="user.photo" class="user-image-input" src="">-->
+                <img *ngIf="!user.photo" src="/images/kermit.jpg" class="user-image-input">
+                <img *ngIf="user.photo" [src]="user.photo" class="user-image-input" src="">
                 <span>{{percent}}</span>
             </div>
         </div>
 
         <div *ngIf="isAdmin" class="form-group row admin-data">
-            <label for="role" class="col-sm-2 col-form-label">Assign User Role</label>
-            <div class="col-sm-4">
-                <select class="form-control" id="role" placeholder="Pick a role"
-                    [(ngModel)]="user.role" name="role" #role="ngModel" >
-                    <option *ngFor="let role of roles" [value]="role">{{role}}</option>
-                </select>
-                <div [hidden]="isAdmin" class="alert alert-danger">
-                    You are not Admin!
+            <div class="form-group">
+                <label for="userId" class="col-sm-2 col-form-label">User Id</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="userId" placeholder="User Id"
+                        [ngModel]="user.id" name="id" #id="ngModel" readonly >
+                </div>
+                <label for="dateCreated" class="col-sm-2 col-form-label">Date Created</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="dateCreated" placeholder="Date Created"
+                        [ngModel]="user.dateCreated" name="dateCreated" #dateCreated="ngModel" readonly >
                 </div>
             </div>
-            <br>
-            <div>
-                <p>User Id: {{user.id}}</p>
-            </div>
-            <br>
-            <div>
-                <p>Date Created: {{user.dateCreated}}</p>
+            <div class="form-group row">
+                <label for="role" class="col-sm-2 col-form-label">User Role</label>
+                <div class="col-sm-4">
+                    <select class="form-control" id="role" placeholder="Pick a role"
+                        [(ngModel)]="user.role" name="role" #role="ngModel" >
+                        <option *ngFor="let role of roles" [value]="role">{{role}}</option>
+                    </select>
+                </div>
             </div>
         </div>
 

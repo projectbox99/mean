@@ -15,7 +15,7 @@ module.exports = (router) => {
         if (!req.body || !req.body.username || !req.body.password) {
             console.log('No body!');
             return res.status(500).json({
-                data: 'Error: req.body not found... again!'
+                data: 'Error: req.body not found...'
             });
         }
 

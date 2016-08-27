@@ -6,8 +6,8 @@ import { FormsModule }    from "@angular/forms";
 import { HttpModule /*, XHRBackend */} from "@angular/http";
 
 // components
-import { AdListComponent }    from "./ad-list.component";
 import { AdDetailComponent }  from "./ad-detail.component";
+import { AdsComponent }  from "./ads-list.component";
 
 import { AdsService } from "../Services/ads.service";
 import { StandingData } from "../Services/standing.data.service";
@@ -25,8 +25,8 @@ import { adRouting } from "./ads.routes";
         adRouting
     ],
     declarations: [
-        AdListComponent,
-        AdDetailComponent
+        AdDetailComponent,
+        AdsComponent
     ],
     providers: [
         AdsService, StandingData, AuthService, PagerService

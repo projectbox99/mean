@@ -15,8 +15,8 @@ import { PagerService } from "../Services/pager.service";
 @Component ({
     // selector: "user-list",
     templateUrl: "home.component.html",
-    styleUrls: [ "home.component.css" ],
-    providers: [ UserService, AuthService, StandingData ]
+    styleUrls: [ "home.component.css" ]
+    // providers: [ UserService, AuthService, StandingData ]
 })
 export class HomeComponent implements OnInit {
     private lists: Lists;

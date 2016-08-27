@@ -8,6 +8,8 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 
 import { User, UserService } from "../Services/users.service";
+import { StandingData } from "../Services/standing.data.service";
+import { AuthService } from "../Services/authentication.service";
 
 
 @Component ({
@@ -16,24 +18,27 @@ import { User, UserService } from "../Services/users.service";
     providers: [ UserService ]
 })
 export class UserRegistrationComponent implements OnInit, OnDestroy {
-    public constructor(private userService: UserService,
+    public constructor(private authService: AuthService,
+                       private userService: UserService,
+                       private standingData: StandingData,
                        private location: Location,
                        private element: ElementRef,
                        private route: ActivatedRoute,
                        private router: Router) { }
 
-    public user: User;
-    public password2: string;
+    private user: User;
+    private password2: string;
     private roles: string[];
 
+    private currentUser: User;
     private isAdmin: boolean;
 
     private sub: Subscription;
 
     private isEditingUser: boolean;
-    public errorMsg: string;
+    private errorMsg: string;
     private statusMsg: string;
-    public active: boolean;
+    private active: boolean;
 
 
     // make sure two-way binding is working
@@ -119,6 +124,8 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
     }    // modifyUser()
 
     ngOnInit() {
+        this.currentUser = this.authService.currentUser;
+        this.isAdmin = this.authService.usrRole === "admin";
         this.user = new User("", "", "");
         this.isEditingUser = false;
 
@@ -127,20 +134,22 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
                 let id = params["id"];
                 if (id) {
                     this.isEditingUser = true;
-                    this.userService.getUser(id).subscribe(
-                        userData => {
-                            this.user = userData;
-                            this.password2 = "";
-                            console.info(`Setting register.component.user to ${JSON.stringify(this.user)}`);
-                        }, error => this.errorMsg = <any>error
-                    );
+                    this.user = this.currentUser;
+                    this.password2 = "";
+                    // this.userService.getUser(id).subscribe(
+                    //     userData => {
+                    //         this.user = userData;
+                    //         this.password2 = "";
+                    //         console.info(`Setting register.component.user to ${JSON.stringify(this.user)}`);
+                    //     }, error => this.errorMsg = <any>error
+                    // );
                 }
             }
         );
 
 
-        this.roles = [ "admin", "supervisor", "regular" ];
-        this.isAdmin = true;
+        // this.roles = [ "admin", "supervisor", "regular" ];
+        this.roles = this.standingData.lists.roles;
 
         this.errorMsg = "";
         this.statusMsg = "";

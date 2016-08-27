@@ -62,7 +62,11 @@ export class AuthService {
 
                 let userData = JSON.stringify(response.json().data.user);
                 if (userData) {
-                    this.currentUser = JSON.parse(userData);
+                    // this.currentUser = JSON.parse(userData);
+                    let usr = JSON.parse(userData);
+                    this.currentUser = new User(
+                        usr._id, usr.username, usr.password, usr.namesFirst, usr.namesLast, usr.email,
+                        usr.phone1, usr.phone2, usr.skypeId, usr.photo, usr.role, usr.dateCreated);
                 }
 
                 if (!this.token || !this.currentUser) {

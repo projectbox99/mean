@@ -30,9 +30,20 @@ label {
 	min-height: 200px;
 }
 
+.main-image {
+	border: 3px solid #888888;
+}
+
 #photo {
-	min-height: 200px;
-	width: auto;
+	padding: 5px 5px 45px 5px;
+	background-color: #eee;
+}
+
+.ad-image-input {
+	max-width: 1000px;
+	min-width: 300px;
+	max-height: 500px;
+	min-height: 100px
 }
 
 .admin-data {

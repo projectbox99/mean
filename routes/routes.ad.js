@@ -5,13 +5,51 @@ const Ad = require('../models/ad');
 /**
  *		Ad
  */
-module.exports = function (router) {
+module.exports = (router) => {
+    router.post('/api/ads/list', (req, res, next) => {
+        if (!req.body || !req.body.user) {
+            console.log('No body!');
+            return res.status(500).json({
+                data: 'Error: req.body not found...'
+            });
+        }
+
+        let owner = req.body.user;
+        if (owner !== "__unapproved__") {
+            Ad.find({ owner: owner }, (err, ads) => {
+                if (err) {
+                    console.error(`Error retrieving ad list: ${err}`);
+                    return res.status(500).json({
+                        data: 'Error fetching ad data!'
+                    });
+                }
+
+                res.status(200).json({
+                    data: ads
+                });
+            });
+        } else {
+            Ad.find({ approved: false }, (err, ads) => {
+                if (err) {
+                    console.error(`Error retrieving ad list: ${err}`);
+                    return res.status(500).json({
+                        data: 'Error fetching ad data!'
+                    });
+                }
+
+                res.status(200).json({
+                    data: ads
+                });
+            });
+        }
+    });
+
     router.get('/api/ads', (req, res, next) => {
         Ad.find((err, ads) => {
             if (err) {
                 console.error('Error retrieving ad list!');
                 return res.status(500).json({
-                    msg: 'Error fetching ad data!'
+                    data: 'Error fetching ad data!'
                 });
             }
 
@@ -22,14 +60,14 @@ module.exports = function (router) {
     });
 
     router.get('/api/ads/:adId', (req, res, next) => {
-        var adId = req.params.adId;
-        next();
-    }, (req, res) => {
+        let adId = req.params.adId;
+        console.log(`GET:/api/ads/${adId}`);
+
         Ad.findById(adId, (err, mongoResponse) => {
             if (err) {
                 console.error(`Error finding ad: ${adId}`);
                 return res.status(500).json({
-                    msg: 'Error finding ad!'
+                    data: 'Error finding ad!'
                 });
             }
 
@@ -40,24 +78,38 @@ module.exports = function (router) {
     });
 
     router.post('/api/ads', (req, res, next) => {
-        var ad = new Ad({
+        if (!(req.body && req.body.title)) {
+            return res.status(500).json({ data: "Error: missing body"});
+        }
+
+        console.log(`BODY in router: ${JSON.stringify(req.body)}`);
+        if (!req.body.price || !typeof Number(req.body.price) === "number") {
+            return res.status(400).json({ data: "Error: Bad or missin price parameter" });
+        }
+
+        next();
+    }, (req, res) => {
+        let created = new Date();
+        let expires = new Date().setDate(created.getDate() + 60);
+
+        let ad = new Ad({
             title: req.body.title,
             category: req.body.category,
             desc: req.body.desc,
-            photos: req.body.photos,
+            photoMain: req.body.photoMain,
+            photos: req.body.photos || "",
             city: req.body.city,
-            price: req.body.price,
+            price: Number(req.body.price),
             owner: req.body.owner,
-            dateCreated: req.body.dateCreated,
-            dateValid: req.body.dateValid
+            approved: req.body.approved || false,
+            dateCreated: created,
+            dateValid: expires
         });
 
         ad.save((err, mongoResponse) => {
             if (err) {
-                console.error('Error creating ad!');
-                return res.status(500).json({
-                    msg: 'Error saving ad data!'
-                });
+                console.error(`Error creating ad: ${err}`);
+                return res.status(500).json({ data: "Error saving ad data!" });
             }
 
             res.status(200).json({
@@ -68,8 +120,7 @@ module.exports = function (router) {
 
     router.put('/api/ads/:adId', (req, res, next) => {
         var adId = req.params.adId;
-        next();
-    }, (req, res) => {
+
         Ad.findByIdAndUpdate(adId, {
             title: req.body.title,
             category: req.body.category,
@@ -100,13 +151,12 @@ module.exports = function (router) {
 
     router.delete('/api/ads/:adId', (req, res, next) => {
         var adId = req.params.adId;
-        next();
-    }, (req, res) => {
+
         Ad.findByIdAndRemove(adId, {}, (err, mongoResponse) => {
             if (err) {
                 console.error('Error deleting ad!');
                 return res.status(500).json({
-                    msg: `Error deleting ad: ${adId}`
+                    data: `Error deleting ad: ${adId}`
                 });
             }
 

@@ -1,8 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Ravi+Prakash);
 
-/*.container-fluid {
-	border: 1px solid black;
-}*/
 
 .navbar {
     background: -webkit-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Safari 5.1 to 6.0 */
@@ -14,44 +11,32 @@
 	/* background: linear-gradient(-100deg, #0000FB, #00FCFD, #00FE00, #000A01); */
     /* background: linear-gradient(-100deg, #FF0100, #FF03FE, #FFFEFF, #FFFE00); */
 	padding: 10px 0 0 0;
+	width: 100%;
+
 }
 
 .nav {
 	margin: 0;
 	min-width: 250px;
-	max-width: 550px;
+	max-width: 500px;
 }
 
 .navbar-right {
-	min-width: 250px;
-	max-width: 300px;
-	margin: 0;
 }
 
 .navbar-header {
-	margin: 0;
-	padding: 0;
-	min-width: 250px;
-	max-width: 300px;
-}
-
-.navbar-form {
-	padding: 0;
-	margin: 0;
-}
-
-.app-name {
 	background-color: rgba(0, 0, 0, 0.3);
 	text-align: center;
 	vertical-align: baseline;
-	min-width: 250px;
-	max-width: 300px;
+	width: 250px;
 
 	border: 3px solid #eee;
-	border-radius: 10px 0 10px 0;
+	border-radius: 20px 0 20px 0;
 	margin: 0 50px 17px 10px;
 	padding: 10px 10px 0px 10px;
+}
 
+.app-name {
 	font-family: 'Ravi Prakash', cursive;
 	font-size: 4em;
 	font-weight: 600;
@@ -87,11 +72,11 @@
 	margin: 0;
 	padding: 0 0 0 5px;
 	vertical-align: top;
-	/*display: inline-block;*/
 }
 
 .li-nav-link {
 	display: inline-block;
+	border: 0;
 }
 
 .nav-link {
@@ -100,7 +85,7 @@
 	border-width: 0 0 1px 1px;
 	border-style: solid;
 	border-color: #eee;
-	border-radius: 5px;
+	border-radius: 20px 5px 20px 5px;
 	width: 100px;
 
 	font-size: 1.1em;
@@ -111,6 +96,7 @@
 }
 
 .nav-link:hover {
+	height: 100%;
 	background-color: #FFCC00;
 }
 
@@ -123,13 +109,20 @@
 }
 
 .dropdown {
-	margin: 5px;
-	padding: 0;
-	border: 1px solid #eee;
-	border-radius: 5px;
+	height: 100%;
+}
+
+.dropdown-toggle {
+	margin: 10px 5px 0 5px;
+	padding: 10px;
+
+	border-width: 0 0 1px 1px;
+	border-style: solid;
+	border-color: #eee;
+	border-radius: 20px 20px 5px 5px;
 	width: 140px;
 
-	font-size: 1.2em;
+	font-size: 1.1em;
 	font-variant: small-caps;
 	text-align: center;
 	color: #eee;
@@ -137,43 +130,62 @@
 	z-index: 1;
 }
 
-.dropdown:hover, .dropdown-toggle:hover {
+.nav .open > a, .nav .open > a:focus, .nav .open > a:hover {
+	background-color: rgba(0, 0, 0, 0.5);
+	border-color: #eee;
+}
+
+.nav > li > a:focus, .nav > li > a:hover {
+	background-color: rgba(0, 50, 200, 0.5);
+	border-color: #eee;
+}
+
+.dropdown-toggle:hover {
 	background-color: #FFCC00;
 }
 
-
-.dropdown:active, .dropdown-toggle:active {
+.dropdown-toggle:active {
 	background-color: rgba(0, 50, 200, 0.5);
 }
 
-.dropdown:active:hover {
+.dropdown-toggle.active {
+	background-color: rgba(0, 50, 200, 0.5);
+}
+
+.dropdown-toggle.inactive {
+	background-color: rgba(0, 50, 200, 0.5);
+}
+
+.dropdown-toggle:active:hover {
 	background-color: rgba(0, 50, 200, 0.75);
 }
 
-.dropdown-toggle {
-	color: #eee;
+.dropdown-menu {
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
-.dropdown-menu {
-	background-color: #FFCC00;
+.menu-item {
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
 .login-area {
-	margin: -10px 0 -30px 0;
+	margin: 0;
+	text-align: left;
+	max-width: 300px;
+	min-width: 230px;
 }
 
 .login-group {
 	display: inline-block;
 	vertical-align: bottom;
-	text-align: right;
 	margin: 0 5px 0 0;
-	padding: 0 0 0 10px;
+	padding: 0;
 	width: 100%;
 }
 
 .login-button-group {
 	display: inline-block;
-	vertical-align: middle;
+	vertical-align: bottom;
 	margin: 0 5px 0 5px;
 	text-align: right;
 }
@@ -214,12 +226,15 @@
 }
 
 #hello {
-	float: left;
 	display: inline;
-	vertical-align: middle;
+	vertical-align: -20%;
 	margin: 0 10px 0 10px;
 
 	color: #eee;
-	font-size: 1.2em;
-	text-shadow: 1px 1px #aaa;
+	font-size: 1.1em;
+	font-weight: 300;
+}
+
+.profile-link {
+
 }

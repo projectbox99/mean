@@ -20,7 +20,7 @@ import { AuthService } from "./Services/authentication.service";
                 transform: "scale(1)"
             })),
             state("active", style({
-                transform: "scale(1.1)"
+                transform: "scale(1)"
             })),
             transition("inactive => active", animate("100ms ease-in")),
             transition("active => inactive", animate("100ms ease-out"))
@@ -114,6 +114,22 @@ export class AppLayout implements OnInit {
     private gotoRegistration(): void {
         this.router.navigate(["/register"]);
     }    // gotoRegistration()
+
+    private gotoProfile(): void {
+        if (this.currentUser && this.currentUser.id.length) {
+            this.router.navigate([ "/users", this.currentUser.id ]).then(
+                result => {
+                    if (result) {        // result === true
+                        console.info("Redirect to user profile succeeded!");
+                    } else {             // result === false
+                        console.error("Redirect to user profile failed!");
+                    }
+                }, error => {
+                    console.error(`Error redirecting to user's profile: ${error.toString()}`);
+                }
+            );
+        }
+    }    // gotoProfile()
 
     ngOnInit() {
         this.authService.logout();

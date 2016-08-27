@@ -2,11 +2,11 @@
 
 import { Routes, RouterModule } from "@angular/router";
 
-import { AdListComponent }    from "./ad-list.component";
 import { AdDetailComponent }  from "./ad-detail.component";
+import { AdsComponent }  from "./ads-list.component";
 
 const adRoutes: Routes = [
-    { path: "ads",  component: AdListComponent },
+	{ path: "ads/list/:id", component: AdsComponent },
     { path: "ads/:id", component: AdDetailComponent }
 ];
 
