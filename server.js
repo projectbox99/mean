@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
 var compression = require('compression');
 
+var cache = require('memory-cache');
+
 // niki
 var fs = require('fs');
 var http = require('http');
@@ -61,8 +63,14 @@ app.use(favicon(path.resolve(__dirname, 'dev/favicon.ico')));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
 
-var routes = require(path.join(__dirname, 'routes/routes'));
+var routes = express.Router();
 app.use('/', routes);
+// //console.log(path.resolve(__dirname, 'routes/routes.user'));
+// app.use('/', require(path.join(__dirname, 'routes/routes.user')).router);
+// app.use('/', require('./routes/routes.ad').router);
+// app.use('/', require('./routes/routes.list').router);
+// app.use('/', routes);
+require('./routes/routes')(app);
 require('./routes/routes.user')(app);
 require('./routes/routes.ad')(app);
 require('./routes/routes.lists')(app);
@@ -110,7 +118,6 @@ mongoose.connection.on('disconnected', () => {
 
 // Init server-side cache
 let List = mongoose.model('List', require(path.resolve(__dirname, 'models/lists')));
-var USER_ROLES = [], CATEGORIES = [], CITIES = [];
 
 (function() {
     List.findOne({}, function(err, lists) {
@@ -119,10 +126,17 @@ var USER_ROLES = [], CATEGORIES = [], CITIES = [];
             throw err;
         }
 
-        USER_ROLES = lists.roles, CATEGORIES = lists.categories, CITIES = lists.cities;
-        console.info(`${chalkBold('[ MongoDB ]')} LISTS: USER_ROLES: ${USER_ROLES}`);
-        console.info(`${chalkBold('[ MongoDB ]')} LISTS: CATEGORIES: ${CATEGORIES}`);
-        console.info(`${chalkBold('[ MongoDB ]')} LISTS: CITIES: ${CITIES}`);
+        app.locals.cache = cache;
+        cache.put('USER_ROLES', lists.roles); app.locals.user_roles = cache.get('USER_ROLES');
+        cache.put('CATEGORIES', lists.categories); app.locals.categories = cache.get('CATEGORIES');
+        cache.put('CITIES', lists.cities); app.locals.cities = cache.get('CITIES');
+
+        cache.put('JWTMAP', []); app.locals.jwtmap = cache.get('JWTMAP');
+        cache.put('USERS', []); app.locals.users = cache.get('USERS');
+
+        console.info(`${chalkBold('[ MongoDB ]')} LISTS: USER_ROLES: ${app.locals.user_roles}`);
+        console.info(`${chalkBold('[ MongoDB ]')} LISTS: CATEGORIES: ${app.locals.categories}`);
+        console.info(`${chalkBold('[ MongoDB ]')} LISTS: CITIES: ${app.locals.cities}`);
     });
 }());
 

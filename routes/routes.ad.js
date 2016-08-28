@@ -5,8 +5,8 @@ const Ad = require('../models/ad');
 /**
  *		Ad
  */
-module.exports = (router) => {
-    router.post('/api/ads/list', (req, res, next) => {
+module.exports = app => {
+    app.post('/api/ads/list', (req, res, next) => {
         if (!req.body || !req.body.user) {
             console.log('No body!');
             return res.status(500).json({
@@ -44,7 +44,7 @@ module.exports = (router) => {
         }
     });
 
-    router.get('/api/ads', (req, res, next) => {
+    app.get('/api/ads', (req, res, next) => {
         Ad.find((err, ads) => {
             if (err) {
                 console.error('Error retrieving ad list!');
@@ -59,7 +59,7 @@ module.exports = (router) => {
         });
     });
 
-    router.get('/api/ads/:adId', (req, res, next) => {
+    app.get('/api/ads/:adId', (req, res, next) => {
         let adId = req.params.adId;
         console.log(`GET:/api/ads/${adId}`);
 
@@ -77,12 +77,12 @@ module.exports = (router) => {
         });
     });
 
-    router.post('/api/ads', (req, res, next) => {
+    app.post('/api/ads', (req, res, next) => {
         if (!(req.body && req.body.title)) {
             return res.status(500).json({ data: "Error: missing body"});
         }
 
-        console.log(`BODY in router: ${JSON.stringify(req.body)}`);
+        console.log(`BODY in app: ${JSON.stringify(req.body)}`);
         if (!req.body.price || !typeof Number(req.body.price) === "number") {
             return res.status(400).json({ data: "Error: Bad or missin price parameter" });
         }
@@ -118,7 +118,7 @@ module.exports = (router) => {
         });
     });
 
-    router.put('/api/ads/:adId', (req, res, next) => {
+    app.put('/api/ads/:adId', (req, res, next) => {
         var adId = req.params.adId;
 
         Ad.findByIdAndUpdate(adId, {
@@ -150,7 +150,7 @@ module.exports = (router) => {
         });
     });
 
-    router.delete('/api/ads/:adId', (req, res, next) => {
+    app.delete('/api/ads/:adId', (req, res, next) => {
         var adId = req.params.adId;
 
         Ad.findByIdAndRemove(adId, {}, (err, mongoResponse) => {

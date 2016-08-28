@@ -1,15 +1,14 @@
 'use strict';
 
 var Lists = require('../models/lists');
-var Ads = require('../models/ad');
 
 
 /**
  *		Lists
  */
 
-module.exports = function (router) {
-    router.get('/api/lists', (req, res, next) => {
+module.exports = app => {
+    app.get('/api/lists', (req, res, next) => {
         Lists.findOne((err, lists) => {
             if (err) {
                 console.error('Error retrieving lists!');

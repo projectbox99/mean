@@ -10,8 +10,8 @@ var tokens = [];
 /**
  *		User
  */
-module.exports = (router) => {
-    router.post('/api/login', (req, res, next) => {
+module.exports = app => {
+    app.post('/api/login', (req, res, next) => {
         if (!req.body || !req.body.username || !req.body.password) {
             console.log('No body!');
             return res.status(500).json({
@@ -23,7 +23,7 @@ module.exports = (router) => {
         let pswd = encryptPswdClean(req.body.password);
 
         User.findOne({ username: usr, password: pswd }, 
-        	'username namesFirst namesLast email phone1 phone2 skypeId photo role dateCreated',
+        	'_id username namesFirst namesLast email phone1 phone2 skypeId photo role dateCreated',
         	(err, userData) => {
             	if (err) {
                     console.log(`Error talking to Mongo: ${err}`);
@@ -40,9 +40,17 @@ module.exports = (router) => {
                 let usrToken;
                 do {
     				usrToken = generateRandomTokenClean();
-                } while (tokens.indexOf(usrToken) > -1);
-                console.log(`Generated a token for ${usr} -> ${usrToken}`);
-                tokens.push({ token: usrToken, user: userData.username, role: userData.role });
+                } while (app.locals.jwtmap[usrToken]);
+
+                // tokens.push({ token: usrToken, user: userData.username, role: userData.role });
+                app.locals.jwtmap[usrToken] = { user: userData._id, role: userData.role };
+                app.locals.cache.put('JWTMAP', app.locals.jwtmap);
+                console.log(app.locals.cache.get('JWTMAP'));
+
+                app.locals.users[userData._id] = { token: usrToken, username: userData.username };
+                app.locals.cache.put('USERS', app.locals.users);
+                console.log(app.locals.cache.get('USERS'));
+
 
                 return res.status(200).json({
                     data: { user: userData, token: usrToken }
@@ -51,7 +59,7 @@ module.exports = (router) => {
         }
     );
 
-    router.get('/api/users', (req, res, next) => {
+    app.get('/api/users', (req, res, next) => {
         User.find((err, users) => {
             if (err) {
                 console.error('Error retrieving user list!');
@@ -66,7 +74,7 @@ module.exports = (router) => {
         });
     });
 
-    router.get('/api/users/:userId', (req, res, next) => {
+    app.get('/api/users/:userId', (req, res, next) => {
         if (!req.params || !req.params.userId) {
             console.error("No id paramater found in the request!");
             return res.status(400).json({
@@ -91,7 +99,7 @@ module.exports = (router) => {
         });
     });
 
-    router.post('/api/users', (req, res, next) => {
+    app.post('/api/users', (req, res, next) => {
         if (!(req.body && req.body.username)) {
             return res.status(500).json({ data: "Error: missing body"});
         } else {
@@ -134,7 +142,7 @@ module.exports = (router) => {
         });
     });
 
-    router.put('/api/users/:userId', (req, res, next) => {
+    app.put('/api/users/:userId', (req, res, next) => {
         if (!req.params || !req.params.userId) {
             console.error("Missing id paramater found in the request!");
             return res.status(400).json({
@@ -203,7 +211,7 @@ module.exports = (router) => {
         });
     });
 
-    router.delete('/api/users/:userId', (req, res) => {
+    app.delete('/api/users/:userId', (req, res) => {
         if (!req.params || !req.params.userId) {
             console.error("No id paramater found in the request!");
             return res.status(400).json({
