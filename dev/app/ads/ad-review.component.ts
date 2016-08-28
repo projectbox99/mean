@@ -78,20 +78,18 @@ export class AdReviewComponent implements OnInit, OnDestroy {
                             	this.photos[i] = "/uploads/" + this.ad.photos[i];
                             }
 
-
+                            this.userService.getUser(this.ad.owner).subscribe(
+                                userData => {
+                                    this.adOwner = userData;
+                                    // console.log(`adOwner: ${JSON.stringify(this.adOwner)}`);
+                                },
+                                error => this.errorMsg = <any>error
+                            );
                         }, error => this.errorMsg = <any>error
                     );
                 }
             }
         );
-
-        this.sub = this.userService.getUser(this.currentUser.id).subscribe(
-            userData => {
-                this.adOwner = userData;
-                // console.log(`adOwner: ${JSON.stringify(this.adOwner)}`);
-            },
-            error => this.errorMsg = <any>error
-        )
     }    // ngOnInit()
 
     ngOnDestroy() {

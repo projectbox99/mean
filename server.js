@@ -9,7 +9,8 @@ var compression = require('compression');
 
 // niki
 var fs = require('fs');
-var http = require('http');
+// var http = require('http');
+var spdy = require('spdy')
 var https = require('https');
 var stats;
 var helmet = require('helmet');
@@ -185,8 +186,7 @@ try {
     stats = fs.statSync('serverCert.pem');
     stats = fs.statSync('serverKey.pem');
     console.log(`${chalkBold('[ NodeJS  ]')} Certificate exists. Create secure HTTPS connection.`);
-    var server = https.createServer(
-        {
+    var server = spdy.createServer({
             key: fs.readFileSync('serverKey.pem'),
             cert: fs.readFileSync('serverCert.pem')
         },
@@ -194,7 +194,7 @@ try {
 }
 catch (e) {
     console.log(`${chalkWarn('[ MongoDB ]')} Certificate missing. Create HTTP connection.`);
-    var server = http.createServer(app);
+    var server = spdy.createServer(app);
 }
 
 var port = env.PORT || '3000';
