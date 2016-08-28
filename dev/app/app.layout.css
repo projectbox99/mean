@@ -18,7 +18,7 @@
 .nav {
 	margin: 0;
 	min-width: 250px;
-	max-width: 500px;
+	max-width: 600px;
 }
 
 .navbar-right {
@@ -171,7 +171,7 @@
 .login-area {
 	margin: 0;
 	text-align: left;
-	max-width: 300px;
+	max-width: 280px;
 	min-width: 230px;
 }
 
@@ -186,7 +186,7 @@
 .login-button-group {
 	display: inline-block;
 	vertical-align: bottom;
-	margin: 0 5px 0 5px;
+	margin: 0 15px 0 5px;
 	text-align: right;
 }
 

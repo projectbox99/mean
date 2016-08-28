@@ -81,7 +81,7 @@
 
                     <li *ngIf="loggedIn && currentUser && currentUser.username.length">
                         <div class="login-button-group">
-                            <p id="hello">Hello, <a class="nav-link profile-link" (click)="gotoProfile()"><strong>{{currentUser.namesFirst || currentUser.username}}</strong></a></p>
+                            <p id="hello">Hello, <a class="nav-link profile-link" role="button" (click)="gotoProfile()"><strong>{{currentUser.namesFirst || currentUser.username}}</strong></a></p>
                             <button class="btn btn-default" (click)="logout()">
                                 <span class="glyphicon glyphicon-log-in"></span>  Logout
                             </button>

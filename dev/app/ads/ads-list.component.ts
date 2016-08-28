@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 
 import { Subscription } from "rxjs/Subscription";
 
+import { User } from "../Services/users.service";
 import { Ad, AdsService } from "../Services/ads.service";
 import { AuthService } from "../Services/authentication.service";
 
@@ -16,57 +17,58 @@ import { AuthService } from "../Services/authentication.service";
     providers: [ AdsService ]
 })
 export class AdsComponent {
+    private currentUser: User;
+    private usrRole: string;
+
+
     private ads: Ad[];
     private sub: Subscription;
 
     private loading: boolean;
-
-    private usrRole: string;
+    private currentList: string;
 
     constructor(private router: Router,
                 private adsService: AdsService,
                 private authService: AuthService) {
-        this.loadMyAds();
+        this.currentUser = this.authService.currentUser;
+        this.usrRole = this.currentUser.role;
     }
 
-    public loadAds(): void {
-        this.sub = this.adsService.getAds()
-            .subscribe(
+    public loadAds(myList: string): void {
+        if (myList === "regular" || myList === "supervisor") {
+            let list_target: string = myList === "regular" ? this.currentUser.id : "__unapproved__";
+            this.sub = this.adsService.getMyAds(list_target).subscribe(
                 ads => {
                     this.ads = ads;
                 },
                 error => {
                     console.log(`Error: ${JSON.stringify(error)}`);
-                },
-                () => {
-                    console.info("The ads Observable came through successfully!");
                 }
             );
+        } else if (myList === "admin") {
+            this.sub = this.adsService.getAds().subscribe(
+                ads => {
+                    this.ads = ads;
+                },
+                error => {
+                    console.log(`Error: ${JSON.stringify(error)}`);
+                }
+            );
+        }
     }    // loadAds()
 
-    public loadMyAds(): void {
-        this.sub = this.adsService.getMyAds(this.authService.currentUser.id)
-            .subscribe(
-                ads => {
-                    this.ads = ads;
-                },
-                error => {
-                    console.log(`Error: ${JSON.stringify(error)}`);
-                },
-                () => {
-                    console.info("The ads Observable came through successfully!");
-                }
-            );
-    }    // loadMyAds()
-
-    public refresh(): void {
+    public refresh(myList: string = ""): void {
         this.loading = true;
-        this.loadAds();
+        if (myList) {
+            this.loadAds(myList);
+        } else {
+            this.loadAds("regular");
+        }
+
         this.loading = false;
     }    // refresh()
 
     public delAd(id: string): void {
-        console.info(`delAd(${id}) started`);
         this.loading = true;
 
         if (id) {
@@ -74,7 +76,7 @@ export class AdsComponent {
                 result => {
                     if (result === true) {
                         console.info(`delAd(${id}) returned SUCCESS!`);
-                        this.loadAds();
+                        this.refresh(this.currentList);
                     } else {
                         console.error(`delAd(${id}) returned ${result}`);
                     }
@@ -82,15 +84,12 @@ export class AdsComponent {
                 error => {
                     console.log(`delAd(${id}) returned an Error: ${error.toString()}`);
                 },
-                () => {
-                    console.info("delAd() Observable completed gracefully.");
-                    this.loading = false;
-                });
+                () => this.loading = false
+            );
         }
     }    // delUser()
 
     public editAd(id: string): void {
-        console.info(`editAd(${id}) started`);
         this.loading = true;
 
         if (id) {
@@ -110,9 +109,16 @@ export class AdsComponent {
         this.loading = false;
     }    // editUser()
 
+    public previewAd(id: string): void {
+        if (id) {
+            this.router.navigate([ "/ads/preview", id ]);
+        }
+    }    // previewAd()
+
     ngOnInit() {
+        this.loading = true;
+        this.refresh(this.usrRole);
         this.loading = false;
-        this.usrRole = this.authService.currentUser.role;
     }
 
     ngOnDestroy() {

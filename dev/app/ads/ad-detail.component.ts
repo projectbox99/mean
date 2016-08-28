@@ -192,6 +192,12 @@ export class AdDetailComponent implements OnInit, OnDestroy {
         setTimeout(() => this.active = true, 0);
     }    // clearForm()
 
+    public gotoPreview(): void {
+        if (this.ad.id) {
+            this.router.navigate([ "/ads/preview", this.ad.id ]);
+        }
+    }    // gotoPreview()
+
     private addAd(ad: Ad): void {
         this.adsService.postAd(this.ad)
             .subscribe(            // we want an Observable returned

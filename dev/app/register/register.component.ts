@@ -24,7 +24,9 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
                        private location: Location,
                        private element: ElementRef,
                        private route: ActivatedRoute,
-                       private router: Router) { }
+                       private router: Router) {
+        this.user = new User("", "", "");
+    }
 
     private user: User;
     private password2: string;
@@ -126,23 +128,18 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.currentUser = this.authService.currentUser;
         this.isAdmin = this.authService.usrRole === "admin";
-        this.user = new User("", "", "");
         this.isEditingUser = false;
+        this.password2 = "";
 
         this.sub = this.route.params.subscribe(
             params => {
                 let id = params["id"];
                 if (id) {
                     this.isEditingUser = true;
-                    this.user = this.currentUser;
-                    this.password2 = "";
-                    // this.userService.getUser(id).subscribe(
-                    //     userData => {
-                    //         this.user = userData;
-                    //         this.password2 = "";
-                    //         console.info(`Setting register.component.user to ${JSON.stringify(this.user)}`);
-                    //     }, error => this.errorMsg = <any>error
-                    // );
+                    this.userService.getUser(id).subscribe(
+                        userData => this.user = userData,
+                        error => this.errorMsg = <any>error
+                    );
                 }
             }
         );

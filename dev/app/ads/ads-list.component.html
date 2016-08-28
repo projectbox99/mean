@@ -23,6 +23,7 @@
 			<td>{{ad.approved ? "Yes" : "No"}}</td>
 			<td>
 				<div class="warning func-btns">
+					<button class="btn btn-warning" [disabled]="loading" (click)="previewAd(ad._id)">Preview Ad</button>
 					<button class="btn btn-primary" [disabled]="loading" (click)="editAd(ad._id)">Edit Ad</button>
 					<button class="btn btn-danger" [disabled]="loading" (click)="delAd(ad._id)">Delete Ad</button>
 				</div>
@@ -31,11 +32,10 @@
 	</table>
 
 	<div class="view-footer">
-		<button class="btn btn-default btn-refresh" [disabled]="loading" (click)="refresh()">Refresh List</button>
+		<button class="btn btn-default btn-refresh" [disabled]="loading" (click)="refresh('regular')">My ads</button>
+		<button *ngIf="usrRole === 'supervisor' || usrRole === 'admin'"
+			class="btn btn-default btn-refresh" [disabled]="loading" (click)="refresh('supervisor')">Unapproved</button>
+		<button *ngIf="usrRole === 'admin'"
+			class="btn btn-default btn-refresh" [disabled]="loading" (click)="refresh('admin')">All ads</button>
 	</div>
-	<!--<ul>
-		<li *ngFor="let user of users">
-			User: {{user.username}}
-		</li>
-	</ul>-->
 </div>

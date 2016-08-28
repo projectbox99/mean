@@ -76,7 +76,7 @@ export class UsersComponent {
         if (id) {
             this.router.navigate([ "/users", id ]).then(
                 result => {
-                    if (result) {        // result === true
+                    if (result === true) {
                         console.info("Redirect to user profile succeeded!");
                     } else {             // result === false
                         console.error("Redirect to user profile failed!");
@@ -95,6 +95,7 @@ export class UsersComponent {
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+    	if (this.sub)
+        	this.sub.unsubscribe();
     }
 }    // class UsersComponent

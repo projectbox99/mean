@@ -6,7 +6,7 @@
     </div>
 
     <form class="form-horizontal" (ngSubmit)="onSubmit()" #userForm="ngForm"> <!-- form-horizontal -->
-        <i>{{diagnostic}}</i><br>
+        <!-- <i>{{diagnostic}}</i><br> -->
 
         <div class="form-group row">
             <label for="title" class="col-sm-2 col-form-label">Title</label>
@@ -142,28 +142,48 @@
             </div>
         </div>
 
-        <div *ngIf="curUsrRole === 'admin'" class="form-group row admin-data">
+        <div *ngIf="curUsrRole !== 'regular'" class="form-group row admin-data">
             <div class="form-group">
+                <label for="approved" class="col-sm-2 col-form-label">Approve</label>
+                <div class="col-sm-4">
+                    <select class="form-control" id="approved" 
+                        placeholder="Approve Ad" required [(ngModel)]="ad.approved" name="approved" #approved="ngModel" >
+                        <option [value]=false>NOT Approved</option>
+                        <option [value]=true>Approved</option>
+                    </select>
+                    <!--<input type="text" class="form-control" id="approved" placeholder="Approved"
+                    [ngModel]="ad.approved" name="approved" #approved="ngModel" >-->
+                </div>
+            </div>
+            <div *ngIf="curUsrRole === 'admin'" class="form-group">
                 <label for="adId" class="col-sm-2 col-form-label">Ad Id</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control" id="adId" placeholder="Ad Id"
                     [ngModel]="ad.id" name="id" #id="ngModel" readonly >
                 </div>
+            </div>
+            <div *ngIf="curUsrRole === 'admin'" class="form-group">
                 <label for="approved" class="col-sm-2 col-form-label">Approved</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control" id="approved" placeholder="Approved"
                         [ngModel]="ad.approved" name="approved" #approved="ngModel" readonly >
                 </div>
+            </div>
+            <div *ngIf="curUsrRole === 'admin'" class="form-group">
                 <label for="owner" class="col-sm-2 col-form-label">Owner</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control" id="owner" placeholder="Owner"
                         [ngModel]="ad.owner" name="owner" #owner="ngModel" readonly >
                 </div>
+            </div>
+            <div *ngIf="curUsrRole === 'admin'" class="form-group">
                 <label for="dateCreated" class="col-sm-2 col-form-label">Date Created</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control" id="dateCreated" placeholder="Date Created"
                         [ngModel]="ad.dateCreated" name="dateCreated" #dateCreated="ngModel" readonly >
                 </div>
+            </div>
+            <div *ngIf="curUsrRole === 'admin'" class="form-group">
                 <label for="dateValid" class="col-sm-2 col-form-label">Valid until</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control" id="dateValid" placeholder="Validity"
@@ -175,10 +195,7 @@
         <div class="form-control-btns row col-sm-10">
             <button type="button" class="btn btn-default" (click)="clearForm()">Clear Form</button>
             <button type="submit" class="btn btn-success">Submit</button>
+            <button type="button" class="btn btn-warning" (click)="gotoPreview()">Preview</button>
         </div>
     </form>
-</div>
-
-<div [hidden]="active" class="waiting">
-    <h2>Waiting for the server to authorize the new ad...</h2>
 </div>

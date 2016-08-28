@@ -8,6 +8,7 @@ import { HttpModule /*, XHRBackend */} from "@angular/http";
 // components
 import { AdDetailComponent }  from "./ad-detail.component";
 import { AdsComponent }  from "./ads-list.component";
+import { AdReviewComponent } from "./ad-review.component";
 
 import { AdsService } from "../Services/ads.service";
 import { StandingData } from "../Services/standing.data.service";

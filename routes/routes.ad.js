@@ -129,6 +129,7 @@ module.exports = (router) => {
             city: req.body.city,
             price: req.body.price,
             owner: req.body.owner,
+            approved: req.body.approved || false,
             dateCreated: req.body.dateCreated,
             dateValid: req.body.dateValid
         }, {

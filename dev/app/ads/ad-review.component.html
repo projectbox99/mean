@@ -1,0 +1,44 @@
+<div class="ad-preview">
+    <h1 class="preview-heading">User <small>Ad</small></h1>
+
+    <div *ngIf="ad.title" class="ad-data">
+        <h2 id="ad-title">{{ad.title}}</h2>
+    </div>
+
+    <div *ngIf="ad.category" class="ad-category">
+        <h2 id="ad-category">{{ad.category}}</h2>
+    </div>
+
+    <div *ngIf="ad.photoMain" class="ad-photoMain">
+        <img [src]="photoMain" id="ad-photoMain" style="max-width: 600px; padding: 10px; border: 1px solid #333333">
+    </div>
+
+    <div *ngIf="ad.desc" class="ad-desc">
+        <p id="ad-desc" style="max-width: 600px">{{ad.desc}}</p>
+    </div>
+
+    <div *ngIf="ad.city" class="ad-city">
+        <p id="ad-city">{{ad.city}}</p>
+    </div>
+
+    <div *ngIf="ad.price" class="ad-price">
+        <p id="ad-price" style="font-size: 3em; font-weight: 750; background-color: #aaaaaa">{{ad.price}} лв.</p>
+    </div>
+
+    <div *ngIf="photos.length" class="ad-photos">
+        <img *ngFor="let photo of photos" [src]="photo"
+            style="max-width: 600px; padding: 10px; border: 1px solid #333333; margin: 5px 5px 5px 0;">
+    </div>
+
+    <div *ngIf="ad.dateCreated" class="ad-dateCreated">
+        <p id="ad-dateCreated"><i>This ad was created on {{ad.dateCreated}}</i></p>
+    </div>
+
+    <div *ngIf="ad.dateValid" class="ad-dateValid">
+        <p id="ad-dateValid"><i>This offer stands untill {{ad.dateValid}}</i></p>
+    </div>
+
+    <div *ngIf="ad.owner" class="ad-owner">
+        
+    </div>
+</div>
