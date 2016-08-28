@@ -3,6 +3,11 @@
 var encryptPswdClean = require('./helpers/password').encryptPswdClean;
 var generateRandomTokenClean = require('./helpers/token').generateRandomTokenClean;
 
+var getToken = require('./helpers/tokens').getToken;
+var getUserIdFromToken = require('./helpers/tokens').getUserIdFromToken;
+var getUserRoleFromToken = require('./helpers/tokens').getUserRoleFromToken;
+var logOff = require('./helpers/users').logOff;
+
 var User = require('../models/user');
 
 var tokens = [];
@@ -45,12 +50,9 @@ module.exports = app => {
                 // tokens.push({ token: usrToken, user: userData.username, role: userData.role });
                 app.locals.jwtmap[usrToken] = { user: userData._id, role: userData.role };
                 app.locals.cache.put('JWTMAP', app.locals.jwtmap);
-                console.log(app.locals.cache.get('JWTMAP'));
 
                 app.locals.users[userData._id] = { token: usrToken, username: userData.username };
                 app.locals.cache.put('USERS', app.locals.users);
-                console.log(app.locals.cache.get('USERS'));
-
 
                 return res.status(200).json({
                     data: { user: userData, token: usrToken }
@@ -60,18 +62,47 @@ module.exports = app => {
     );
 
     app.get('/api/users', (req, res, next) => {
-        User.find((err, users) => {
-            if (err) {
-                console.error('Error retrieving user list!');
-                return res.status(500).json({
-                    data: 'Error fetching user list!'
-                });
-            }
+        let token = getToken(req.headers['authorization']);
 
-            res.status(200).json({
-                data: users
+        if (!token) {
+            return res.status(400).json({
+                data: 'Not authorized'
             });
-        });
+        }
+
+        let tokenUserId;
+        let tokenUserRole = getUserRoleFromToken(token, app.locals.jwtmap);
+
+        if (tokenUserRole === "admin") {
+            User.find((err, users) => {
+                if (err) {
+                    console.error('Error retrieving user list!');
+                    return res.status(500).json({
+                        data: 'Error fetching user list!'
+                    });
+                }
+
+                res.status(200).json({
+                    data: users
+                });
+            });
+        } else {
+            tokenUserId = getUserIdFromToken(token, app.locals.jwtmap);
+            User.findById(tokenUserId,
+                '_id username namesFirst namesLast email phone1 phone2 skypeId photo role dateCreated',
+                (err, user) => {
+                if (err) {
+                    console.error('Error retrieving user list!');
+                    return res.status(500).json({
+                        data: 'Error fetching user list!'
+                    });
+                }
+
+                return res.status(200).json({
+                    data: user
+                });
+            });
+        }
     });
 
     app.get('/api/users/:userId', (req, res, next) => {
@@ -82,21 +113,38 @@ module.exports = app => {
             });
         }
 
-        let userId = req.params.userId;
-        User.findById(userId,
-            '_id username namesFirst namesLast email phone1 phone2 skypeId photo role dateCreated',
-            (err, mongoResponse) => {
-            if (err) {
-                console.error('Error querying user in MongoDB!');
-                return res.status(500).json({
-                    data: 'Error querying user in database!'
-                });
-            }
-
-            res.status(200).json({
-                data: mongoResponse
+        let token = getToken(req.headers['authorization']);
+        if (!token) {
+            return res.status(400).json({
+                data: 'Not authorized'
             });
-        });
+        }
+
+        let userId = req.params.userId;
+        let tokenUserId = getUserIdFromToken(token, app.locals.jwtmap);
+        let tokenUserRole = getUserRoleFromToken(token, app.locals.jwtmap);
+
+        if (tokenUserRole === 'admin' || (userId == tokenUserId)) {
+            User.findById(userId,
+                '_id username namesFirst namesLast email phone1 phone2 skypeId photo role dateCreated',
+                (err, mongoResponse) => {
+                    if (err) {
+                        console.error('Error querying user in MongoDB!');
+                        return res.status(500).json({
+                            data: 'Error querying user in database!'
+                        });
+                    }
+
+                    return res.status(200).json({
+                        data: mongoResponse
+                    });
+                }
+            );
+        } else {
+            return res.status(400).json({
+                data: 'Not authorized'
+            });
+        }
     });
 
     app.post('/api/users', (req, res, next) => {
@@ -150,37 +198,26 @@ module.exports = app => {
             });
         }
 
-        // check requester's bearer token:
-        let currentToken;
-        if (req.headers.authorization) {
-            // console.log(`Auth header: ${req.headers.authorization}`);
-            currentToken = req.headers.authorization.slice(7);
-        }
+        let userId = req.params.userId;
+        let token = getToken(req.headers['authorization']);
 
-        if (!currentToken) {
-            console.log(`Bad token!`);
-            return res.status(401).json({
-                data: 'Error: Missing authorization credentials'
+        if (!token) {
+            return res.status(400).json({
+                data: 'Not authorized'
             });
         }
 
-        let currentRole, currentUser;
-        for (let i = 0; i < tokens.length; i++) {
-            // console.log("[i]: " + tokens[i].token + " : " + tokens[i].user + " : " + tokens[i].role);
-            if (currentToken === tokens[i].token) {
-                currentUser = tokens[i].user;
-                currentRole = tokens[i].role;
-                break;
-            }
-        }
+        let tokenUserRole = getUserRoleFromToken(token, app.locals.jwtmap);
+        let tokenUserId = getUserIdFromToken(token, app.locals.jwtmap);
 
-        if ((currentRole !== 'admin') && (currentUser !== req.body.username)) {
+        if ( !((tokenUserRole === 'admin') || (tokenUserId == userId)) ) {
+            console.log(tokenUserRole);
+            console.log(tokenUserId);
             return res.status(401).json({
                 data: 'Error: Unauthorized to modify this user\'s data'
             });
         }
 
-        let userId = req.params.userId;
         User.findByIdAndUpdate(userId,
         {
             password: encryptPswdClean(req.body.password),
@@ -219,18 +256,44 @@ module.exports = app => {
             });
         }
 
-        var userId = req.params.userId;
-        User.findByIdAndRemove(userId, {}, (err, mongoResponse) => {
-            if (err) {
-                console.error('Error deleting user!');
-                return res.status(500).json({
-                    msg: `Error deleting user: ${userId}`
-                });
-            }
+        let token = getToken(req.headers['authorization']);
 
-            res.status(200).json({
-                data: 'OK'
+        if (!token) {
+            return res.status(400).json({
+                data: 'Not authorized'
             });
-        });
+        }
+
+        var userId = req.params.userId;
+
+        let tokenUserRole = getUserRoleFromToken(token, app.locals.jwtmap);
+        
+        console.log(app.locals.cache.get("USERS"));
+        console.log(app.locals.cache.get("JWTMAP"));
+
+        if( tokenUserRole === 'admin' ) {
+            logOff(userId, app.locals.users, app.locals.jwtmap, app.locals.cache);
+            app.locals.cache.put("USERS", app.locals.users);
+            app.locals.cache.put("JWTMAP", app.locals.jwtmap);
+
+            User.findByIdAndRemove(userId, {}, (err, mongoResponse) => {
+                if (err) {
+                    console.error('Error deleting user!');
+                    return res.status(500).json({
+                        msg: `Error deleting user: ${userId}`
+                    });
+                }
+
+                res.status(200).json({
+                    data: 'OK'
+                });
+            });    
+        } else {
+            return res.status(400).json({
+                data: 'Not authorized!'
+            });
+        }
+
+        
     });
 }
