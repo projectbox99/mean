@@ -10,7 +10,6 @@ var logOff = require('./helpers/users').logOff;
 
 var User = require('../models/user');
 
-var tokens = [];
 
 /**
  *		User

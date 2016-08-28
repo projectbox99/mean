@@ -2,7 +2,14 @@
 
 module.exports = {
 
-	logOff: (userId, users, jwtmap, cache)=> {
+	loggedIn: (userId, users, jwtmap) => {
+		if (users[userId])
+			return true;
+
+		return false;
+	},
+
+	logOff: (userId, users, jwtmap, cache) => {
 		if (users[userId]) {
 			let token = users[userId].token;
 			delete users[userId];
