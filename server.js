@@ -193,8 +193,8 @@ try {
         app);
 }
 catch (e) {
-    console.log(`${chalkWarn('[ MongoDB ]')} Certificate missing. Create HTTP connection.`);
-    var server = spdy.createServer(app);
+    console.log(`${chalkWarn('[ NodeJs ]')} Certificate missing. Create HTTP connection.`);
+    var server = spdy.createServer({}, app);
 }
 
 var port = env.PORT || '3000';
