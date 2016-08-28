@@ -9,9 +9,9 @@ var compression = require('compression');
 
 // niki
 var fs = require('fs');
-// var http = require('http');
+var http = require('http');
 var spdy = require('spdy')
-var https = require('https');
+// var https = require('https');
 var stats;
 var helmet = require('helmet');
 
@@ -182,19 +182,20 @@ var debug = require('debug')('web-tech:server');
 //var http = require('http');
 
 // niki
+var server;
 try {
     stats = fs.statSync('serverCert.pem');
     stats = fs.statSync('serverKey.pem');
-    console.log(`${chalkBold('[ NodeJS  ]')} Certificate exists. Create secure HTTPS connection.`);
-    var server = spdy.createServer({
+    console.log(`${chalkBold('[ NodeJS  ]')} Certificate exists. Creating secure connection over SPDY protocol.`);
+    server = spdy.createServer({
             key: fs.readFileSync('serverKey.pem'),
             cert: fs.readFileSync('serverCert.pem')
         },
         app);
 }
 catch (e) {
-    console.log(`${chalkWarn('[ NodeJs ]')} Certificate missing. Create HTTP connection.`);
-    var server = spdy.createServer({}, app);
+    console.log(`${chalkWarn('[ NodeJS ]')} Certificate missing. Falling back to HTTP connection.`);
+    server = http.createServer(app);
 }
 
 var port = env.PORT || '3000';
