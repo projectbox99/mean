@@ -7,7 +7,7 @@ import { Location } from "@angular/common";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
-import { User } from "../Services/users.service";
+import { User, UserService } from "../Services/users.service";
 import { AdsService, Ad } from "../Services/ads.service";
 import { StandingData, Lists } from "../Services/standing.data.service";
 import { AuthService } from "../Services/authentication.service";
@@ -16,7 +16,7 @@ import { AuthService } from "../Services/authentication.service";
 @Component ({
     templateUrl: "ad-review.component.html",
     styleUrls: [ "ad-review.component.css" ],
-    providers: [ AdsService ]
+    providers: [ AdsService, UserService ]
 })
 export class AdReviewComponent implements OnInit, OnDestroy {
     private ad: Ad;
@@ -41,9 +41,11 @@ export class AdReviewComponent implements OnInit, OnDestroy {
                 private standingData: StandingData,
                 private authService: AuthService,
                 private element: ElementRef,
+                private userService: UserService,
                 private location: Location) {
         this.errorMsg = "";
 
+        this.adOwner = new User("", "", "");
         this.currentUser = authService.currentUser;
         this.usrRole = authService.usrRole;
 
@@ -82,6 +84,14 @@ export class AdReviewComponent implements OnInit, OnDestroy {
                 }
             }
         );
+
+        this.sub = this.userService.getUser(this.currentUser.id).subscribe(
+            userData => {
+                this.adOwner = userData;
+                // console.log(`adOwner: ${JSON.stringify(this.adOwner)}`);
+            },
+            error => this.errorMsg = <any>error
+        )
     }    // ngOnInit()
 
     ngOnDestroy() {

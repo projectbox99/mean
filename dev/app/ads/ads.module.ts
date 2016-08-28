@@ -14,6 +14,7 @@ import { AdsService } from "../Services/ads.service";
 import { StandingData } from "../Services/standing.data.service";
 import { AuthService } from "../Services/authentication.service";
 import { PagerService } from "../Services/pager.service";
+import { UserService } from "../Services/users.service";
 
 import { adRouting } from "./ads.routes";
 
@@ -30,7 +31,7 @@ import { adRouting } from "./ads.routes";
         AdsComponent
     ],
     providers: [
-        AdsService, StandingData, AuthService, PagerService
+        AdsService, StandingData, AuthService, PagerService, UserService
     ]
 })
 export class AdsModule { }

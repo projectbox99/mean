@@ -25,6 +25,20 @@
         <p id="ad-price" style="font-size: 3em; font-weight: 750; background-color: #aaaaaa">{{ad.price}} лв.</p>
     </div>
 
+    <!-- adOwner -->
+    <div *ngIf="adOwner.id" clas="ad-owner-email">
+        <p id="ad-owner-email">{{adOwner.email}}</p>
+    </div>
+
+    <div *ngIf="adOwner.id" clas="ad-owner-phone1">
+        <p id="ad-owner-phone1">{{adOwner.phone1}}</p>
+    </div>
+
+    <div *ngIf="adOwner.id" clas="ad-owner-phone2">
+        <p id="ad-owner-phone2">{{adOwner.phone2}}</p>
+    </div>
+    <!-- END adOwner -->
+
     <div *ngIf="photos.length" class="ad-photos">
         <img *ngFor="let photo of photos" [src]="photo"
             style="max-width: 600px; padding: 10px; border: 1px solid #333333; margin: 5px 5px 5px 0;">
