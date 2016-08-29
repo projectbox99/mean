@@ -100,7 +100,7 @@ module.exports = app => {
         }
 
         let tokenUserId = getUserIdFromToken(token, app.locals.jwtmap);
-        if (!loggedIn(token, app.locals.users, app.locals.jwtmap)) {
+        if (!loggedIn(tokenUserId, app.locals.users, app.locals.jwtmap)) {
             return res.status(400).json({
                 data: 'Not authorized - not logged in'
             });
@@ -229,7 +229,7 @@ module.exports = app => {
         }        
 
         let tokenUserId = getUserIdFromToken(token, app.locals.jwtmap);
-        let tokenUserRole = getUserIdFromToken(token, app.locals.jwtmap);
+        let tokenUserRole = getUserRoleFromToken(token, app.locals.jwtmap);
         let adOwner;
 
         if (tokenUserRole !== 'admin' && tokenUserRole !== 'supervisor') {
@@ -242,14 +242,13 @@ module.exports = app => {
                     });
                 }
 
-                adOwner = mongoResponse.owner || "";
+                adOwner = mongoResponse.owner.toString();
+                if (!adOwner || adOwner != tokenUserId) {
+                    return res.status(400).json({
+                        data: 'Error - not authorized to delete ad'
+                    });
+                }
             });
-
-            if (adOwner !== tokenUserId) {
-                return res.status(400).json({
-                    data: 'Error - not authorized to delete ad'
-                });
-            }
         }
 
         Ad.findByIdAndRemove(adId, {}, (err, mongoResponse) => {

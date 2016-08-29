@@ -124,7 +124,7 @@ export class AdsService {
 
         return this.http.delete(this.adsUrl + "/" + id, options)
             .map((response: Response) => {
-                return this.extractData(response)._id ? Observable.create(true) : Observable.create(false);
+                return this.extractData(response)._id ? true : false;
             })
             .catch((error) => {
                 this.handleError(error).map((errMsg) => console.error("deleteUser Error: " + errMsg));
@@ -133,13 +133,11 @@ export class AdsService {
     }    // deleteAd()
 
     private extractData(res: Response) {
-        console.info("AdsService.extractData!");
         let body = res.json();
         return body.data || {};
     }    // extractData()
 
     private handleError (error: any): Observable<string> {
-        console.info("AdsService.handleError!");
         let errMsg = (error.message)
             ? error.message
             : (error.status)

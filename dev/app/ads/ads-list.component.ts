@@ -74,7 +74,7 @@ export class AdsComponent {
         if (id) {
             this.adsService.deleteAd(id).subscribe(
                 result => {
-                    if (result === true) {
+                    if (result == true) {
                         console.info(`delAd(${id}) returned SUCCESS!`);
                         this.refresh(this.currentList);
                     } else {

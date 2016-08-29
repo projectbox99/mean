@@ -53,7 +53,6 @@ export class UsersComponent {
             this.userService.deleteUser(id).subscribe(
                 result => {
                     if (result === true) {
-                        console.info(`delUser(${id}) returned SUCCESS!`);
                         this.loadUsers();
                     } else {
                         console.error(`delUser(${id}) returned ${result}`);
