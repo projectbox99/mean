@@ -6,6 +6,9 @@ var getToken = require('./helpers/tokens').getToken;
 var getUserIdFromToken = require('./helpers/tokens').getUserIdFromToken;
 var getUserRoleFromToken = require('./helpers/tokens').getUserRoleFromToken;
 
+var addCityIfNotExists = require('./helpers/lists').addCityIfNotExists;
+var updateCitiesInDb = require('./helpers/lists').updateCitiesInDb;
+
 var loggedIn = require('./helpers/users').loggedIn;
 /**
  *		Ad
@@ -124,7 +127,7 @@ module.exports = app => {
             city: req.body.city,
             price: Number(req.body.price),
             owner: req.body.owner,
-            approved: req.body.approved || false,
+            approved: req.body.approved,
             dateCreated: created,
             dateValid: expires
         });
@@ -143,9 +146,7 @@ module.exports = app => {
 
     app.put('/api/ads/:adId', (req, res, next) => {
         if (!req.params || !req.params.adId) {
-            return res.status(400).json({
-                data: 'Bad request - missing ad id'
-            });
+            return res.status(400).json({ data: 'Bad request - missing ad id' });
         }
 
         let adId = req.params.adId;
@@ -157,24 +158,28 @@ module.exports = app => {
         let token = getToken(req.headers['authorization']);
 
         if (!token) {
-            return res.status(400).json({
-                data: 'Not authorized'
-            });
+            return res.status(400).json({ data: 'Not authorized' });
         }
 
         let tokenUserId = getUserIdFromToken(token, app.locals.jwtmap);
         let tokenUserRole = getUserRoleFromToken(token, app.locals.jwtmap);
 
-        if (!loggedIn(token, app.locals.users, app.locals.jwtmap) &&  tokenUserRole === 'regular') {
-            return res.status(400).json({
-                data: 'Not authorized - not logged in'
-            });
+        if (!loggedIn(tokenUserId, app.locals.users, app.locals.jwtmap) && tokenUserRole === 'regular') {
+            return res.status(400).json({ data: 'Not authorized - not logged in' });
         }
 
         if (!req.body.price || !typeof Number(req.body.price) === "number") {
             return res.status(400).json({ data: "Error: Bad or missin price parameter" });
         }
 
+        if (req.body.approved && req.body.city) {
+            // update app.locals.cities
+        	let newCities = addCityIfNotExists(req.body.city, app.locals.cities);
+            // update app.local.cache.get('CITIES')
+            app.locals.cache.put('CITIES', app.locals.cities);
+            // update DB.Lists
+            updateCitiesInDb(app.locals.cities);
+        }
 
         if (tokenUserRole === 'admin' || tokenUserRole === 'supervisor' || tokenUserId === req.body.owner) {
             Ad.findByIdAndUpdate(adId, {

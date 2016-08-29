@@ -28,7 +28,8 @@ import { adRouting } from "./ads.routes";
     ],
     declarations: [
         AdDetailComponent,
-        AdsComponent
+        AdsComponent,
+        AdReviewComponent
     ],
     providers: [
         AdsService, StandingData, AuthService, PagerService, UserService

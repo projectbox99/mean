@@ -1,5 +1,5 @@
 <div [hidden]="!active" class="ad-container col-sm-12">
-    <h1 class="form-heading">User <small>Ad</small></h1>
+    <h1 class="form-heading">Ad <small>data</small></h1>
 
     <div [hidden]="!errorMsg" class="errorMsg alert alert-danger">
         An error occured while creating user! Error: {{errorMsg}}
@@ -10,7 +10,7 @@
 
         <div class="form-group row">
             <label for="title" class="col-sm-2 col-form-label">Title</label>
-            <div class="col-sm-4">
+            <div class="col-sm-8">
                 <input type="text" class="form-control" id="title" placeholder="Title" required
                     [(ngModel)]="ad.title" name="title" #title="ngModel" >
                     <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
@@ -21,7 +21,7 @@
 
         <div *ngIf="standingData.lists.categories.length" class="form-group row">
             <label for="category" class="col-sm-2 col-form-label">Category</label>
-            <div class="col-sm-4">
+            <div class="col-sm-2">
                 <select class="form-control" id="category" 
                 placeholder="Pick a category" required [(ngModel)]="ad.category" name="category" #category="ngModel" >
                     <option *ngFor="let cat of standingData.lists.categories" [value]="cat">{{cat}}</option>
@@ -36,7 +36,7 @@
 
         <div class="form-group row">
             <label for="desc" class="col-sm-2 col-form-label">Description</label>
-            <div class="col-sm-4">
+            <div class="col-sm-8">
                 <textarea class="form-control" id="desc" placeholder="Description" required 
                 [(ngModel)]="ad.desc" name="desc" #desc="ngModel" rows="10" cols="50">
                 </textarea>
@@ -47,92 +47,92 @@
         </div>
 
         <!-- Photos -->
-        <div class="form-group main-image row">
+        <div class="form-group row">
             <label for="photoMain" class="col-sm-2 col-form-label">Ad Photo</label>
-            <div class="col-sm-3" style="display: inline">
+            <div class="col-sm-4 main-image" style="display: inline">
                 <input type="file" class="form-control" id="photoMain" name="photo" accept="image/*"
                 (change)="imgChange($event)" (drop)="drop($event)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
                 <img *ngIf="photoMain" [src]="photoMain" id="photo0" class="ad-image-input">
-                <img *ngIf="!photoMain" class="ad-image-input" id="photo0" src="/images/kermit.jpg">
-                <span>{{percent}}</span>
+                <img *ngIf="!photoMain" src="/images/kermit.jpg" id="photo0" class="ad-image-input">
+                <span *ngIf="percent">{{percent}}</span>
             </div>
         </div>
 
         <div *ngIf="ad.photoMain" class="form-group">
         <label for="photo-1" class="col-sm-2 col-form-label">Photo</label>
-            <div class="col-sm-3" style="display: inline">
+            <div class="col-sm-4" style="display: inline">
                 <input type="file" class="form-control" id="photo-1" name="photo-1" accept="image/*"
                 (change)="imgChange($event, 1)" (drop)="drop($event, 1)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
                 <img *ngIf="photos[0]" [src]="photos[0]" id="photo1" class="ad-image-input">
                 <img *ngIf="!photos[0]" id="photo1" class="ad-image-input" src="/images/kermit.jpg">
-                <span>{{percent_1}}</span>
+                <span *ngIf="percent_1">{{percent_1}}</span>
             </div>
         </div>
 
         <div *ngIf="ad.photos[0]" class="form-group">
         <label for="photo-2" class="col-sm-2 col-form-label">Photo</label>
-            <div class="col-sm-3" style="display: inline">
+            <div class="col-sm-4" style="display: inline">
                 <input type="file" class="form-control" id="photo-2" name="photo-2" accept="image/*"
                 (change)="imgChange($event, 2)" (drop)="drop($event, 2)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
                 <img *ngIf="photos[1]" [src]="photos[1]" id="photo2" class="ad-image-input">
                 <img *ngIf="!photos[1]" id="photo2" class="ad-image-input" src="/images/kermit.jpg">
-                <span>{{percent_2}}</span>
+                <span *ngIf="percent_2">{{percent_2}}</span>
             </div>
         </div>
 
         <div *ngIf="ad.photos[1]" class="form-group">
         <label for="photo-3" class="col-sm-2 col-form-label">Photo</label>
-            <div class="col-sm-3" style="display: inline">
+            <div class="col-sm-4" style="display: inline">
                 <input type="file" class="form-control" id="photo-3" name="photo-3" accept="image/*"
                 (change)="imgChange($event, 3)" (drop)="drop($event, 3)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
                 <img *ngIf="photos[2]" [src]="photos[2]" id="photo3" class="ad-image-input">
                 <img *ngIf="!photos[2]" id="photo3" class="ad-image-input" src="/images/kermit.jpg">
-                <span>{{percent_3}}</span>
+                <span *ngIf="percent_3">{{percent_3}}</span>
             </div>
         </div>
 
         <div *ngIf="ad.photos[2]" class="form-group">
         <label for="photo-4" class="col-sm-2 col-form-label">Photo</label>
-            <div class="col-sm-3" style="display: inline">
+            <div class="col-sm-4" style="display: inline">
                 <input type="file" class="form-control" id="photo-4" name="photo-4" accept="image/*"
                 (change)="imgChange($event, 4)" (drop)="drop($event, 4)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
                 <img *ngIf="photos[3]" [src]="photos[3]" id="photo4" class="ad-image-input">
                 <img *ngIf="!photos[3]" id="photo4" class="ad-image-input" src="/images/kermit.jpg">
-                <span>{{percent_4}}</span>
+                <span *ngIf="percent_4">{{percent_4}}</span>
             </div>
         </div>
 
         <div *ngIf="ad.photos[3]" class="form-group">
         <label for="photo-5" class="col-sm-2 col-form-label">Photo</label>
-            <div class="col-sm-3" style="display: inline">
+            <div class="col-sm-4" style="display: inline">
                 <input type="file" class="form-control" id="photo-5" name="photo5" accept="image/*"
                 (change)="imgChange($event, 5)" (drop)="drop($event, 5)" (dragover)="allowDrop($event)" (dragenter)="allowDrop($event)">
                 <img *ngIf="photos[4]" [src]="photos[4]" id="photo5" class="ad-image-input">
                 <img *ngIf="!photos[4]" id="photo-5" class="ad-image-input" src="/images/kermit.jpg">
-                <span>{{percent_5}}</span>
+                <span *ngIf="percent_5">{{percent_5}}</span>
             </div>
         </div>
         <!-- END Photos -->
 
         <div class="form-group row">
             <label for="city" class="col-sm-2 col-form-label">City</label>
-            <div class="col-sm-4">
+            <div class="col-sm-2">
                 <input type="text" class="form-control" id="city" placeholder="City" required 
                     [(ngModel)]="ad.city" name="city" #city="ngModel" >
                     <div [hidden]="city.valid || city.pristine" class="alert alert-danger">
                         The city is also required
                     </div>
-                        <ul *ngIf="standingData.lists.cities" class="list-inline">
-                    <li *ngFor="let city of standingData.lists.cities" class="city">
-                        {{city}}
-                    </li>
-        </ul>
             </div>
+            <ul *ngIf="standingData.lists.cities" class="list-inline">
+                <li *ngFor="let city of standingData.lists.cities" class="city">
+                    {{city}}
+                </li>
+            </ul>            
         </div>
 
         <div class="form-group row">
             <label for="price" class="col-sm-2 col-form-label">Price</label>
-            <div class="col-sm-4">
+            <div class="col-sm-2">
                 <input type="number" class="form-control" id="price" placeholder="Price" required 
                     [(ngModel)]="ad.price" name="price" #price="ngModel"
                     min="0.01" max="99999.99" step="0.01">

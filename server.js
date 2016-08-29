@@ -65,11 +65,6 @@ app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
 
 var routes = express.Router();
 app.use('/', routes);
-// //console.log(path.resolve(__dirname, 'routes/routes.user'));
-// app.use('/', require(path.join(__dirname, 'routes/routes.user')).router);
-// app.use('/', require('./routes/routes.ad').router);
-// app.use('/', require('./routes/routes.list').router);
-// app.use('/', routes);
 require('./routes/routes')(app);
 require('./routes/routes.user')(app);
 require('./routes/routes.ad')(app);

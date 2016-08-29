@@ -4,7 +4,7 @@ module.exports = {
 
 	getToken: data => {
 		if (data){
-			let regex = /^.* (.*)$/g;
+			let regex = /^.* (.*)$/i;
 			return regex.exec(data)[1];	
 		}
 
@@ -14,7 +14,7 @@ module.exports = {
 	getUserIdFromToken: (token, jwtmap) => {
 		if (token && jwtmap) {
 			if (jwtmap[token] && jwtmap[token].user)
-				return jwtmap[token].user;
+				return jwtmap[token].user.toString();
 		}
 
 		return "";
@@ -23,7 +23,7 @@ module.exports = {
 	getUserRoleFromToken: (token, jwtmap) => {
 		if (token && jwtmap) {
 			if (jwtmap[token] && jwtmap[token].role)
-				return jwtmap[token].role;
+				return jwtmap[token].role.toString();
 		}
 
 		return "";

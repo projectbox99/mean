@@ -284,7 +284,7 @@ export class AdDetailComponent implements OnInit, OnDestroy {
                         adData => {
                             this.ad = adData;
 
-                            this.photoMain = "/uploads/" + this.ad.photoMain;
+                            this.photoMain = this.ad.photoMain ? "/uploads/" + this.ad.photoMain : "";
                             for (let i = 0; i < this.ad.photos.length; i++) {
                             	this.photos[i] = "/uploads/" + this.ad.photos[i];
                             }
