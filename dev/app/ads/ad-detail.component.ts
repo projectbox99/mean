@@ -19,9 +19,17 @@ import { RestoreService } from "../Services/restore.service";
     providers: [ AdsService, RestoreService ]
 })
 export class AdDetailComponent implements OnInit, OnDestroy {
-    @Input() ad: Ad;
     @Output() canceled = new EventEmitter();
     @Output() saved = new EventEmitter();
+
+    @Input()
+    set ad (ad: Ad) {
+        this.restoreService.setItem(ad);
+    }
+
+    get ad () {
+        return this.restoreService.getItem();
+    }
 
     private currentUser: User;
     private curUsrRole: string;

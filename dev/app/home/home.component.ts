@@ -22,18 +22,6 @@ import { PagerService } from "../Services/pager.service";
 export class HomeComponent implements OnInit {
     private lists: Lists;
 
-    public get categories(): string[] {
-        return this.lists.categories || [];
-    }
-
-    public get cities(): string[] {
-        return this.lists.cities || [];
-    }
-
-    public get roles(): string[] {
-        return this.lists.categories || [];
-    }
-
     private loading: boolean;
     private active: boolean;
     private error: string;

@@ -1,6 +1,6 @@
 "use strict";
 
-import { Component, OnInit, OnDestroy, ElementRef } from "@angular/core";
+import { Component, OnInit, OnDestroy, ElementRef, Input, Output, EventEmitter } from "@angular/core";
 import { NgForm, Location } from "@angular/common";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
@@ -10,25 +10,27 @@ import { Subscription } from "rxjs/Subscription";
 import { User, UserService } from "../Services/users.service";
 import { StandingData } from "../Services/standing.data.service";
 import { AuthService } from "../Services/authentication.service";
+import { RestoreService } from "../Services/restore.service";
 
 
 @Component ({
     templateUrl: "register.component.html",
     styleUrls: [ "register.component.css" ],
-    providers: [ UserService ]
+    providers: [ UserService, RestoreService ]
 })
 export class UserRegistrationComponent implements OnInit, OnDestroy {
-    public constructor(private authService: AuthService,
-                       private userService: UserService,
-                       private standingData: StandingData,
-                       private location: Location,
-                       private element: ElementRef,
-                       private route: ActivatedRoute,
-                       private router: Router) {
-        this.user = new User("", "", "");
+    @Output() canceled = new EventEmitter();
+    @Output() saved = new EventEmitter();
+
+    @Input()
+    set user (user: User) {
+        this.restoreService.setItem(user);
     }
 
-    private user: User;
+    get user () {
+        return this.restoreService.getItem();
+    }
+
     private password2: string;
     private roles: string[];
 
@@ -42,6 +44,17 @@ export class UserRegistrationComponent implements OnInit, OnDestroy {
     private statusMsg: string;
     private active: boolean;
 
+
+    public constructor(private authService: AuthService,
+                       private userService: UserService,
+                       private standingData: StandingData,
+                       private restoreService: RestoreService<User>,
+                       private location: Location,
+                       private element: ElementRef,
+                       private route: ActivatedRoute,
+                       private router: Router) {
+        this.user = new User("", "", "");
+    }
 
     // make sure two-way binding is working
     public get diagnostic(): string { return JSON.stringify(this.user); }
