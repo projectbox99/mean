@@ -55,15 +55,29 @@ module.exports = app => {
         Ad.find((err, ads) => {
             if (err) {
                 console.error('Error retrieving ad list!');
-                return res.status(500).json({
-                    data: 'Error fetching ad data!'
-                });
+                return res.status(500).json({ data: 'Error fetching ad data!' });
             }
 
             res.status(200).json({
                 data: ads
             });
         });
+    });
+
+    app.get('/api/ads/:startIdx/:count', (req, res, next) => {
+        if (!req.params || !req.params.startIdx || !req.params.count) {
+            return res.status(400).json({ data: 'Bad request - missing start index/ count parameters' });
+        }
+
+        let count;
+        Ad.find({ approved: true }, (err, ads) => {
+            if (err) {
+                console.error(`Error retrieving ads ${req.params.startIdx} - ${req.params.startIdx + req.params.count}`);
+                return res.status(500).json({ data: 'Error fetching ad data!' });
+            }
+
+            res.status(200).json({ data: ads });
+        }).skip(req.params.startIdx).limit(req.params.count);
     });
 
     app.get('/api/ads/:adId', (req, res, next) => {

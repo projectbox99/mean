@@ -33,7 +33,16 @@
                 <h2 class="heading">Pager</h2>
 
                 <!-- paged items -->
-                <div *ngFor="let item of pagedItems">Item {{item}}</div>
+                <div [hidden]="adsCount <= 0">
+                    <div *ngFor="let ad of pagedItems" style="border: 1px solid black; margin-bottom: 10px">
+                        Item {{ad.title}}
+                        <table>
+                            <tr><td *ngIf="ad.photoMain"><img [src]="'/uploads/' + ad.photoMain" width="100"></td></tr>
+                            <tr><td *ngIf="!ad.photoMain"><img src="/images/kermit.jpg" width="100"></td></tr>
+                            <tr><td><h2>{{ad.price}}</h2></td></tr>
+                        </table>
+                    </div>
+                </div>
 
                 <!-- pager -->
                 <ul *ngIf="pager.pages.length" class="pagination">
@@ -52,11 +61,11 @@
                     <li [ngClass]="{ disabled: pager.currentPage === pager.totalPages }">
                         <a (click)="setPage(pager.totalPages)" role="button">Last</a>
                     </li>
-                    <p>pager.pages.length: {{pager.pages.length}}</p>
-                    <p>pager.pages: {{pager.pages}}</p>
-                    <p>pager.currentPage: {{pager.currentPage}}</p>
-                    <p>pager.totalPages: {{pager.totalPages}}</p>
                 </ul>
+                <p>pager.pages.length: {{pager.pages.length}}</p>
+                <p>pager.pages: {{pager.pages}}</p>
+                <p>pager.currentPage: {{pager.currentPage}}</p>
+                <p>pager.totalPages: {{pager.totalPages}}</p>
             </div>
         </div>
     </div>

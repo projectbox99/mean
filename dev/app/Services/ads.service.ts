@@ -38,11 +38,18 @@ export class AdsService {
         this.token = JSON.parse(sessionStorage.getItem("token"));
     }
 
-    public getAds(): Observable<Ad[]> {
+    public getAds(startIndex: number = 0, count: number = 0): Observable<any> {
         let headers = new Headers({ "Authorization": "Bearer " + this.token });
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.get(this.adsUrl, options)
+        let urlToUse: string;
+        if (count) {
+            urlToUse = `${this.adsUrl}/${startIndex}/${count}`;
+        } else {
+            urlToUse = this.adsUrl;
+        }
+
+        return this.http.get(urlToUse, options)
             .map(this.extractData)
             .catch(this.handleError);
     }    // getAds()
