@@ -3,6 +3,7 @@
 import { Router } from "@angular/router";
 import { Component, OnInit, Input } from "@angular/core";
 
+import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 // services
@@ -56,7 +57,7 @@ export class HomeComponent implements OnInit {
     }    // constructor()
 
     public loadStandingData(): void {
-        this.lists = this.standingData.getLists();
+        this.lists = this.standingData.getLists()
     }    // loadStandingData()
 
 

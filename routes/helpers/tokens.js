@@ -17,6 +17,7 @@ module.exports = {
 				return jwtmap[token].user.toString();
 		}
 
+		console.error(`Missing token: ${token || ""} or jwtmap: ${jwtmap || ""}`);
 		return "";
 	},
 
@@ -26,6 +27,7 @@ module.exports = {
 				return jwtmap[token].role.toString();
 		}
 
+		console.error(`Missing token: ${token || ""} or jwtmap: ${jwtmap || ""}`);
 		return "";
 	}
 }

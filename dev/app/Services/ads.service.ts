@@ -83,7 +83,6 @@ export class AdsService {
         let headers = new Headers({ "Authorization": "Bearer " + this.token, "Content-Type": "application/json" });
         let options: RequestOptions = new RequestOptions({ headers: headers });
         let body: string = JSON.stringify(ad);
-        console.info(`BODY in service: ${body}`);
 
         return this.http.post(this.adsUrl, body, options)   // returns Observable<Response>
             .map(this.extractData)               // success

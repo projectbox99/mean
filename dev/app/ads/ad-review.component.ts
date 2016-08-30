@@ -49,6 +49,7 @@ export class AdReviewComponent implements OnInit, OnDestroy {
         this.currentUser = authService.currentUser;
         this.usrRole = authService.usrRole;
 
+        this.lists = new Lists([], [], []);
         this.loadStandingData();
 
         this.photoMain = "";

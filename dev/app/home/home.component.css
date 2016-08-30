@@ -5,17 +5,22 @@
 
 .sd-container {
 	width: 100%;
-	margin: -10px 0 0 0;
+	margin: 0;
 	background: -webkit-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Safari 5.1 to 6.0 */
     background: -o-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Firefox 3.6 to 15 */
-    background: linear-gradient(-100deg, #0000FB, #00FE00, #000A01);
+    background: linear-gradient(-100deg, #3FA5BC, #002A52);
 }
 
 .categories-heading {
 	text-align: center;
 	font-variant: small-caps;
 	font-weight: 300;
+}
+
+h2.heading {
+	margin: 0;
+	padding: 0;
 }
 
 .categories_list {

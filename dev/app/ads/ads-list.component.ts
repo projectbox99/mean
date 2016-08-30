@@ -20,7 +20,6 @@ export class AdsComponent {
     private currentUser: User;
     private usrRole: string;
 
-
     private ads: Ad[];
     private sub: Subscription;
 

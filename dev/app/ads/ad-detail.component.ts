@@ -11,16 +11,17 @@ import { User } from "../Services/users.service";
 import { AdsService, Ad } from "../Services/ads.service";
 import { StandingData, Lists } from "../Services/standing.data.service";
 import { AuthService } from "../Services/authentication.service";
-
+import { RestoreService } from "../Services/restore.service";
 
 @Component ({
     templateUrl: "ad-detail.component.html",
     styleUrls: [ "ad-detail.component.css" ],
-    providers: [ AdsService ]
+    providers: [ AdsService, RestoreService ]
 })
 export class AdDetailComponent implements OnInit, OnDestroy {
     @Input() ad: Ad;
-    @Output() close = new EventEmitter();
+    @Output() canceled = new EventEmitter();
+    @Output() saved = new EventEmitter();
 
     private currentUser: User;
     private curUsrRole: string;
@@ -46,9 +47,12 @@ export class AdDetailComponent implements OnInit, OnDestroy {
                 private adsService: AdsService,
                 private standingData: StandingData,
                 private authService: AuthService,
+                private restoreService: RestoreService<Ad>,
                 private element: ElementRef,
                 private location: Location) {
         this.curUsrRole = authService.usrRole;
+
+        this.lists = new Lists([], [], []);
         this.loadStandingData();
         this.percent = 0;
 

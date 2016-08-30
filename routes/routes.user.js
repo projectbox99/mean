@@ -49,6 +49,7 @@ module.exports = app => {
                 // tokens.push({ token: usrToken, user: userData.username, role: userData.role });
                 app.locals.jwtmap[usrToken] = { user: userData._id, role: userData.role };
                 app.locals.cache.put('JWTMAP', app.locals.jwtmap);
+                console.info(`Generated token: ${usrToken} for user: ${app.locals.jwtmap[usrToken].user} - ${app.locals.jwtmap[usrToken].role}`);
 
                 app.locals.users[userData._id] = { token: usrToken, username: userData.username };
                 app.locals.cache.put('USERS', app.locals.users);
