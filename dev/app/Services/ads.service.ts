@@ -32,9 +32,12 @@ export class AdsService {
             ? ("")
             : (":" + window.location.port)) + "/api/ads";
 
+    public count: number;
+
     private token: string;
 
     constructor(private http: Http) {
+        this.count = 0;
         this.token = JSON.parse(sessionStorage.getItem("token"));
     }
 
@@ -47,10 +50,16 @@ export class AdsService {
             urlToUse = `${this.adsUrl}/${startIndex}/${count}`;
         } else {
             urlToUse = this.adsUrl;
+            console.log(`Using ${this.adsUrl}`);
         }
 
         return this.http.get(urlToUse, options)
-            .map(this.extractData)
+            .map(
+                res => {
+                    let data: any = this.extractData(res);
+                    this.count = data.count ? <number>data.count : 0;
+                    return data.ads;
+                })
             .catch(this.handleError);
     }    // getAds()
 

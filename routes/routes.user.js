@@ -182,7 +182,19 @@ module.exports = app => {
         user.role = "regular";
         user.dateCreated = new Date;
 
-        user.save().then((mongoResponse) => {
+        user.save().then((err, mongoResponse) => {
+            if (err) {
+                console.log(`Error saving user: ${err}`);
+                return res.status(500).json({ data: 'Error saving user in DB: ${err}' });
+            }
+
+            // update server cache
+            if (app.locals.usersCount)
+                app.locals.usersCount++;
+            if (app.locals.cache && app.locals.cache.get('USERS_COUNT'))
+                app.locals.cache.put('USERS_COUNT', app.locals.cache.get('USERS_COUNT') + 1);
+            console.info(`${chalkBold('[ MongoDB ]')} USERS_COUNT: ${app.locals.usersCount} (Incremented)`);
+
             return res.status(200).json({ data: mongoResponse });
         }, (err) => {
             console.error(`Error saving user data: ${err}`);
@@ -284,9 +296,14 @@ module.exports = app => {
                     });
                 }
 
-                res.status(200).json({
-                    data: 'OK'
-                });
+                // update server cache
+                if (app.locals.usersCount)
+                    app.locals.usersCount--;
+                if (app.locals.cache && app.locals.cache.get('USERS_COUNT'))
+                    app.locals.cache.put('USERS_COUNT', app.locals.cache.get('USERS_COUNT') - 1);
+                console.info(`${chalkBold('[ MongoDB ]')} USERS_COUNT: ${app.locals.usersCount} (Decremented)`);
+
+                    res.status(200).json({ data: 'OK' });
             });    
         } else {
             return res.status(400).json({

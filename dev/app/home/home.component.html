@@ -1,25 +1,40 @@
 <div class="home">
     <div class="sd-container">
     <div class="categories-heading">
-        <h2 class="heading">Categories</h2>
+        <h2 class="heading">Категории</h2>
     </div>
 
     <div *ngIf="error" class="error">Error: {{error}}</div>
 
     <!-- CATEGORIES -->
     <div class="categories_list">
-    	<ul *ngIf="standingData.lists.categories" class="list-inline">
+    	<ul *ngIf="standingData.lists.categories" class="list-inline cities-list">
 			<li *ngFor="let category of standingData.lists.categories"
-            class="category" role="button">
+            class="category" role="button" [ngClass]="{ active: category === activeCategory }"
+            (click)="changeActiveCategory(category)"
+            (dblclick)="$event.stopPropagation(); $event.preventDefault()" >
 			{{category}}
 			</li>
     	</ul>
     </div>
 
+    <!-- SEARCH -->
+    <div class="search">
+        <form class="search-form">
+            <input type="text" id="search-input" class="form-control" placeholder="Търсене..."
+            [(ngModel)]="search" name="search" #srch="ngModel" >
+            <button type="submit" class="btn btn-default" (click)="startSearch()">
+            <span class="glyphicon glyphicon-search"></span> Търсене</button>
+        </form>
+    </div>
+
     <!-- CITIES -->
     <div class="cities_list">
         <ul *ngIf="standingData.lists.cities" class="list-inline">
-            <li *ngFor="let city of standingData.lists.cities" class="city">
+            <li *ngFor="let city of standingData.lists.cities" class="city"
+            role="button" [ngClass]="{ active: city === activeCity }"
+            (click)="changeActiveCity(city)"
+            (dblclick)="$event.stopPropagation(); $event.preventDefault()" >
                 {{city}}
             </li>
         </ul>
@@ -28,44 +43,48 @@
     </div>
         <!-- ADS -->
         <div>
-        <div class="container">
+        <div class="ads-container">
             <div class="text-center">
-                <h2 class="heading">Pager</h2>
+                <h2 *ngIf="adsCount && pager" id="pager-heading" class="heading">Реклами {{pager.startIndex + 1}}-{{pager.endIndex + 1}} от общо {{adsCount}}</h2>
 
                 <!-- paged items -->
-                <div [hidden]="adsCount <= 0">
-                    <div *ngFor="let ad of pagedItems" style="border: 1px solid black; margin-bottom: 10px">
-                        Item {{ad.title}}
-                        <table>
-                            <tr><td *ngIf="ad.photoMain"><img [src]="'/uploads/' + ad.photoMain" width="100"></td></tr>
-                            <tr><td *ngIf="!ad.photoMain"><img src="/images/kermit.jpg" width="100"></td></tr>
-                            <tr><td><h2>{{ad.price}}</h2></td></tr>
+                <div [hidden]="!adsCount" class="ad-container">
+                    <div *ngFor="let ad of pagedItems" class="ad-box">
+                        <div class="ad-title">{{ad.title}}</div>
+                        <table role="button" (click)="previewAd(ad._id)">
+                            <tr><td *ngIf="ad.photoMain" class="img-td"><img [src]="'/uploads/' + ad.photoMain" class="ad-img"></td></tr>
+                            <tr><td *ngIf="!ad.photoMain" class="img-td"><img src="/images/kermit.jpg" class="ad-img"></td></tr>
+                            <tr><td class="category-td">{{ad.category}}</td></tr>
+                            <tr><td class="city-td">Къде: {{ad.city}}</td></tr>
+                            <tr><td><h2 class="ad-price-h2">{{ad.price}} лв.</h2></td></tr>
                         </table>
                     </div>
                 </div>
 
                 <!-- pager -->
-                <ul *ngIf="pager.pages.length" class="pagination">
-                    <li [ngClass]="{ disabled: pager.currentPage === 1 }">
-                        <a (click)="setPage(1)" role="button">First</a>
-                    </li>
-                    <li [ngClass]="{ disabled: pager.currentPage === 1 }">
-                        <a (click)="setPage(pager.currentPage - 1)" role="button">Previous</a>
-                    </li>
-                    <li *ngFor="let page of pager.pages" [ngClass]="{ active: pager.currentPage === page }">
-                        <a (click)="setPage(page)" role="button">{{page}}</a>
-                    </li>
-                    <li [ngClass]="{ disabled: pager.currentPage === pager.totalPages }">
-                        <a (click)="setPage(pager.currentPage + 1)" role="button">Next</a>
-                    </li>
-                    <li [ngClass]="{ disabled: pager.currentPage === pager.totalPages }">
-                        <a (click)="setPage(pager.totalPages)" role="button">Last</a>
-                    </li>
-                </ul>
-                <p>pager.pages.length: {{pager.pages.length}}</p>
+                <div class="pager">
+                    <ul *ngIf="pager.pages.length" class="pagination">
+                        <li [ngClass]="{ disabled: pager.currentPage === 1 }">
+                            <a (click)="setPage(1)" role="button">First</a>
+                        </li>
+                        <li [ngClass]="{ disabled: pager.currentPage === 1 }">
+                            <a (click)="setPage(pager.currentPage - 1)" role="button">Previous</a>
+                        </li>
+                        <li *ngFor="let page of pager.pages" [ngClass]="{ active: pager.currentPage === page }">
+                            <a (click)="setPage(page)" role="button">{{page}}</a>
+                        </li>
+                        <li [ngClass]="{ disabled: pager.currentPage === pager.totalPages }">
+                            <a (click)="setPage(pager.currentPage + 1)" role="button">Next</a>
+                        </li>
+                        <li [ngClass]="{ disabled: pager.currentPage === pager.totalPages }">
+                            <a (click)="setPage(pager.totalPages)" role="button">Last</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- <p>pager.pages.length: {{pager.pages.length}}</p>
                 <p>pager.pages: {{pager.pages}}</p>
                 <p>pager.currentPage: {{pager.currentPage}}</p>
-                <p>pager.totalPages: {{pager.totalPages}}</p>
+                <p>pager.totalPages: {{pager.totalPages}}</p> -->
             </div>
         </div>
     </div>

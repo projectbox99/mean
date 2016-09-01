@@ -2,14 +2,14 @@
 
 
 .navbar {
-    background: -webkit-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Firefox 3.6 to 15 */
+    /*
+    background: -webkit-linear-gradient(-100deg, #0000FB, #00FE00, #000A01);
+    background: -o-linear-gradient(-100deg, #0000FB, #00FE00, #000A01);
+    background: -moz-linear-gradient(-100deg, #0000FB, #00FE00, #000A01);
     background: linear-gradient(-100deg, #0000FB, #00FE00, #000A01);
-    /* background: linear-gradient(-100deg, #0360b0, #03a000, yellow); /* Standard syntax (must be last) /*
-	/* background: linear-gradient(-100deg, #08FF16, #0AFFFA, #FAFF05, #FDFFFE); */
-	/* background: linear-gradient(-100deg, #0000FB, #00FCFD, #00FE00, #000A01); */
-    /* background: linear-gradient(-100deg, #FF0100, #FF03FE, #FFFEFF, #FFFE00); */
+    */
+    background: linear-gradient(-100deg, #282828, #032B41, #282828);
+
 	padding: 10px 0 0 0;
 	width: 100%;
 	color: #eee;
@@ -66,6 +66,7 @@
 .logo {
 	margin: 5px;
 	padding: 10px;
+	min-width: 232px;
 }
 
 .app-name {
@@ -80,24 +81,23 @@
 	word-spacing: -100%;
 
 	color: #eee;
-	mix-blend-mode: normal;
+	mix-blend-mode: color-dodge;
 }
 
 .app-name-span {
 	vertical-align: +40%;
-	font-size: 0.8em;
+	font-size: 1.1em;
 	font-weight: 900;
 	word-spacing: -100%;
 }
 
 .app-name-span2 {
 	vertical-align: -40%;
-	font-size: 1.1em;
+	font-size: 1.5em;
 	font-weight: 300;
-	word-spacing: -100%;
 	color: #FFCC00;
-	text-shadow: 2px 1px 2px #AA9900;
-	margin: 0 0 -10px 0;
+	text-shadow: 2px 1px 5px #AA9900;
+	margin: 0 10px -10px -20px;
 }
 
 #bs-navbar-collapse-1 {
@@ -249,6 +249,11 @@
 .form-control {
 	min-width: 180px;
 	max-width: 180px;
+}
+
+input#photo.form-control {
+	background-color: rgb(3, 43, 65);
+	color: aliceblue;
 }
 
 .logout-btn {

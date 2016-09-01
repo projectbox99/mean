@@ -16,6 +16,7 @@ import { AuthGuard } from "./Services/auth.guard";
 import { UserService } from "./Services/users.service";
 import { StandingData } from "./Services/standing.data.service";
 import { PagerService } from "./Services/pager.service";
+import { SearchService } from "./Services/search.service";
 
 // components
 import { AppLayout } from "./app.layout";
@@ -57,6 +58,7 @@ import { AdsModule } from "./ads/ads.module";
         UserService,
         StandingData,
         PagerService,
+        SearchService,
 
         // providers used to create fake backend
         // fakeBackendProvider,

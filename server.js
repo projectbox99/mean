@@ -65,6 +65,9 @@ app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
 
 // Init server-side cache
 let List = mongoose.model('List', require(path.resolve(__dirname, 'models/lists')));
+let Ad = mongoose.model('Ad', require(path.resolve(__dirname, 'models/ad')));
+let User = mongoose.model('User', require(path.resolve(__dirname, 'models/user')));
+// console.log(`Ad: ${Ad}`);
 
 (function() {
     List.findOne({}, function(err, lists) {
@@ -84,6 +87,26 @@ let List = mongoose.model('List', require(path.resolve(__dirname, 'models/lists'
         console.info(`${chalkBold('[ MongoDB ]')} LISTS: USER_ROLES: ${app.locals.user_roles}`);
         console.info(`${chalkBold('[ MongoDB ]')} LISTS: CATEGORIES: ${app.locals.categories}`);
         console.info(`${chalkBold('[ MongoDB ]')} LISTS: CITIES: ${app.locals.cities}`);
+    });
+
+    Ad.find({ approved: true }).count((err, count) => {
+    	if (err) {
+    		console.log(`Error retrieving ads cound from DB: ${err}`);
+    		throw err;
+    	}
+
+    	cache.put('ADS_COUNT', Number(count)); app.locals.adsCount = cache.get('ADS_COUNT');
+    	console.info(`${chalkBold('[ MongoDB ]')} ADS_COUNT: ${app.locals.adsCount}`);
+    });
+
+	User.find().count((err, count) => {
+    	if (err) {
+    		console.log(`Error retrieving users cound from DB: ${err}`);
+    		throw err;
+    	}
+
+    	cache.put('USERS_COUNT', Number(count)); app.locals.usersCount = cache.get('USERS_COUNT');
+    	console.info(`${chalkBold('[ MongoDB ]')} USERS_COUNT: ${app.locals.usersCount}`);
     });
 }());
 

@@ -6,10 +6,18 @@
 .sd-container {
 	width: 100%;
 	margin: 0;
+	padding: 5px 0;
+	text-align: center;
 	background: -webkit-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Safari 5.1 to 6.0 */
     background: -o-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(-100deg, #0000FB, #00FE00, #000A01); /* Firefox 3.6 to 15 */
     background: linear-gradient(-100deg, #3FA5BC, #002A52);
+}
+
+.text-center {
+	display: block;
+	padding: 20px 200px;
+	max-width: 100%;
 }
 
 .categories-heading {
@@ -21,6 +29,8 @@
 h2.heading {
 	margin: 0;
 	padding: 0;
+	text-align: center;
+	color: #eeeeee;
 }
 
 .categories_list {
@@ -44,15 +54,93 @@ h2.heading {
 	/*color: #FFCC00;*/
 	color: #eee;
 	/*text-shadow: 2px 2px 2px #FFCC00;*/
-	background-color: #0C6B80;
+	/* background-color: #0C6B80; */
+
 }
 
-.cities_list {
+.category.active {
+	background-color: #172933;
+}
+
+.city.active {
+	background-color: #172933;
+}
+
+.search {
+	min-width: 300px;
+	max-width: 400px;
+	display: inline-flex;
+	margin: 20px 20px;
+}
+
+form.search-form {
+	display: inherit;
+}
+
+.cities-list {
 	width: 100%;
 	text-align: center;
+	color: #FBEA20;
 }
 
-.city {
+li.city {
 	font-size: 1.2em;
-	color: #094502;
+	color: #eeff77;
+}
+
+#pager-heading {
+	text-align: left;
+	vertical-align: middle;
+	text-indent: 100px;
+	color: #333333;
+}
+
+.ad-container {
+	display: inline;
+}
+
+.ad-box {
+	display: inline-block;
+	min-width: 300px;
+	max-width: 500px;
+	min-height: 400px;
+	padding: 10px;
+	border: 1px solid black;
+	margin: 10px 5px;
+}
+
+td.img-td {
+	text-align: center;
+	max-width: 300px;
+}
+
+.ad-img {
+	max-width: 280px;
+	max-height: 280px;
+}
+
+.ad-title {
+	text-align: justify;
+	font-size: large;
+	font-stretch: semi-expanded;
+}
+
+td.category-td {
+	text-align: left;
+}
+
+td.city-td {
+	text-align: left;
+	font-size: large;
+}
+
+.ad-price-h2 {
+	background-color: antiquewhite;
+	color: black;
+	text-align: left;
+	text-indent: 25px;
+	line-height: 40px;
+	border-radius: 100px / 100px;
+	width: 200px;
+	margin: 10px 0;
 }

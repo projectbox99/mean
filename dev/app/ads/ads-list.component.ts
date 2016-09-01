@@ -45,9 +45,11 @@ export class AdsComponent {
                 }
             );
         } else if (myList === "admin") {
+            console.log('loading admin ads...');
             this.sub = this.adsService.getAds().subscribe(
                 ads => {
                     this.ads = ads;
+                    console.log(`Admins ads: ${JSON.stringify(this.ads)}`);
                 },
                 error => {
                     console.log(`Error: ${JSON.stringify(error)}`);

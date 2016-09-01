@@ -14,11 +14,46 @@ var loggedIn = require('./helpers/users').loggedIn;
  *		Ad
  */
 module.exports = app => {
+    app.post('/api/ads/search', (req, res, next) => {
+        if (!req.body || !req.body.str) {
+            return res.status(500).json({ data: 'Error: req.body not found...' });
+        }
+
+        let str = req.body.str;
+        let cat = req.body.cat ? req.body.cat : "";
+        let city = req.body.city ? req.body.city : "";
+
+        console.info(`${str} - ${cat} - ${city}`);
+
+        let terms = str.split(' ');
+        let termsRegEx = '.*' + terms.join('|') + '.*';
+        console.info(`${termsRegEx}`);
+
+        Ad.find(
+            {
+                title: new RegExp(termsRegEx, 'i'),
+                category: new RegExp('.*' + cat + '.*', 'i'),
+                city: new RegExp('.*' + city + '.*', 'i'),
+                approved: true
+            },
+            (err, ads) => {
+                if (err) {
+                    console.error('Error retrieving ad list!');
+                    return res.status(500).json({ data: 'Error fetching ad data!' });
+                }
+
+                if (!ads) {
+                    return res.status(200).json({ data: { count: 0, ads: [] } })
+                }
+
+                return res.status(200).json({ data: { count: ads.length, ads: ads }});
+            }
+        );
+    });
+
     app.post('/api/ads/list', (req, res, next) => {
         if (!req.body || !req.body.user) {
-            return res.status(500).json({
-                data: 'Error: req.body not found...'
-            });
+            return res.status(500).json({ data: 'Error: req.body not found...' });
         }
 
         let owner = req.body.user;
@@ -76,7 +111,7 @@ module.exports = app => {
                 return res.status(500).json({ data: 'Error fetching ad data!' });
             }
 
-            res.status(200).json({ data: ads });
+            res.status(200).json({ data: { count: app.locals.adsCount, ads: ads }});
         }).skip(req.params.startIdx).limit(req.params.count);
     });
 
@@ -151,6 +186,13 @@ module.exports = app => {
                 console.error(`Error creating ad: ${err}`);
                 return res.status(500).json({ data: "Error saving ad data!" });
             }
+
+            // update server cache
+            if (app.locals.adsCount)
+                app.locals.adsCount++;
+            if (app.locals.cache && app.locals.cache.get('ADS_COUNT'))
+                app.locals.cache.put('ADS_COUNT', app.locals.cache.get('ADS_COUNT') + 1);
+            console.info(`${chalkBold('[ MongoDB ]')} ADS_COUNT: ${app.locals.adsCount} (Incremented)`);
 
             res.status(200).json({
                 data: mongoResponse
@@ -278,9 +320,14 @@ module.exports = app => {
                 });
             }
 
-            res.status(200).json({
-                data: mongoResponse
-            });
+            // update server cache
+            if (app.locals.adsCount)
+                app.locals.adsCount--;
+            if (app.locals.cache && app.locals.cache.get('ADS_COUNT'))
+                app.locals.cache.put('ADS_COUNT', app.locals.cache.get('ADS_COUNT') - 1);
+            console.info(`${chalkBold('[ MongoDB ]')} ADS_COUNT: ${app.locals.adsCount} (Decremented)`);
+
+            res.status(200).json({ data: mongoResponse });
         });
     });
 }

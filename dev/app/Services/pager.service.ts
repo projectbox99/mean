@@ -1,5 +1,5 @@
 export class PagerService {
-	getPager(totalItems: number, currentPage: number = 1, pageSize: number = 10) {
+	getPager(totalItems: number, currentPage: number = 1, pageSize: number = 9) {
 		let totalPages = Math.ceil(totalItems / pageSize);
 
 		let startPage, endPage;
@@ -22,8 +22,13 @@ export class PagerService {
 		let startIndex = (currentPage - 1) * pageSize;
 		let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
 
+		// console.info(`currentPage: ${currentPage}`);
+		// console.info(`totalPages: ${totalPages}`);
+		// console.info(`startIndex: ${startIndex}`);
+		// console.info(`endIndex: ${endIndex}`);
+
 		let pages = [];
-		for (let i = startPage; i < endPage; i++)
+		for (let i = startPage; i <= endPage; i++)
 			pages.push(i);
 
 		return {
