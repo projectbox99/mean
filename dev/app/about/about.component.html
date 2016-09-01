@@ -7,17 +7,52 @@
 	        <p id="about-data"><label>Host name:&nbsp;</label>{{info.osHostname}}</p>
 	    </div>
 
+
+	 	<div *ngIf="info.osHostname" class="about-data">
+	        <p id="about-data"><label>Host name:&nbsp;</label>{{info.osHostname}}</p>
+	    </div>
+
 	 	<div *ngIf="info.osPlatform" class="about-data">
 	        <p id="about-data"><label>Platform:&nbsp;</label>{{info.osPlatform}}</p>
 	    </div>
 
 	 	<div *ngIf="info.osArch" class="about-data">
-	        <p id="about-data"><label>Arch:&nbsp;</label>{{info.osArch}}</p>
+	        <p id="about-data"><label>CPU architecture:&nbsp;</label>{{info.osArch}}</p>
 	    </div>
 
 	 	<div *ngIf="info.osRelease" class="about-data">
 	        <p id="about-data"><label>Release:&nbsp;</label>{{info.osRelease}}</p>
 	    </div>
+
+	 	<div *ngIf="info.osType" class="about-data">
+	        <p id="about-data"><label>Type:&nbsp;</label>{{info.osType}}</p>
+	    </div>
+
+	 	<div *ngIf="info.osUptime" class="about-data">
+	        <p id="about-data"><label>Up Time:&nbsp;</label>{{info.osUptime}}</p>
+	    </div>
+
+	 	<div *ngIf="info.osFreemem" class="about-data">
+	        <p id="about-data"><label>Free system memory:&nbsp;</label>{{info.osFreemem}}</p>
+	    </div>
+
+	 	<div *ngIf="info.osLoadavg1m" class="about-data">
+	        <p id="about-data"><label>Last 1 minute load average:&nbsp;</label>{{info.osLoadavg1m}}</p>
+	    </div>
+
+	 	<div *ngIf="info.osLoadavg5m" class="about-data">
+	        <p id="about-data"><label>Last 5 minutes load average:&nbsp;</label>{{info.osLoadavg5m}}</p>
+	    </div>
+
+	 	<div *ngIf="info.osLoadavg15m" class="about-data">
+	        <p id="about-data"><label>Last 15 minutes load average:&nbsp;</label>{{info.osLoadavg15m}}</p>
+	    </div>
+
+	 	<div *ngIf="info.osHomedir" class="about-data">
+	        <p id="about-data"><label>Home directory:&nbsp;</label>{{info.osHomedir}}</p>
+	    </div>
+
+
 
 	 	<div *ngIf="info.cpuModel" class="about-data">
 	        <p id="about-data"><label>Cpu Model:&nbsp;</label>{{info.cpuModel}}</p>
@@ -45,6 +80,41 @@
 
 	 	<div *ngIf="info.cpuIdleAvg" class="about-data">
 	        <p id="about-data"><label>Idle Avg:&nbsp;</label>{{info.cpuIdleAvg}}</p>
+	    </div>
+
+
+
+	 	<div *ngIf="info.processUptime" class="about-data">
+	        <p id="about-data"><label>Process Uptime:&nbsp;</label>{{info.processUptime}}</p>
+	    </div>
+
+	 	<div *ngIf="info.processVersion" class="about-data">
+	        <p id="about-data"><label>Process Version:&nbsp;</label>{{info.processVersion}}</p>
+	    </div>
+
+	 	<div *ngIf="info.processVersionsHttp_parser" class="about-data">
+	        <p id="about-data"><label>Http parser:&nbsp;</label>{{info.processVersionsHttp_parser}}</p>
+	    </div>
+
+	 	<div *ngIf="info.processVersionsNode" class="about-data">
+	        <p id="about-data"><label>Node Version:&nbsp;</label>{{info.processVersionsNode}}</p>
+	    </div>
+
+	 	<div *ngIf="info.processVersionsV8" class="about-data">
+	        <p id="about-data"><label>V8 Version:&nbsp;</label>{{info.processVersionsV8}}</p>
+	    </div>
+
+	    <div *ngIf="info.processVersionsAres" class="about-data">
+	        <p id="about-data"><label>Ares Version:&nbsp;</label>{{info.processVersionsAres}}</p>
+	    </div>
+
+	    <div *ngIf="info.processVersionsOpenssl" class="about-data">
+	        <p id="about-data"><label>Openssl Version:&nbsp;</label>{{info.processVersionsOpenssl}}</p>
+	    </div>
+
+
+	    <div *ngIf="info.remoteIp" class="about-data">
+	        <p id="about-data"><label>Client Ip:&nbsp;</label>{{info.remoteIp}}</p>
 	    </div>
 
 <!-- 		<code>

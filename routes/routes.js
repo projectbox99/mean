@@ -18,6 +18,8 @@ var upload = multer({ storage: storage }).single('file');
 
 var fs = require('fs');
 
+var async = require('async');
+
 module.exports = app => {
 	/* GET/ALL home page. */
 	app.all('/', function (req, res, next) {
@@ -73,7 +75,7 @@ module.exports = app => {
 			cpuUserAvg += cpuInfo[cnt].times.user;
 			cpuNiceAvg += cpuInfo[cnt].times.nice;
 			cpuSysAvg += cpuInfo[cnt].times.sys;
-			cpuIdleAvg += cpuInfo[cnt].times.idele;
+			cpuIdleAvg += cpuInfo[cnt].times.idle;
 		}
 		cpuUserAvg = cpuUserAvg / cpuCount;
 		cpuNiceAvg = cpuNiceAvg / cpuCount;
@@ -94,7 +96,7 @@ module.exports = app => {
         let osLoadavg15m =  osLoadAvg[2]; // min
         let osHomedir = os.homedir();
 
-        let processUptime = process.uptime(); // seconds
+        let processUptime = process.uptime() / 60; // minutes
 
         let remoteIp = req.connection.remoteAddress;
 
@@ -128,7 +130,7 @@ module.exports = app => {
             osLoadavg5m: `${osLoadavg5m} minutes`,
             osLoadavg15m: `${osLoadavg15m} minutes`,
             osHomedir: `${osHomedir}`,
-            processUptime: `${processUptime}`,
+            processUptime: `${processUptime} minutes`,
             processVersion: `${process.version}`,
             processVersionsHttp_parser: `${process.versions.http_parser}`,
             processVersionsNode: `${process.versions.node}`,
@@ -142,7 +144,7 @@ module.exports = app => {
             remoteIp: `${remoteIp}`,
             folderSize: `${folderSize}`
 		};
-
+//		console.log(JSON.stringify(serverInfo));
 		return res.status(200).json({
 			data: serverInfo
 		});
