@@ -53,21 +53,98 @@ module.exports = app => {
 			fs.createReadStream('uploads/' + req.file.filename).pipe(fs.createWriteStream('public/uploads/' + req.file.filename));
 		});
 
-
-		// target_filename = req.file.originalname;
-
-		// let src = fs.createReadStream(req.file.path);
-		// let dest = fs.createWriteStream(req.file.filename);
-		// src.pipe(dest);
-		// src.on('end', () => {
-		// 	res.status(200).json({
-		// 		data: 'OK'
-		// 	});
-		// });
-		// src.on('error', (err) => {
-		// 	res.status(500).json({
-		// 		data: `Error writing out file: ${err}`
-		// 	});
-		// });
 	});
+
+	app.get('/api/about', (req, res, next) => {
+		const os = require('os');
+
+		let cpuInfo = os.cpus();
+		let cpuCount = cpuInfo.length;
+		let cpuModel = cpuInfo[0].model;
+		let cpuSpeed = cpuInfo[0].speed;
+		let cpuUserAvg = 0;
+		let cpuNiceAvg = 0;
+		let cpuSysAvg = 0;
+		let cpuIdleAvg = 0;
+		let osLoadAvg = os.loadavg();
+
+		for (let cnt = 0; cnt < cpuCount; cnt++)
+		{
+			cpuUserAvg += cpuInfo[cnt].times.user;
+			cpuNiceAvg += cpuInfo[cnt].times.nice;
+			cpuSysAvg += cpuInfo[cnt].times.sys;
+			cpuIdleAvg += cpuInfo[cnt].times.idele;
+		}
+		cpuUserAvg = cpuUserAvg / cpuCount;
+		cpuNiceAvg = cpuNiceAvg / cpuCount;
+		cpuSysAvg = cpuSysAvg / cpuCount;
+		cpuIdleAvg = cpuIdleAvg / cpuCount;
+
+        let osHostname = os.hostname();
+        let osPlatform = os.platform();
+        let osArch = os.arch();
+        let osRelease = os.release();
+        let osType = os.type();
+        let osUptime = os.uptime() / 60; // minutes
+        let osTotalmem = os.totalmem() / 1048576; //  MB
+        let osFreemem = os.freemem() / 1048576; //  MB
+
+        let osLoadavg1m =  osLoadAvg[0]; // min
+        let osLoadavg5m =  osLoadAvg[1]; // min
+        let osLoadavg15m =  osLoadAvg[2]; // min
+        let osHomedir = os.homedir();
+
+        let processUptime = process.uptime(); // seconds
+
+        let remoteIp = req.connection.remoteAddress;
+
+        let folderSize;
+        let stat;
+        try {
+    			stats = fs.statSync('public/uploads');
+    			folderSize = stats.size;
+        	}
+		catch (e) {
+    		folderSize = 0;
+		}
+
+		let serverInfo = {
+            cpuModel: `${cpuModel}`,
+            cpuCount: `${cpuCount}`,
+			cpuSpeed: `${cpuSpeed} MHz`,
+            cpuUserAvg: `${cpuUserAvg}`,
+            cpuNiceAvg: `${cpuNiceAvg}`,
+            cpuSysAvg: `${cpuNiceAvg}`,
+            cpuIdleAvg: `${cpuIdleAvg}`,
+            osHostname: `${osHostname}`,
+            osPlatform: `${osPlatform}`,
+            osArch: `${osArch}`,
+            osRelease: `${osRelease}`,
+            osType: `${osType}`,
+            osUptime: `${osUptime} minutes`,
+            osTotalmem: `${osTotalmem} MB`,
+            osFreemem: `${osFreemem} MB`,
+            osLoadavg1m: `${osLoadavg1m} minutes`,
+            osLoadavg5m: `${osLoadavg5m} minutes`,
+            osLoadavg15m: `${osLoadavg15m} minutes`,
+            osHomedir: `${osHomedir}`,
+            processUptime: `${processUptime}`,
+            processVersion: `${process.version}`,
+            processVersionsHttp_parser: `${process.versions.http_parser}`,
+            processVersionsNode: `${process.versions.node}`,
+            processVersionsV8: `${process.versions.v8}`,
+            processVersionsUv: `${process.versions.uv}`,
+            processVersionsZlib: `${process.versions.zlib}`,
+            processVersionsAres: `${process.versions.ares}`,
+            processVersionsModules: `${process.versions.modules}`,
+            processVersionsIcu: `${process.versions.icu}`,
+            processVersionsOpenssl: `${process.versions.openssl}`,
+            remoteIp: `${remoteIp}`,
+            folderSize: `${folderSize}`
+		};
+
+		return res.status(200).json({
+			data: serverInfo
+		});
+	});	
 }

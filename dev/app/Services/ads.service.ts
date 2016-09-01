@@ -58,7 +58,7 @@ export class AdsService {
                 res => {
                     let data: any = this.extractData(res);
                     this.count = data.count ? <number>data.count : 0;
-                    return data.ads;
+                    return !count ? data : data.ads;
                 })
             .catch(this.handleError);
     }    // getAds()

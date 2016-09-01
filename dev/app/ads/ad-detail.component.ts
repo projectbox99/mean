@@ -22,14 +22,15 @@ export class AdDetailComponent implements OnInit, OnDestroy {
     @Output() canceled = new EventEmitter();
     @Output() saved = new EventEmitter();
 
-    @Input()
-    set ad (ad: Ad) {
-        this.restoreService.setItem(ad);
-    }
+    // @Input()
+    // set ad (ad: Ad) {
+    //     this.restoreService.setItem(ad);
+    // }
 
-    get ad () {
-        return this.restoreService.getItem();
-    }
+    // get ad () {
+    //     return this.restoreService.getItem();
+    // }
+    private ad:Ad;
 
     private currentUser: User;
     private curUsrRole: string;
@@ -108,6 +109,7 @@ export class AdDetailComponent implements OnInit, OnDestroy {
     		.then(
     			result => {
     				if (count === 0) {
+                        console.log("------------>" + result.fileName);
 						this.ad.photoMain = result.fileName;
 					} else {
 						this.ad.photos[count - 1] = result.fileName;

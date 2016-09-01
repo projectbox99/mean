@@ -1,3 +1,55 @@
 <div class='about'>
 	<h1>about.component.html</h1>
+
+	<div *ngIf="info" class="info-container" >
+
+	 	<div *ngIf="info.osHostname" class="about-data">
+	        <p id="about-data"><label>Host name:&nbsp;</label>{{info.osHostname}}</p>
+	    </div>
+
+	 	<div *ngIf="info.osPlatform" class="about-data">
+	        <p id="about-data"><label>Platform:&nbsp;</label>{{info.osPlatform}}</p>
+	    </div>
+
+	 	<div *ngIf="info.osArch" class="about-data">
+	        <p id="about-data"><label>Arch:&nbsp;</label>{{info.osArch}}</p>
+	    </div>
+
+	 	<div *ngIf="info.osRelease" class="about-data">
+	        <p id="about-data"><label>Release:&nbsp;</label>{{info.osRelease}}</p>
+	    </div>
+
+	 	<div *ngIf="info.cpuModel" class="about-data">
+	        <p id="about-data"><label>Cpu Model:&nbsp;</label>{{info.cpuModel}}</p>
+	    </div>
+
+	 	<div *ngIf="info.cpuCount" class="about-data">
+	        <p id="about-data"><label>Count:&nbsp;</label>{{info.cpuCount}}</p>
+	    </div>
+
+	 	<div *ngIf="info.cpuSpeed" class="about-data">
+	        <p id="about-data"><label>Speed:&nbsp;</label>{{info.cpuSpeed}}</p>
+	    </div>
+
+	 	<div *ngIf="info.cpuUserAvg" class="about-data">
+	        <p id="about-data"><label>User Avg:&nbsp;</label>{{info.cpuUserAvg}}</p>
+	    </div>
+
+	 	<div *ngIf="info.cpuNiceAvg" class="about-data">
+	        <p id="about-data"><label>Nice Avg:&nbsp;</label>{{info.cpuNiceAvg}}</p>
+	    </div>
+
+	 	<div *ngIf="info.cpuSysAvg" class="about-data">
+	        <p id="about-data"><label>Sys Avg:&nbsp;</label>{{info.cpuSysAvg}}</p>
+	    </div>
+
+	 	<div *ngIf="info.cpuIdleAvg" class="about-data">
+	        <p id="about-data"><label>Idle Avg:&nbsp;</label>{{info.cpuIdleAvg}}</p>
+	    </div>
+
+<!-- 		<code>
+			<div *ngFor="let i of items" class="info-item">{{i}} -> {{JSON.stringify(info.i)}}</div>
+			<div></div>
+		</code> -->
+	</div>
 </div>
