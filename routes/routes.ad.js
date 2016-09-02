@@ -104,7 +104,7 @@ module.exports = app => {
             return res.status(400).json({ data: 'Bad request - missing start index/ count parameters' });
         }
 
-        let count;
+        // let count;
         Ad.find({ approved: true }, (err, ads) => {
             if (err) {
                 console.error(`Error retrieving ads ${req.params.startIdx} - ${req.params.startIdx + req.params.count}`);
@@ -192,7 +192,7 @@ module.exports = app => {
                 app.locals.adsCount++;
             if (app.locals.cache && app.locals.cache.get('ADS_COUNT'))
                 app.locals.cache.put('ADS_COUNT', app.locals.cache.get('ADS_COUNT') + 1);
-            console.info(`${chalkBold('[ MongoDB ]')} ADS_COUNT: ${app.locals.adsCount} (Incremented)`);
+            // console.info(`${chalkBold('[ MongoDB ]')} ADS_COUNT: ${app.locals.adsCount} (Incremented)`);
 
             res.status(200).json({
                 data: mongoResponse
@@ -237,11 +237,21 @@ module.exports = app => {
             updateCitiesInDb(app.locals.cities);
         }
 
+        let previousApprovedStatus;
         if (tokenUserRole === 'admin' || tokenUserRole === 'supervisor' || tokenUserId === req.body.owner) {
+            Ad.findById(adId, (err, adData) => {
+                if (adData && adData.approved) {
+                    previousApprovedStatus = adData.approved;
+                } else {
+                    previousApprovedStatus = false;
+                }
+            });
+
             Ad.findByIdAndUpdate(adId, {
                 title: req.body.title,
                 category: req.body.category,
                 desc: req.body.desc,
+                photoMain: req.body.photoMain,
                 photos: req.body.photos,
                 city: req.body.city,
                 price: req.body.price,
@@ -259,6 +269,16 @@ module.exports = app => {
                     return res.status(500).json({
                         msg: `Error updating ad data for ${adId}!`
                     });
+                }
+
+                if (previousApprovedStatus !== mongoResponse.approved) {
+                    if (mongoResponse.approved) {
+                        app.locals.adsCount++;
+                        app.locals.cache.put('ADS_COUNT', app.locals.adsCount);
+                    } else {
+                        app.locals.adsCount--;
+                        app.locals.cache.put('ADS_COUNT', app.locals.adsCount);
+                    }
                 }
 
                 res.status(200).json({
@@ -325,7 +345,7 @@ module.exports = app => {
                 app.locals.adsCount--;
             if (app.locals.cache && app.locals.cache.get('ADS_COUNT'))
                 app.locals.cache.put('ADS_COUNT', app.locals.cache.get('ADS_COUNT') - 1);
-            console.info(`${chalkBold('[ MongoDB ]')} ADS_COUNT: ${app.locals.adsCount} (Decremented)`);
+            // console.info(`${chalkBold('[ MongoDB ]')} ADS_COUNT: ${app.locals.adsCount} (Decremented)`);
 
             res.status(200).json({ data: mongoResponse });
         });

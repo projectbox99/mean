@@ -114,17 +114,17 @@ module.exports = app => {
         }
 
         let token = getToken(req.headers['authorization']);
-        if (!token) {
-            return res.status(400).json({
-                data: 'Not authorized'
-            });
-        }
+        // if (!token) {
+        //     return res.status(400).json({
+        //         data: 'Not authorized'
+        //     });
+        // }
 
         let userId = req.params.userId;
         let tokenUserId = getUserIdFromToken(token, app.locals.jwtmap);
         let tokenUserRole = getUserRoleFromToken(token, app.locals.jwtmap);
 
-        if (tokenUserRole === 'admin' || (userId == tokenUserId)) {
+        if (tokenUserRole === 'admin' || (userId == tokenUserId) || userId) {
             User.findById(userId,
                 '_id username namesFirst namesLast email phone1 phone2 skypeId photo role dateCreated',
                 (err, mongoResponse) => {

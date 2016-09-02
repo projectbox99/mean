@@ -96,6 +96,11 @@ export class AdsService {
     }    // getAd()
 
     public postAd(ad: Ad): Observable<Ad> {
+        if (!ad || !ad.id) {
+            console.log(`postUser was called with a bad ad id argument: ${JSON.stringify(ad)}`);
+            return Observable.create(new Ad());
+        }
+
         let headers = new Headers({ "Authorization": "Bearer " + this.token, "Content-Type": "application/json" });
         let options: RequestOptions = new RequestOptions({ headers: headers });
         let body: string = JSON.stringify(ad);
@@ -107,7 +112,7 @@ export class AdsService {
 
     public putAd(ad: Ad): Observable<Ad> {
         if (!ad || !ad.id) {
-            console.log(`putUser was called with a bad user argument: ${JSON.stringify(ad)}`);
+            console.log(`putUser was called with a bad ad id argument: ${JSON.stringify(ad)}`);
             return Observable.create(new Ad());
         }
 
@@ -120,6 +125,7 @@ export class AdsService {
                 let adData = this.extractData(response);
                 if (adData._id) {
                     adData.id = adData._id;
+                    console.log(`Service returned: ${JSON.stringify(adData)}`);
                     return adData;
                 } else {
                     return Observable.create(new Ad());

@@ -49,7 +49,7 @@ export class AdsComponent {
             this.sub = this.adsService.getAds().subscribe(
                 ads => {
                     this.ads = ads;
-                    console.log(`Admins ads: ${JSON.stringify(this.ads)}`);
+                    // console.log(`Admins ads: ${JSON.stringify(this.ads)}`);
                 },
                 error => {
                     console.log(`Error: ${JSON.stringify(error)}`);
@@ -61,6 +61,7 @@ export class AdsComponent {
     public refresh(myList: string = ""): void {
         this.loading = true;
         if (myList) {
+            this.currentList = myList;
             this.loadAds(myList);
         } else {
             this.loadAds("regular");

@@ -22,15 +22,14 @@ export class AdDetailComponent implements OnInit, OnDestroy {
     @Output() canceled = new EventEmitter();
     @Output() saved = new EventEmitter();
 
-    // @Input()
-    // set ad (ad: Ad) {
-    //     this.restoreService.setItem(ad);
-    // }
+    @Input()
+    set ad (ad: Ad) {
+        this.restoreService.setItem(ad);
+    }
 
-    // get ad () {
-    //     return this.restoreService.getItem();
-    // }
-    private ad:Ad;
+    get ad () {
+        return this.restoreService.getItem();
+    }
 
     private currentUser: User;
     private curUsrRole: string;
@@ -88,11 +87,11 @@ export class AdDetailComponent implements OnInit, OnDestroy {
 
     	reader.onload = (e) => {
     		if (count == 0) {
-	            console.log("Changing photoMain...");
+	            console.log("Rendering photoMain...");
 	            this.photoMain = e.target.result;
 	            image.src = this.photoMain;
 	        } else if (count <= 5) {
-	        	console.log(`Changing photo[${count - 1}]...`);
+	        	console.log(`Rendering photo[${count - 1}]...`);
 	        	this.photos[count - 1] = e.target.result;
 	        	image.src = this.photos[count - 1];
 	        } else {
@@ -109,10 +108,13 @@ export class AdDetailComponent implements OnInit, OnDestroy {
     		.then(
     			result => {
     				if (count === 0) {
-                        console.log("------------>" + result.fileName);
-						this.ad.photoMain = result.fileName;
+    					this.ad.photoMain = result.fileName;
+    					console.log(`uploadFile setting this.ad.photoMain to ${this.ad.photoMain}`);
+						// this.photoMain = "uploads/" + this.ad.photoMain;
 					} else {
 						this.ad.photos[count - 1] = result.fileName;
+						console.log(`uploadFile setting this.ad.photos[${count - -1}] to ${this.ad.photos[count-1]}`);
+						// this.photos[count - 1] = "uploads/" + this.ad.photos[count - 1];
 					}
     			},
     			error => {
@@ -164,18 +166,21 @@ export class AdDetailComponent implements OnInit, OnDestroy {
 
         reader.onload = function(e) {
             if (count === 0) {
-                console.log("Changing main image...");
+                console.log("Rendering main image...");
                 self.photoMain = e.target.result;
+                // self.ad.photoMain = self.photoMain;
                 image.src = self.photoMain;
             } else {
-                console.log(`Changing image ${count - 1}...`);
+                console.log(`Rendering image ${count - 1}...`);
                 self.photos[count - 1] = e.target.result;
+                self.ad.photos[count - 1] = self.photos[count - 1];
                 image.src = self.photos[count - 1];
-                console.log(self.photos.length);
+                console.log(self.ad.photos.length);
             }
         }
 
         reader.readAsDataURL(event.target.files[0]);
+        this.uploadFile(event.target.files[0], count);
     }    // imgChange()
 
     public loadStandingData(): void {
@@ -185,6 +190,8 @@ export class AdDetailComponent implements OnInit, OnDestroy {
     public onSubmit(): void {
         this.errorMsg = "";
         this.statusMsg = "";
+
+        console.log(`Submitting: ${JSON.stringify(this.ad)}`);
 
         if (this.isEditingAd) {
             this.modifyAd(this.ad);
@@ -300,12 +307,13 @@ export class AdDetailComponent implements OnInit, OnDestroy {
                     this.adsService.getAd(id).subscribe(
                         adData => {
                             this.ad = adData;
-
+                            console.log(`ngOnInit loads ad: ${JSON.stringify(this.ad)}`);
                             this.photoMain = this.ad.photoMain ? "/uploads/" + this.ad.photoMain : "";
+                            console.log(`ngOnInit setting this.photoMain to ${this.photoMain}`);
                             for (let i = 0; i < this.ad.photos.length; i++) {
                             	this.photos[i] = "/uploads/" + this.ad.photos[i];
+                            	console.log(`ngOnInit setting this.photos[${i}] to ${this.photos[i]}`);
                             }
-                            console.info(`Setting register.component.user to ${JSON.stringify(this.ad)}`);
                         }, error => this.errorMsg = <any>error
                     );
                 } else {
