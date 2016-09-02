@@ -1,6 +1,6 @@
 "use strict";
 
-import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, ElementRef, NgZone } from "@angular/core";
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, ElementRef } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Response } from "@angular/http";
 import { Location } from "@angular/common";
@@ -57,8 +57,7 @@ export class AdDetailComponent implements OnInit, OnDestroy {
                 private authService: AuthService,
                 private restoreService: RestoreService<Ad>,
                 private element: ElementRef,
-                private location: Location,
-                private ngZone: NgZone) {
+                private location: Location) {
         this.curUsrRole = authService.usrRole;
 
         this.lists = new Lists([], [], []);
@@ -140,12 +139,12 @@ export class AdDetailComponent implements OnInit, OnDestroy {
 	    		}
     		};
 
-    		xhr.upload.onprogress = (e) => {
-    			window.setTimeout(() => {
-    				this.percent = Math.ceil((e.loaded / e.total) * 100);
-    				console.log(this.percent + "%");    				
-    			}, 10);
-    		}
+    		// xhr.upload.onprogress = (e) => {
+    		// 	window.setTimeout(() => {
+    		// 		this.percent = Math.ceil((e.loaded / e.total) * 100);
+    		// 		console.log(this.percent + "%");    				
+    		// 	}, 10);
+    		// }
 
 			xhr.open("POST", url, true);
 			xhr.responseType = "json";
@@ -196,6 +195,7 @@ export class AdDetailComponent implements OnInit, OnDestroy {
         if (this.isEditingAd) {
             this.modifyAd(this.ad);
         } else {
+            console.log('choosing addAd()');
             this.addAd(this.ad);
         }
 
@@ -223,8 +223,8 @@ export class AdDetailComponent implements OnInit, OnDestroy {
     }    // gotoPreview()
 
     private addAd(ad: Ad): void {
-        this.adsService.postAd(this.ad)
-            .subscribe(            // we want an Observable returned
+        console.log(`IN addAd: ${ad}`);
+        this.adsService.postAd(this.ad).subscribe(            // we want an Observable returned
                 adData => {      // function to invoke for each element in the observable sequence
                     this.ad = adData;
                     this.statusMsg = "Ad created successfully";

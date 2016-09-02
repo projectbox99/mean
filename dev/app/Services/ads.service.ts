@@ -96,7 +96,7 @@ export class AdsService {
     }    // getAd()
 
     public postAd(ad: Ad): Observable<Ad> {
-        if (!ad || !ad.id) {
+        if (!ad) {
             console.log(`postUser was called with a bad ad id argument: ${JSON.stringify(ad)}`);
             return Observable.create(new Ad());
         }
@@ -105,6 +105,8 @@ export class AdsService {
         let options: RequestOptions = new RequestOptions({ headers: headers });
         let body: string = JSON.stringify(ad);
 
+        console.log(`SERVICE URL: ${this.adsUrl}`);
+        console.log(`SERVICE POST: ${body}`);
         return this.http.post(this.adsUrl, body, options)   // returns Observable<Response>
             .map(this.extractData)               // success
             .catch(this.handleError);            // error
