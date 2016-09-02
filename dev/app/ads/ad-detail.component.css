@@ -31,7 +31,7 @@ label {
 }
 
 .main-image {
-	border: 3px solid #888888;
+	/* border: 3px solid #888888; */
 }
 
 #photo {
@@ -43,7 +43,10 @@ label {
 	max-width: 1000px;
 	min-width: 300px;
 	max-height: 500px;
-	min-height: 100px
+	min-height: 100px;
+	border: 1px solid #888888;
+	padding: 10px;
+	background-color: #f8f8ed;
 }
 
 .admin-data {

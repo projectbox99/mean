@@ -50,7 +50,7 @@
                 <!-- paged items -->
                 <div [hidden]="!adsCount" class="ad-container">
                     <div *ngFor="let ad of pagedItems" class="ad-box">
-                        <div class="ad-title">{{ad.title}}</div>
+                        <div class="ad-title">{{ad.title.length > 28 ? ad.title.slice(0, 25) + "..." : ad.title}}</div>
                         <table role="button" (click)="previewAd(ad._id)">
                             <tr><td *ngIf="ad.photoMain" class="img-td"><img [src]="'/uploads/' + ad.photoMain" class="ad-img"></td></tr>
                             <tr><td *ngIf="!ad.photoMain" class="img-td"><img src="/images/kermit.jpg" class="ad-img"></td></tr>

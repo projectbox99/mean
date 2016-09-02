@@ -188,9 +188,9 @@ module.exports = app => {
             }
 
             // update server cache
-            if (app.locals.adsCount)
+            if (app.locals.adsCount && ad.approved)
                 app.locals.adsCount++;
-            if (app.locals.cache && app.locals.cache.get('ADS_COUNT'))
+            if (app.locals.cache && app.locals.cache.get('ADS_COUNT') && ad.approved)
                 app.locals.cache.put('ADS_COUNT', app.locals.cache.get('ADS_COUNT') + 1);
             // console.info(`${chalkBold('[ MongoDB ]')} ADS_COUNT: ${app.locals.adsCount} (Incremented)`);
 
@@ -315,7 +315,7 @@ module.exports = app => {
 
         if (tokenUserRole !== 'admin' && tokenUserRole !== 'supervisor') {
             Ad.findById(adId,
-            'owner',
+            'owner approved',
             (err, mongoResponse) => {
                 if (err) {
                     return res.status(500).json({
@@ -341,9 +341,9 @@ module.exports = app => {
             }
 
             // update server cache
-            if (app.locals.adsCount)
+            if (app.locals.adsCount && mongoResponse.approved)
                 app.locals.adsCount--;
-            if (app.locals.cache && app.locals.cache.get('ADS_COUNT'))
+            if (app.locals.cache && app.locals.cache.get('ADS_COUNT') && mongoResponse.approved)
                 app.locals.cache.put('ADS_COUNT', app.locals.cache.get('ADS_COUNT') - 1);
             // console.info(`${chalkBold('[ MongoDB ]')} ADS_COUNT: ${app.locals.adsCount} (Decremented)`);
 
