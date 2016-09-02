@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit {
                 this.ads = res;
                 this.adsCount = this.adsService.count;
                 this.isInSearchResults = false;
-                this.pager = this.pagerService.getPager(this.adsCount || this.count, this.currentPage);
+                this.pager = this.pagerService.getPager(this.adsCount || 0, this.currentPage);
                 this.pagedItems = this.ads;
             },
             error => {
